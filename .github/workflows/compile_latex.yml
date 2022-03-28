@@ -32,4 +32,4 @@ jobs:
         with:
           files: thesis.pdf
           tag_name: $ {{ github.run_number }}
-          release_name: Bachelor_Thesis_Build_${{ github.run_number }}
+          name: Bachelor_Thesis_Build_${{ github.run_number }}
