@@ -10,14 +10,14 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: thesis.tex
-      - name: Publish PDF
+      - name: Publish PDF and log files to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Bachelor_Thesis
           path: thesis.pdf
           if-no-files-found: error
-      - name: Release
+      - name: Release PDF
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        if: github.ref == 'refs/heads/actions_workflow'
         with:
           files: thesis.pdf
