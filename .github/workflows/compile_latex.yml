@@ -14,4 +14,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Bachelor_Thesis
-          path: main.pdf
+          path: thesis.pdf
