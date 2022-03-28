@@ -36,5 +36,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
           files: thesis.pdf
           name: Bachelor_Thesis_Build_${{ github.run_number }}
