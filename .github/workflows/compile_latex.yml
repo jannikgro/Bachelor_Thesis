@@ -10,6 +10,16 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: thesis.tex
+      - name: Move files to compiler_output folder
+        run: |
+          mkdir compiler_output
+          cp ./thesis.pdf ./compiler_output/thesis.pdf
+          mv ./thesis.aux ./compiler_output/thesis.aux
+          mv ./thesis.bcf ./compiler_output/thesis.bcf
+          mv ./thesis.log ./compiler_output/thesis.log
+          mv ./thesis.out ./compiler_output/thesis.out
+          mv ./thesis.run.xml ./compiler_output/thesis.run.xml
+          mv ./thesis.toc ./compiler_output/thesis.toc
       - name: Publish PDF and log files to Artifacts
         uses: actions/upload-artifact@v2
         with:

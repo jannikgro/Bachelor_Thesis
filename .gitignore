@@ -8,6 +8,7 @@
 *.acr
 *.alg
 *.bbl
+*.bcf
 *.blg
 *.dvi
 *.glg
@@ -20,4 +21,6 @@
 *.mtc
 *.mtc1
 *.out
+*.pdf
 *.synctex.gz
+*.xml
