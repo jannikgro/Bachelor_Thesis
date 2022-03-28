@@ -10,3 +10,6 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: thesis.tex
+      - name: Publish PDF
+        uses: actions/upload-artifact@v2
+        path: main.pdf
