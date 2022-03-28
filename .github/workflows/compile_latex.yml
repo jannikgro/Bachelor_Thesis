@@ -26,10 +26,15 @@ jobs:
           name: Bachelor_Thesis
           path: compiler_output
           if-no-files-found: error
+      - name: Generate release tag
+        id: tag
+        run: |
+          echo "::set-output name=release_tag::UserBuild_$(date +"%Y.%m.%d_%H-%M")"
       - name: Release PDF
         uses: softprops/action-gh-release@v1
         if: github.ref == 'refs/heads/actions_workflow'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: thesis.pdf
-          token: $ {{ github.run_number }}
           name: Bachelor_Thesis_Build_${{ github.run_number }}
