@@ -24,10 +24,11 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Bachelor_Thesis
-          path: thesis.pdf
+          path: compiler_output
           if-no-files-found: error
       - name: Release PDF
         uses: softprops/action-gh-release@v1
         if: github.ref == 'refs/heads/actions_workflow'
         with:
           files: thesis.pdf
+          tag_name: $ {{ github.ref }}
