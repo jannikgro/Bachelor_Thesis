@@ -10,3 +10,33 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: thesis.tex
+      - name: Move files to compiler_output folder
+        run: |
+          mkdir compiler_output
+          cp ./thesis.pdf ./compiler_output/thesis.pdf
+          mv ./thesis.aux ./compiler_output/thesis.aux
+          mv ./thesis.bcf ./compiler_output/thesis.bcf
+          mv ./thesis.log ./compiler_output/thesis.log
+          mv ./thesis.out ./compiler_output/thesis.out
+          mv ./thesis.run.xml ./compiler_output/thesis.run.xml
+          mv ./thesis.toc ./compiler_output/thesis.toc
+      - name: Publish PDF and log files to Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Bachelor_Thesis
+          path: compiler_output
+          if-no-files-found: error
+      - name: Generate release tag
+        if: github.ref == 'refs/heads/main'
+        id: tag
+        run: |
+          echo "::set-output name=release_tag::UserBuild_$(date +"%Y.%m.%d_%H-%M")"
+      - name: Release PDF
+        uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          files: thesis.pdf
+          name: Bachelor_Thesis_Build_${{ github.run_number }}
