@@ -12,4 +12,6 @@ jobs:
           root_file: thesis.tex
       - name: Publish PDF
         uses: actions/upload-artifact@v2
-        path: main.pdf
+        with:
+          name: Bachelor_Thesis
+          path: main.pdf
