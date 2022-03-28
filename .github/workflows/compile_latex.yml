@@ -31,5 +31,4 @@ jobs:
         if: github.ref == 'refs/heads/actions_workflow'
         with:
           files: thesis.pdf
-          tag_name: $ {{ github.run_number }}
           name: Bachelor_Thesis_Build_${{ github.run_number }}
