@@ -3,7 +3,7 @@ In dieser Arbeit werde ich ein Lehrbuch \cite{Sutton1998} und ein Paper \cite{DB
 
 \section{Der Markt als Markov-Entscheidungsprozess}
 Der im vorigen Kapitel intuitiv umrissene Markt wird hier als Markov-Entscheidungsprozess modelliert.
-Dazu wird das Marktgeschehen eines geschäftlich relevanten Zeitraumes, z.B. eines Tages oder eines Monats in $n_ep$ gleich lange Zeitabschnitte unterteilt.
+Dazu wird das Marktgeschehen eines geschäftlich relevanten Zeitraumes, z.B. eines Tages oder eines Monats in $n_{ep}$ gleich lange Zeitabschnitte unterteilt.
 In der Terminologie des Reinforcement Learnings wird ein einzelner Abschnitt als Schritt, die Gesamtheit als Episode bezeichnet.
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
 Der Reinforcement-Learning-Agent setzt in Abhängigkeit des Zustandes drei Preise:
@@ -12,18 +12,35 @@ Der Reinforcement-Learning-Agent setzt in Abhängigkeit des Zustandes drei Preis
     \item für diese Produkte in neu sowie
     \item den Rückkaufpreis, für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
 \end{enumerate}
-Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_max$.
-Damit ist der (stetige) Aktionsraum als $\mathcal{A}=[0, p_max]^3$ definiert.
+Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
+Damit ist der (stetige) Aktionsraum als $\mathcal{A}=[0, p_{max}]^3$ definiert.
 Der Konkurrent legt ebenfalls diese drei Preise für seine Produktlinie fest.
 
-In jedem Schritt besuchen $k \in \natural$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
-\begin{enumerate}
-    \item kein Kauf,
-    \item gebrauchtes Produkt beim ersten Anbieter,
-    \item Neuware beim ersten Anbieter,
-    \item gebrauchtes Produkt beim zweiten Anbieter,
-    \item Neuware beim zweiten Anbieter.
-\end{enumerate}
+In jedem Schritt besuchen $k \in 2\mathbb{N}$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
+Entweder kaufen sie kein Produkt, das gebrauchte oder neue beim ersten Anbieter (RL-Agent) oder das gebrauchte oder neue beim Konkurrenten.
+Das Kaufverhalten ist aber keinesfalls deterministisch.
+Es wird stark durch die Preise beeinflusst, aber unterschiedliche Kunden haben unterschiedliche Erwartungen, unterschiedliche Anbieterpräferenzen oder unterschiedliche Einstellungen zu Nachhaltigkeit.
+Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden geshuffelt wird.
+Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
+Die Berechnungsformel für den Präferenzvektor lautet:
+\begin{equation}
+    \sigma(p{1, gebraucht}, p{1, neu}, p{2, gebraucht}, p{2, neu}) = \left[
+        1,
+        \frac{5.5}{p{1, gebraucht} - \exp{p{1, gebraucht} - 0.5 p_{max}}},
+        \frac{10}{p{1, neu} - \exp{p{1, neu} - 0.8 p_{max}}},
+        \frac{5.5}{p{2, gebraucht} - \exp{p{2, gebraucht} - 0.5 p_{max}}},
+        \frac{10}{p{2, neu} - \exp{p{2, neu} - 0.8 p_{max}}}
+    \right]^\top
+\end{equation}
+Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
+Gebrauchten Produkten wird dabei 55\% der Wertschätzung gegenüber Neuprodukten entgegengebracht.
+Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0.5 p_{max}$ bei Gebraucht- und $0.8 p_{max}$ bei Neuware überschreitet.
+Das modelliert die grundsätzliche Zahlungsbereitschaft der Kunden für diese Produkte und verhindert einen Preiszyklus nach oben.
+Weiterhin werden die Produkte der beiden Anbieter als gleichwertig betrachtet.
+So ist der Wettbewerb zwischen den Anbietern symmetrisch und die Gewinne der beiden Anbieter vergleichbar.
+Der Wert 1 als Präferenz für das Nichtkaufen ist festgelegt.
+Fallen die Präferenzen der anderen Optionen niedrig aus, so wird durch die Softmax-Funktion eine hohe Wahrscheinlichkeit auf das Nichtkaufen entfallen.
+Darstellung [Test] veranschaulicht das Kundenverhalten an einigen Beispielen. 
 
 \section{Reinforcement Learning -- eine kurze Einführung}
 
