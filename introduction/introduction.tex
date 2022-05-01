@@ -8,9 +8,9 @@ In der Terminologie des Reinforcement Learnings wird ein einzelner Abschnitt als
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
 Der Reinforcement-Learning-Agent setzt in Abhängigkeit des Zustandes drei Preise:
 \begin{enumerate}
-    \item für gebrauchte Produkte der Produktlinie,
-    \item für diese Produkte in neu sowie
-    \item den Rückkaufpreis, für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
+    \item für gebrauchte Produkte der Produktlinie ($p_{1, gebraucht}$),
+    \item für diese Produkte in neu ($p_{1, neu}$) sowie
+    \item den Rückkaufpreis ($p_{1, rück}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
 \end{enumerate}
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
 Damit ist der (stetige) Aktionsraum als $\mathcal{A}=[0, p_{max}]^3$ definiert.
@@ -24,12 +24,12 @@ Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kun
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
 Die Berechnungsformel für den Präferenzvektor lautet:
 \begin{equation}
-    \sigma(p{1, gebraucht}, p{1, neu}, p{2, gebraucht}, p{2, neu}) = \left[
+    \sigma(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) = \left[
         1,
-        \frac{5.5}{p{1, gebraucht} - \exp{p{1, gebraucht} - 0.5 p_{max}}},
-        \frac{10}{p{1, neu} - \exp{p{1, neu} - 0.8 p_{max}}},
-        \frac{5.5}{p{2, gebraucht} - \exp{p{2, gebraucht} - 0.5 p_{max}}},
-        \frac{10}{p{2, neu} - \exp{p{2, neu} - 0.8 p_{max}}}
+        \frac{5.5}{p_{1, gebraucht}} - \exp{p_{1, gebraucht} - 0.5 p_{max}},
+        \frac{10}{p_{1, neu}} - \exp{p_{1, neu} - 0.8 p_{max}},
+        \frac{5.5}{p_{2, gebraucht}} - \exp{p_{2, gebraucht} - 0.5 p_{max}},
+        \frac{10}{p_{2, neu}} - \exp{p_{2, neu} - 0.8 p_{max}}
     \right]^\top
 \end{equation}
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
