@@ -10,11 +10,11 @@ Der Reinforcement-Learning-Agent setzt in Abhängigkeit des Zustandes drei Preis
 \begin{enumerate}
     \item für gebrauchte Produkte der Produktlinie ($p_{1, gebraucht}$),
     \item für diese Produkte in neu ($p_{1, neu}$) sowie
-    \item den Rückkaufpreis ($p_{1, rück}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
+    \item den Rückkaufpreis ($p_{1, re}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
 \end{enumerate}
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
 Damit ist der (stetige) Aktionsraum als $\mathcal{A}=[0, p_{max}]^3$ definiert.
-Der Konkurrent legt ebenfalls diese drei Preise für seine Produktlinie fest.
+Der Konkurrent legt ebenfalls diese drei Preise für seine Produktlinie fest ($p_{2, gebraucht}$, $p_{2, neu}$, $p_{2, re}$).
 
 In jedem Schritt besuchen $k \in 2\mathbb{N}$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
 Entweder kaufen sie kein Produkt, das gebrauchte oder neue beim ersten Anbieter (RL-Agent) oder das gebrauchte oder neue beim Konkurrenten.
@@ -24,13 +24,14 @@ Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kun
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
 Die Berechnungsformel für den Präferenzvektor lautet:
 \begin{equation}
-    \sigma(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) = \left[
-        1,
-        \frac{5.5}{p_{1, gebraucht}} - \exp{p_{1, gebraucht} - 0.5 p_{max}},
-        \frac{10}{p_{1, neu}} - \exp{p_{1, neu} - 0.8 p_{max}},
-        \frac{5.5}{p_{2, gebraucht}} - \exp{p_{2, gebraucht} - 0.5 p_{max}},
-        \frac{10}{p_{2, neu}} - \exp{p_{2, neu} - 0.8 p_{max}}
-    \right]^\top
+    \sigma(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
+    \begin{matrix}
+        1\\
+        \frac{5.5}{p_{1, gebraucht}} - \exp{(p_{1, gebraucht} - 0.5 p_{max})}\\
+        \frac{10}{p_{1, neu}} - \exp{(p_{1, neu} - 0.8 p_{max})}\\
+        \frac{5.5}{p_{2, gebraucht}} - \exp{(p_{2, gebraucht} - 0.5 p_{max})}\\
+        \frac{10}{p_{2, neu}} - \exp{(p_{2, neu} - 0.8 p_{max})}\\
+    \end{matrix}
 \end{equation}
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung gegenüber Neuprodukten entgegengebracht.
