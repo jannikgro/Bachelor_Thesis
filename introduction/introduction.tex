@@ -25,13 +25,13 @@ Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden
 Die Berechnungsformel für den Präferenzvektor lautet:
 \begin{equation}
     \sigma(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
-    \begin{matrix}
+    \begin{pmatrix}
         1\\
         \frac{5.5}{p_{1, gebraucht}} - \exp{(p_{1, gebraucht} - 0.5 p_{max})}\\
         \frac{10}{p_{1, neu}} - \exp{(p_{1, neu} - 0.8 p_{max})}\\
         \frac{5.5}{p_{2, gebraucht}} - \exp{(p_{2, gebraucht} - 0.5 p_{max})}\\
         \frac{10}{p_{2, neu}} - \exp{(p_{2, neu} - 0.8 p_{max})}\\
-    \end{matrix}
+    \end{pmatrix}
 \end{equation}
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung gegenüber Neuprodukten entgegengebracht.
