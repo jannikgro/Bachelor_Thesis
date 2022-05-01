@@ -2,7 +2,29 @@
 In dieser Arbeit werde ich ein Lehrbuch \cite{Sutton1998} und ein Paper \cite{DBLP:journals/corr/abs-1712-01815} zitieren.
 
 \section{Der Markt als Markov-Entscheidungsprozess}
+Der im vorigen Kapitel intuitiv umrissene Markt wird hier als Markov-Entscheidungsprozess modelliert.
+Dazu wird das Marktgeschehen eines geschäftlich relevanten Zeitraumes, z.B. eines Tages oder eines Monats in $n_ep$ gleich lange Zeitabschnitte unterteilt.
+In der Terminologie des Reinforcement Learnings wird ein einzelner Abschnitt als Schritt, die Gesamtheit als Episode bezeichnet.
+Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
+Der Reinforcement-Learning-Agent setzt in Abhängigkeit des Zustandes drei Preise:
+\begin{enumerate}
+    \item für gebrauchte Produkte der Produktlinie,
+    \item für diese Produkte in neu sowie
+    \item den Rückkaufpreis, für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
+\end{enumerate}
+Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_max$.
+Damit ist der (stetige) Aktionsraum als $\mathcal{A}=[0, p_max]^3$ definiert.
+Der Konkurrent legt ebenfalls diese drei Preise für seine Produktlinie fest.
 
-\section{Reinforcement Learning -- ein Überblick}
+In jedem Schritt besuchen $k \in \natural$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
+\begin{enumerate}
+    \item kein Kauf,
+    \item gebrauchtes Produkt beim ersten Anbieter,
+    \item Neuware beim ersten Anbieter,
+    \item gebrauchtes Produkt beim zweiten Anbieter,
+    \item Neuware beim zweiten Anbieter.
+\end{enumerate}
+
+\section{Reinforcement Learning -- eine kurze Einführung}
 
 \section{Stetige Aktionsräume mit Reinforcement Learning}
