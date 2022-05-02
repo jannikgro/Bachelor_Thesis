@@ -24,7 +24,7 @@ Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kun
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
 Die Berechnungsformel für den Präferenzvektor lautet:
 \begin{equation}
-    \sigma(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
+    \sigma_{kunde}(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
     \begin{pmatrix}
         1\\
         \frac{5.5}{p_{1, gebraucht}} - \exp{(p_{1, gebraucht} - 0.5 p_{max})}\\
@@ -41,7 +41,39 @@ Weiterhin werden die Produkte der beiden Anbieter als gleichwertig betrachtet.
 So ist der Wettbewerb zwischen den Anbietern symmetrisch und die Gewinne der beiden Anbieter vergleichbar.
 Der Wert 1 als Präferenz für das Nichtkaufen ist festgelegt.
 Fallen die Präferenzen der anderen Optionen niedrig aus, so wird durch die Softmax-Funktion eine hohe Wahrscheinlichkeit auf das Nichtkaufen entfallen.
-Darstellung [Test] veranschaulicht das Kundenverhalten an einigen Beispielen. 
+Darstellung [Test] veranschaulicht das Kundenverhalten an einigen Beispielen.
+
+Für jeden der beiden Anbieter enthält das Marktmodell einen Zähler für die Anzahl der im Lager befindlichen Gebrauchtprodukte, $n_{lager}$.
+Das Lager hat ein Fassungsvermögen von $m_{lager}$ Produkten.
+Der initiale Lagerstand wird für beide Anbieter unabhängig und uniform zufällig zwischen $0$ und $m_{lager}$ gewählt.
+Wenn mehr Produkte zurücklaufen, werden diese verworfen und der Lagerstand bleibt beim Maximum.
+Kauft ein Kunde ein gebrauchtes Produkt, obwohl das Lager leer ist, so muss der Anbieter Entschädigung zahlen.
+Die Entschädigung ist auf $2 p_{max}$ pro enttäuschtem Kunden festgelegt.
+Das erzeugt einen starken Anreiz für die Anbieter, das Lager nicht leerlaufen zu lassen.
+Allerdings verursacht auch die Lagerhaltung Kosten: Am Ende eines jeden Schrittes werden Kosten von $p_{lager}$ pro eingelagertem Element berechnet.
+Das wiederum treibt die Anbieter dazu, ihr Lager möglichst klein zu halten und stellt sie vor die Herausforderung, mit dem Rückkaufpreis nicht nur auf ihren Konkurrenten zu reagieren, sondern auch ihr Lager zu regulieren.
+
+Weiterhin verwaltet der Markt einen Zähler für die Anzahl der Produkte, die sich in Zirkulation befinden.
+Er wird als $n_{zirk}$ bezeichnet und uniform zufällig zwischen $0$ und $5 m_{lager}$ initialisiert.
+Wird ein Neuprodukt gekauft, so wird dieser Zähler um eins erhöht.
+Der Kauf von bereits gebrauchten Produkten führt nicht zu einer Erhöhung.
+Diese Circular Economy modelliert also nur den einmaligen Weiterverkauf von Produkten.
+
+Je mehr Kunden im Besitz eines Produkts sind, desto mehr dieser Eigentümer erwägen, ihr Produkt nicht länger besitzen zu wollen.
+Sie stehen in der Zirkularwirtschaft vor einer Entscheidung aus vier Möglichkeiten.
+Sie können ihr Produkt weiter behalten, es wegwerfen oder an einen der beiden Anbieter zurückverkaufen.
+Insgesamt stellen sich in jedem Schritt $c \cdot n_{zirk}$ Eigentümer dieser Entscheidung.
+Nach dem gleichen Verfahren wie bei der Kaufentscheidung der Kunden wird ihr Verhalten mit einer diskreten Wahrscheinlichkeitsverteilung modelliert, aus der dann für jeden der $c \cdot n_{zirk}$ Eigentümer geshuffelt wird.
+Die Berechnung der Präferenzen der Eigentümer geschieht auf Grundlage der Preise der Anbieter mittels dieser Formel:
+\begin{equation}
+    \sigma_{eigentuemer}=
+    \begin{pmatrix}
+        1\\
+        \min \left(20, \frac{2}{p_{1, gebraucht}},  \frac{2}{p_{2, gebraucht}}\right)\\
+        2 \exp{\left(\frac{p_{1, re} - \min{(p_{1, gebraucht}, p_{1, neu})})}{\min{(p_{1, gebraucht}, p_{1, neu})}}\right)}\\
+        2 \exp{\left(\frac{p_{2, re} - \min{(p_{2, gebraucht}, p_{2, neu})})}{\min{(p_{2, gebraucht}, p_{2, neu})}}\right}\\
+    \end{pmatrix}
+\end{equation}
 
 \section{Reinforcement Learning -- eine kurze Einführung}
 
