@@ -91,11 +91,23 @@ Weil der Prozess erst in Gang gesetzt werden muss, muss der Konkurrent den erste
 Im Gegenzug wird er bei seinen Preisen im letzten Schritt (die dann noch für einen halben Schritt gelten) keine Preisreaktion mehr bekommen.
 Diese Randeffekte fallen jedoch bei den gewählten Episodenlängen nicht ins Gewicht.
 
+Dieser Markt erhält also abwechselnd von zwei konkurrierenden Anbietern Aktionen und kann auch für beide Anbieter Gewinne ausrechnen.
+Zum Markov-Entscheidungsprozess wird dieser Markt, wenn er aus der Sicht eines der beiden Anbieter betrachtet wird.
+Der andere Anbieter wird damit als Teil der Umgebung betrachtet.
+So wurde bereits oben vom Agenten und vom Konkurrenten geschrieben.
+Das Verhalten des Konkurrenten kann deterministisch oder stochastisch sein, muss aber für die Markov-Eigenschaft unveränderlich sein.
+
+Die Belohnung, die der Agent in einem Schritt erhält, ist die Differenz aus Einnahmen und Ausgaben des Agenten in diesem Schritt.
+Mit dem Verkauf neuer oder gebrauchter Ware erzielt der Agent Einnahmen.
+Ausgaben sind nicht nur der bereits erklärte Rückkaufpreis und die Lagerkosten und -strafen, sondern auch der Einkaufspreis für Neuware.
+Pro Neuverkauf zahlt der Agent $p_{einkauf}$.
+Damit muss für Gewinn auf dem Bereich der Neuware auf jeden Fall $p_{1, neu} > p_{einkauf}$ gelten.
+
 Nun kann der Zustandsraum des Markov-Entscheidungsprozess $\mathcal{S}$ definiert werden.
 Er ist siebendimensional und enthält Folgendes:
 \begin{enumerate}
     \item die Nummer des aktuellen Schrittes in der Episode,
-    \item die Anzahl der Elemente, die zirkulieren ($n_{zirk}$),
+    \item die Anzahl der gerade zirkulierenden Elemente ($n_{zirk}$),
     \item die Anzahl der Elemente im eigenen Lager,
     \item den Preis des gebrauchten Produkts des Konkurrenten ($p_{2, gebraucht}$),
     \item den Neupreis des Konkurrenten ($p_{2, neu}$),
@@ -117,6 +129,15 @@ Ein Beispiel dafür ist eine Situation mit einem relativ vollen Lager.
 Am Anfang kann es sinnvoll sein, einen Teil der Elemente aus dem Lager zu einem niedrigen Preis abzuverkaufen, um langfristig Lagerkosten zu sparen, auch wenn das kurzfristig zu Verlusten führt.
 Am Ende ist jedoch kein Raum mehr für langfristige Planung, und es werden hohe Verkaufspreise für kurzfristige Gewinne gesetzt.
 
-\section{Reinforcement Learning -- eine kurze Einführung}
+Obwohl die Anzahl der zirkulierenden Elemente und der Lagerstand des Konkurrenten für die Markov-Eigenschaft notwendig sind, bereitet die Messung dieser beiden Werte Probleme.
+Der Konkurrent lässt sich vermutlich nicht ins Lager schauen und die Anzahl der Elemente in Zirkulation kann allenfalls geschätzt werden.
+Deshalb ist es eine zu beleuchtende Frage, ob die untersuchten Verfahren auch mit diesem \texttt{partiell beobachtbaren Markov-Entscheidungsprozess} zufriedenstellende Ergebnisse liefern.
 
-\section{Stetige Aktionsräume mit Reinforcement Learning}
+Jetzt muss noch einmal beleuchtet werden, dass für den beschriebenen Markt auch keine weiteren Größen beobachtet werden müssen und somit die Markov-Eigenschaft tatsächlich erfüllt ist.
+Das Verhalten des Marktes ist vollständig definiert und kommt mit den genannten Größen aus.
+Auch die regelbasierten Wettbewerber verwenden für ihr Verhalten nur die aufgezählten Variablen.
+Messgrößen wie die vorher gesetzten Preise, die Anzahl der weggeworfenen Objekte oder die Anzahl der bisherigen Verkäufe könnte man im Zustand vermuten (sie sind ja schließlich auf der grafischen Visualisierung des Marktes), beeinflussen aber nicht das künftige Verhalten.
+Eine Gedächtnisfunktion der Kunden (und dann notwendigerweise auch der Agenten) über vergangenes Verhalten ist eine mögliche Erweiterung, die das Modell praxisnäher bringen würde.
+So könnten Kunden die vergangene Preispolitik in ihre Entscheidung mit einbeziehen und Anbietern ein höheres oder niedrigeres Renommee zubilligen.
+
+\section{Regelbasierte Strategien -- Benchmark und Wettbewerber}
