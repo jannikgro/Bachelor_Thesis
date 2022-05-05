@@ -81,6 +81,40 @@ Die Präferenzen für das Zurückverkaufen an die jeweiligen Anbieter werden deu
 Gedanke dahinter: Die Kunden möchten ihrem Anbieter keine große Rendite zugestehen.
 Die Zähldichte der Wahrscheinlichkeitsverteilung ergibt sich dann wieder als Softmax dieser Präferenzen.
 
+Auf einem Online-Marktplatz reagieren die Anbieter gegenseitig auf Preisveränderungen.
+Während der Agent seine Preise stets zu Beginn jedes Schrittes setzt, reagiert der Wettbewerber in der Mitte eines Schrittes auf den Agenten.
+Das bedeutet, dass nach $k/2$ Kunden die Wahrscheinlichkeitsverteilungen für Kunden- und Eigentümerverhalten neu berechnet wird.
+So entsteht ein symmetrischer und fairer Markt, in dem für jeden Anbieter nach dem Setzen seiner Preise stets $k/2$ Kunden auf das Angebot treffen, das neben den neuen Preisen noch die vorigen des Konkurrenten erhält.
+Weitere $k/2$ Kunden treffen dann auf diese Preise und die erneute Reakion des Wettbewerbers.
+Einzige Ausnahme ist hier der erste und der letzte Schritt.
+Weil der Prozess erst in Gang gesetzt werden muss, muss der Konkurrent den ersten halben Schritt mit Defaultwerten verbringen.
+Im Gegenzug wird er bei seinen Preisen im letzten Schritt (die dann noch für einen halben Schritt gelten) keine Preisreaktion mehr bekommen.
+Diese Randeffekte fallen jedoch bei den gewählten Episodenlängen nicht ins Gewicht.
+
+Nun kann der Zustandsraum des Markov-Entscheidungsprozess $\mathcal{S}$ definiert werden.
+Er ist siebendimensional und enthält Folgendes:
+\begin{enumerate}
+    \item die Nummer des aktuellen Schrittes in der Episode,
+    \item die Anzahl der Elemente, die zirkulieren ($n_{zirk}$),
+    \item die Anzahl der Elemente im eigenen Lager,
+    \item den Preis des gebrauchten Produkts des Konkurrenten ($p_{2, gebraucht}$),
+    \item den Neupreis des Konkurrenten ($p_{2, neu}$),
+    \item den Rückkaufpreis des Konkurrenten ($p_{2, re}$) und
+    \item den Lagerstand des Konkurrenten.
+\end{enumerate}
+Diese Werte beeinflussen das Verhalten der Kunden und des Konkurrenten.
+Sie müssen gegeben sein, damit die sogenannte Markoveigenschaft erfüllt ist.
+Diese besagt, dass die Wahrscheinlichkeiten der Zustandsübergänge und der Belohnungen nur vom aktuellen Zustand und der gewählten Aktion abhängen und insbesondere stochastisch unabhängig von den zuvor besuchten Zuständen und Aktionen sind.
+Dass sie das künftige Verhalten des Systems beeinflussen, ist bei diesen Größen klar.
+So werden Gebraucht- und Neupreis des Konkurrenten noch für die erste Hälfte dieses Schrittes direkt für das Kundenverhalten verwendet.
+Der Rückkaufpreis beeinflusst das Verhalten der Eigentümer, deren Anzahl wiederum durch die Anzahl der Elemente in Zirkulation gegeben ist.
+Der eigene Lagerstand erklärt durch Lagerkosten- und strafen einen Teil des eigenen Gewinnes, genau wie der Lagerstand des Konkurrenten einen Teil seines Verhaltens erklärt.
+Kurz sollte noch einmal auf den Schrittzähler eingegangen werden.
+In zahlreichen Formulierungen wird er nicht benötigt, hier ist er aber wegen der festen Episodenlänge ein Teil des Zustands.
+So kann es nämlich einen Unterschied machen, ob man eine ansonsten identische Beobachtung am Anfang oder am Ende einer Episode macht.
+Ein Beispiel dafür ist eine Situation mit einem relativ vollen Lager.
+Am Anfang kann es sinnvoll sein, einen Teil der Elemente aus dem Lager zu einem niedrigen Preis abzuverkaufen, um langfristig Lagerkosten zu sparen, auch wenn das kurzfristig zu Verlusten führt.
+Am Ende ist jedoch kein Raum mehr für langfristige Planung, und hohe Verkaufspreise führen zu schnelleren Gewinnen.
 
 \section{Reinforcement Learning -- eine kurze Einführung}
 
