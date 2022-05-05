@@ -70,10 +70,17 @@ Die Berechnung der Präferenzen der Eigentümer geschieht auf Grundlage der Prei
     \begin{pmatrix}
         1\\
         \min \left(20, \frac{2}{p_{1, gebraucht}},  \frac{2}{p_{2, gebraucht}}\right)\\
-        2 \exp{\left(\frac{p_{1, re} - \min{(p_{1, gebraucht}, p_{1, neu})})}{\min{(p_{1, gebraucht}, p_{1, neu})}}\right)}\\
-        2 \exp{\left(\frac{p_{2, re} - \min{(p_{2, gebraucht}, p_{2, neu})})}{\min{(p_{2, gebraucht}, p_{2, neu})}}\right)}\\
+        2 \exp{\left(\frac{p_{1, re} - \min{(p_{1, gebraucht}, p_{1, neu})}}{\min{(p_{1, gebraucht}, p_{1, neu})}}\right)}\\
+        2 \exp{\left(\frac{p_{2, re} - \min{(p_{2, gebraucht}, p_{2, neu})}}{\min{(p_{2, gebraucht}, p_{2, neu})}}\right)}\\
     \end{pmatrix}
 \end{equation}
+Diese Formel setzt die Präferenz für das Halten eines Produktes auf $1$ fest.
+Die Präferenz für das Wegwerfen wird höher, wenn der Gebrauchtpreis niedriger ist.
+Die Motivation dazu ist, dass bei einem geringen Kaufpreis der Kunde das Produkt weniger wertschätzt und daher eher geneigt ist, es wegzuwerfen.
+Die Präferenzen für das Zurückverkaufen an die jeweiligen Anbieter werden deutlich höher, wenn der prozentuale Unterschied zwischen dem Rückkaufpreis nah am Verkaufspreis ist.
+Gedanke dahinter: Die Kunden möchten ihrem Anbieter keine große Rendite zugestehen.
+Die Zähldichte der Wahrscheinlichkeitsverteilung ergibt sich dann wieder als Softmax dieser Präferenzen.
+
 
 \section{Reinforcement Learning -- eine kurze Einführung}
 
