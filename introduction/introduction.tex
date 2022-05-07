@@ -62,6 +62,7 @@ Diese Circular Economy modelliert also nur den einmaligen Weiterverkauf von Prod
 Je mehr Kunden im Besitz eines Produkts sind, desto mehr dieser Eigentümer erwägen, ihr Produkt nicht länger besitzen zu wollen.
 Sie stehen in der Zirkularwirtschaft vor einer Entscheidung aus vier Möglichkeiten.
 Sie können ihr Produkt weiter behalten, es wegwerfen oder an einen der beiden Anbieter zurückverkaufen.
+Die Möglichkeit des Rückkaufs ist nicht auf den Anbieter beschränkt, der ihnen das Produkt ursprünglich verkauft hat, sondern es findet Wettbewerb um den Rückkauf statt.
 Insgesamt stellen sich in jedem Schritt $c \cdot n_{zirk}$ Eigentümer dieser Entscheidung.
 Nach dem gleichen Verfahren wie bei der Kaufentscheidung der Kunden wird ihr Verhalten mit einer diskreten Wahrscheinlichkeitsverteilung modelliert, aus der dann für jeden der $c \cdot n_{zirk}$ Eigentümer geshuffelt wird.
 Die Berechnung der Präferenzen der Eigentümer geschieht auf Grundlage der Preise der Anbieter mittels dieser Formel:
@@ -116,7 +117,7 @@ Er ist siebendimensional und enthält Folgendes:
 \end{enumerate}
 Diese Werte beeinflussen das Verhalten der Kunden und des Konkurrenten.
 Sie müssen gegeben sein, damit die sogenannte Markoveigenschaft erfüllt ist.
-Diese besagt, dass die Wahrscheinlichkeiten der Zustandsübergänge und der Belohnungen nur vom aktuellen Zustand und der gewählten Aktion abhängen und insbesondere stochastisch unabhängig von den zuvor besuchten Zuständen und Aktionen sind.
+Diese besagt, dass die Wahrscheinlichkeiten der Zustandsübergänge und der Belohnungen nur vom aktuellen Zustand und der gewählten Aktion abhängen und damit insbesondere stochastisch unabhängig von den zuvor besuchten Zuständen und Aktionen sind.
 Dass sie das künftige Verhalten des Systems beeinflussen, ist bei diesen Größen klar.
 So werden Gebraucht- und Neupreis des Konkurrenten noch für die erste Hälfte dieses Schrittes direkt für das Kundenverhalten verwendet.
 Der Rückkaufpreis beeinflusst das Verhalten der Eigentümer, deren Anzahl wiederum durch die Anzahl der Elemente in Zirkulation gegeben ist.
@@ -141,3 +142,30 @@ Eine Gedächtnisfunktion der Kunden (und dann notwendigerweise auch der Agenten)
 So könnten Kunden die vergangene Preispolitik in ihre Entscheidung mit einbeziehen und Anbietern ein höheres oder niedrigeres Renommee zubilligen.
 
 \section{Regelbasierte Strategien -- Benchmark und Wettbewerber}
+Der heute am meisten verwendete Ansatz für das Dynamic Pricing ist die Festlegung von Regeln durch menschliche Experten.
+Solche Funktionen für die Einpreisung der verkauften Waren erhalten genau wie die RL-Agenten die oben definierten Parameter, um daraus einen möglichst guten Preis zu bestimmen.
+Beim Design dieser Preisstrategien müssen die Herausforderungen des Marktes bereits erkannt sein und für verschiedene Situationen Lösungen vorweggenommen werden.
+Für den hier definierten Markt lassen sich einige Überlegungen anstellen:
+\begin{itemize}
+    \item Die Kunden bevorzugen niedrigere Preise.
+    Es erscheint also plausibel, bei Neu- und Rückkaufpreis die Konkurrenz zu unterbieten.
+    \item Es sollte allerdings nur bis zu einem bestimmten Preis unterboten werden, weil ansonsten die niedrige Rendite trotz möglicherweise höherer Verkäufe zu wenig Gewinn ermöglicht.
+    Insbesondere muss der Verkaufspreis über dem Einkaufpreis liegen.
+    \item Das Lager sollte möglichst leer gehalten werden, um dort Kosten zu sparen.
+    Allerdings müssen genug Produkte vorrätig sein, um die Kundenwünsche zu erfüllen.
+    Mit einem niedrigeren Rückkaufpreis wird das Lager langsamer gefüllt, mit einem niedrigeren Gebrauchtpreis schneller geleert.
+    Umgekehrt wird ein höherer Rückkaufpreis und ein höherer Gebrauchtpreis gesetzt, falls das Lager gefüllt werden soll.
+    \item Der Rückkaufpreis sollte stets so niedrig sein wie auf dem Markt realisierbar.
+\end{itemize}
+
+Diese Überlegungen führen zur regelbasierten Strategie mit der folgenden Formel:
+\begin{equation}
+    \pi(p_{2, gebraucht}, n_{lager})_{gebraucht} =
+    \begin{cases}
+        p_{2, gebraucht} + 2 & n_{lager} < m_{lager} / 15\\
+        p_{2, gebraucht} + 1 & n_{lager} < m_{lager} / 10\\
+        p_{2, gebraucht} - 1 & n_{lager} < m_{lager} / 8\\
+        p_{2, gebraucht} - 2 & \text{Sonst}
+    \end{cases}
+\end{equation}
+Dies ist ein Test.
