@@ -1,16 +1,39 @@
-\section{Recommerce -- ein Überblick}
-In dieser Arbeit werde ich ein Lehrbuch \cite{Sutton1998} und ein Paper \cite{DBLP:journals/corr/abs-1712-01815} zitieren.
+\section{Ein Überblick zu Recommerce und Preisstrategien}
+Nicht erst seitdem es Online-Marktplätze gibt, ist die Festlegung von Preisen eine zentrale Herausforderung im Geschäftsbetrieb.
+Durch Online-Marktplätze hat allerdings die Intensität des Wettbewerbs erheblich zugenommen, da Konkurrenzangebote leicht einsehbar sind und Preise in hochfrequentem Tempo gesetzt werden können.
+Zudem müssen alle Produkte des meist sehr breiten Angebots auf diese Weise mit aktuellen Preisen in Reaktion auf die Marktsituation versehen werden.
+Diese Umstände motivieren automatische Preisfindung, da menschliche Branchenkenner mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
+
+Eine weitere Komponente kommt im sogenannten Recommerce hinzu.
+Recommerce beschreibt den Rückkauf, die Aufwertung und den Weitervertrieb von gebrauchten Produkten \cite{deges2019grundlagen}.
+Gerade mit Blick auf die ressourcenintensive Modebranche verspricht Recommerce eine Steigerung der Nachhaltigkeit durch Einführung einer Zirkularwirtschaft.
+Es ermöglicht Eigentümern die Möglichkeit, durch den Rückverkauf ihrer nicht weiter benötigten Produkte Geld einzunehmen, und eröffnet Kaufinteressenten die Möglichkeit, gebrauchte und ggf. aufgewertete Produkte zu niedrigeren Preisen zu erwerben.
+Zur Herausforderung, neue Produkte einzupreisen, kommt also noch hinzu, Preise für gebrauchten Produkte und Rückkaufpreise festzulegen.
+Dabei müssen auch Nebenbedingungen wie Lagerkosten beachtet werden, wodurch sich ein durchaus kompliziertes Problem ergibt.
+Abbildung \ref{grafic:MarketOverview} zeigt eine grafische Visualisierung des in dieser Arbeit untersuchten Szenarios.
+
+\begin{figure}[htbp]
+	\label{grafic:MarketOverview}
+	\centering
+	\includesvg{MarketOverview_042.svg}
+	\caption{svg image}
+\end{figure}
+
+Um das Problem der dynamischen Preisfindung zu lösen, wird das zu untersuchende Szenario zunächst in Abschnitt \ref{section:markov} als Markov-Entscheidungsprozess formalisiert.
+Anschließend wird in Abschnitt \ref{section:rulebased} eine regelbasierte Strategie eingeführt.
+Der Hauptteil der Arbeit widmet sich allerdings dem Vergleich von Reinforcement-Learning-Verfahren, um die Herausforderung zu meistern.
 
 \section{Der Markt als Markov-Entscheidungsprozess}
+\label{section:markov}
 Der im vorigen Kapitel intuitiv umrissene Markt wird hier als Markov-Entscheidungsprozess modelliert.
 Dazu wird das Marktgeschehen eines geschäftlich relevanten Zeitraumes, z.B. eines Tages oder eines Monats in $n_{ep}$ gleich lange Zeitabschnitte unterteilt.
 In der Terminologie des Reinforcement Learnings wird ein einzelner Abschnitt als Schritt, die Gesamtheit als Episode bezeichnet.
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
 Der Reinforcement-Learning-Agent setzt in Abhängigkeit des Zustandes drei Preise:
 \begin{enumerate}
-    \item für gebrauchte Produkte der Produktlinie ($p_{1, gebraucht}$),
-    \item für diese Produkte in neu ($p_{1, neu}$) sowie
-    \item den Rückkaufpreis ($p_{1, re}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
+	\item für gebrauchte Produkte der Produktlinie ($p_{1, gebraucht}$),
+	\item für diese Produkte in neu ($p_{1, neu}$) sowie
+	\item den Rückkaufpreis ($p_{1, re}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
 \end{enumerate}
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
 Damit ist der (stetige) Aktionsraum als $\mathcal{A}=[0, p_{max}]^3$ definiert.
@@ -24,14 +47,14 @@ Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kun
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
 Die Berechnungsformel für den Präferenzvektor lautet:
 \begin{equation}
-    \sigma_{kunde}(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
-    \begin{pmatrix}
-        1\\
-        \frac{5.5}{p_{1, gebraucht}} - \exp{(p_{1, gebraucht} - 0.5 p_{max})}\\
-        \frac{10}{p_{1, neu}} - \exp{(p_{1, neu} - 0.8 p_{max})}\\
-        \frac{5.5}{p_{2, gebraucht}} - \exp{(p_{2, gebraucht} - 0.5 p_{max})}\\
-        \frac{10}{p_{2, neu}} - \exp{(p_{2, neu} - 0.8 p_{max})}\\
-    \end{pmatrix}
+	\sigma_{kunde}(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
+	\begin{pmatrix}
+		1\\
+		\frac{5.5}{p_{1, gebraucht}} - \exp{(p_{1, gebraucht} - 0.5 p_{max})}\\
+		\frac{10}{p_{1, neu}} - \exp{(p_{1, neu} - 0.8 p_{max})}\\
+		\frac{5.5}{p_{2, gebraucht}} - \exp{(p_{2, gebraucht} - 0.5 p_{max})}\\
+		\frac{10}{p_{2, neu}} - \exp{(p_{2, neu} - 0.8 p_{max})}\\
+	\end{pmatrix}
 \end{equation}
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung gegenüber Neuprodukten entgegengebracht.
@@ -67,13 +90,13 @@ Insgesamt stellen sich in jedem Schritt $c \cdot n_{zirk}$ Eigentümer dieser En
 Nach dem gleichen Verfahren wie bei der Kaufentscheidung der Kunden wird ihr Verhalten mit einer diskreten Wahrscheinlichkeitsverteilung modelliert, aus der dann für jeden der $c \cdot n_{zirk}$ Eigentümer geshuffelt wird.
 Die Berechnung der Präferenzen der Eigentümer geschieht auf Grundlage der Preise der Anbieter mittels dieser Formel:
 \begin{equation}
-    \sigma_{eigentuemer}=
-    \begin{pmatrix}
-        1\\
-        \min \left(20, \frac{2}{p_{1, gebraucht}},  \frac{2}{p_{2, gebraucht}}\right)\\
-        2 \exp{\left(\frac{p_{1, re} - \min{(p_{1, gebraucht}, p_{1, neu})}}{\min{(p_{1, gebraucht}, p_{1, neu})}}\right)}\\
-        2 \exp{\left(\frac{p_{2, re} - \min{(p_{2, gebraucht}, p_{2, neu})}}{\min{(p_{2, gebraucht}, p_{2, neu})}}\right)}\\
-    \end{pmatrix}
+	\sigma_{eigentuemer}=
+	\begin{pmatrix}
+		1\\
+		\min \left(20, \frac{2}{p_{1, gebraucht}},  \frac{2}{p_{2, gebraucht}}\right)\\
+		2 \exp{\left(\frac{p_{1, re} - \min{(p_{1, gebraucht}, p_{1, neu})}}{\min{(p_{1, gebraucht}, p_{1, neu})}}\right)}\\
+		2 \exp{\left(\frac{p_{2, re} - \min{(p_{2, gebraucht}, p_{2, neu})}}{\min{(p_{2, gebraucht}, p_{2, neu})}}\right)}\\
+	\end{pmatrix}
 \end{equation}
 Diese Formel setzt die Präferenz für das Halten eines Produktes auf $1$ fest.
 Die Präferenz für das Wegwerfen wird höher, wenn der Gebrauchtpreis niedriger ist.
@@ -107,13 +130,13 @@ Damit muss für Gewinn auf dem Bereich der Neuware auf jeden Fall $p_{1, neu} > 
 Nun kann der Zustandsraum des Markov-Entscheidungsprozess $\mathcal{S}$ definiert werden.
 Er ist siebendimensional und enthält Folgendes:
 \begin{enumerate}
-    \item die Nummer des aktuellen Schrittes in der Episode,
-    \item die Anzahl der gerade zirkulierenden Elemente ($n_{zirk}$),
-    \item die Anzahl der Elemente im eigenen Lager,
-    \item den Preis des gebrauchten Produkts des Konkurrenten ($p_{2, gebraucht}$),
-    \item den Neupreis des Konkurrenten ($p_{2, neu}$),
-    \item den Rückkaufpreis des Konkurrenten ($p_{2, re}$) und
-    \item den Lagerstand des Konkurrenten.
+	\item die Nummer des aktuellen Schrittes in der Episode,
+	\item die Anzahl der gerade zirkulierenden Elemente ($n_{zirk}$),
+	\item die Anzahl der Elemente im eigenen Lager,
+	\item den Preis des gebrauchten Produkts des Konkurrenten ($p_{2, gebraucht}$),
+	\item den Neupreis des Konkurrenten ($p_{2, neu}$),
+	\item den Rückkaufpreis des Konkurrenten ($p_{2, re}$) und
+	\item den Lagerstand des Konkurrenten.
 \end{enumerate}
 Diese Werte beeinflussen das Verhalten der Kunden und des Konkurrenten.
 Sie müssen gegeben sein, damit die sogenannte Markoveigenschaft erfüllt ist.
@@ -142,46 +165,46 @@ Eine Gedächtnisfunktion der Kunden (und dann notwendigerweise auch der Agenten)
 So könnten Kunden die vergangene Preispolitik in ihre Entscheidung mit einbeziehen und Anbietern ein höheres oder niedrigeres Renommee zubilligen.
 
 \section{Regelbasierte Strategien -- Benchmark und Wettbewerber}
-Der heute am meisten verwendete Ansatz für das Dynamic Pricing ist die Festlegung von Regeln durch menschliche Experten.
-Solche Funktionen für die Einpreisung der verkauften Waren erhalten genau wie die RL-Agenten die oben definierten Parameter, um daraus einen möglichst guten Preis zu bestimmen.
+\label{section:rulebased}
+Der heutige Industriestandard für das Dynamic Pricing ist die Festlegung von Regeln durch menschliche Experten.
+Sie erstellen Funktionen für die Einpreisung der verkauften Waren, denen prinzipiell die gleichen Parameter wie den RL-Agenten zur Verfügung stehen.
 Beim Design dieser Preisstrategien müssen die Herausforderungen des Marktes bereits erkannt sein und für verschiedene Situationen Lösungen vorweggenommen werden.
 Für den hier definierten Markt lassen sich einige Überlegungen anstellen:
 \begin{itemize}
-    \item Die Kunden bevorzugen niedrigere Preise.
-    Es erscheint also plausibel, bei Neu- und Rückkaufpreis die Konkurrenz zu unterbieten.
-    \item Es sollte allerdings nur bis zu einem bestimmten Preis unterboten werden, weil ansonsten die niedrige Rendite trotz möglicherweise höherer Verkäufe zu wenig Gewinn ermöglicht.
-    Insbesondere muss der Verkaufspreis über dem Einkaufpreis liegen.
-    \item Das Lager sollte möglichst leer gehalten werden, um dort Kosten zu sparen.
-    Allerdings müssen genug Produkte vorrätig sein, um die Kundenwünsche zu erfüllen.
-    Mit einem niedrigeren Rückkaufpreis wird das Lager langsamer gefüllt, mit einem niedrigeren Gebrauchtpreis schneller geleert.
-    Umgekehrt wird ein höherer Rückkaufpreis und ein höherer Gebrauchtpreis gesetzt, falls das Lager gefüllt werden soll.
-    \item Der Rückkaufpreis sollte stets so niedrig sein wie auf dem Markt realisierbar.
+	\item Die Kunden bevorzugen niedrigere Preise.
+	Es erscheint also plausibel, bei Neu- und Rückkaufpreis die Konkurrenz zu unterbieten.
+	\item Es sollte allerdings nur bis zu einem bestimmten Preis unterboten werden, weil ansonsten die niedrige Rendite trotz möglicherweise höherer Verkäufe zu wenig Gewinn ermöglicht.
+	Insbesondere muss der Verkaufspreis über dem Einkaufpreis liegen.
+	\item Das Lager sollte möglichst leer gehalten werden, um dort Kosten zu sparen.
+	Allerdings müssen genug Produkte vorrätig sein, um die Kundenwünsche zu erfüllen.
+	Mit einem niedrigeren Rückkaufpreis wird das Lager langsamer gefüllt, mit einem niedrigeren Gebrauchtpreis schneller geleert.
+	Umgekehrt wird ein höherer Rückkaufpreis und ein höherer Gebrauchtpreis gesetzt, falls das Lager gefüllt werden soll.
+	\item Der Rückkaufpreis sollte stets so niedrig sein, wie es auf dem Markt realisiert werden kann.
 \end{itemize}
-
 Diese Überlegungen führen zur regelbasierten Strategie mit dem Neupreis:
 \begin{equation}
-    p_{1, neu}(p_{2, neu}) = \max{(p_{2, neu} - 1, p_{einkauf} + 1)}
+	\pi\left(p_{2, neu}\right)_{neu} = \max{\left(p_{2, neu} - 1, p_{einkauf} + 1\right)}
 \end{equation}
 Beim Gebraucht- und Rückkaufpreis wird je nach Lagerstand entschieden.
 Der Gebrauchtpreis wird in Abhängigkeit des Konkurrenzpreises und des Lagerstandes folgendermaßen gesetzt:
 \begin{equation}
-    \pi(p_{2, gebraucht}, n_{lager})_{gebraucht} =
-    \begin{cases}
-        p_{2, gebraucht} + 2 & n_{lager} < m_{lager} / 15\\
-        p_{2, gebraucht} + 1 & n_{lager} < m_{lager} / 10\\
-        p_{2, gebraucht} - 1 & n_{lager} < m_{lager} / 8\\
-        p_{2, gebraucht} - 2 & \text{Sonst}
-    \end{cases}
+	\pi\left(p_{2, gebraucht}, n_{lager}\right)_{gebraucht} =
+	\begin{cases}
+		p_{2, gebraucht} + 2 & n_{lager} < m_{lager} / 15\\
+		p_{2, gebraucht} + 1 & n_{lager} < m_{lager} / 10\\
+		p_{2, gebraucht} - 1 & n_{lager} < m_{lager} / 8\\
+		p_{2, gebraucht} - 2 & \text{sonst}
+	\end{cases}
 \end{equation}
 Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der Preis gesetzt als:
 \begin{equation}
-    \pi(p_{2, re}, n_{lager})_{re} =
-    \begin{cases}
-        p_{2, re} + 1 & n_{lager} < m_{lager} / 15\\
-        p_{2, re} & n_{lager} < m_{lager} / 10\\
-        p_{2, re} - 1 & n_{lager} < m_{lager} / 8\\
-        p_{2, re} - 2 & \text{Sonst}
-    \end{cases}
+	\pi(p_{2, re}, n_{lager})_{re} =
+	\begin{cases}
+		p_{2, re} + 1 & n_{lager} < m_{lager} / 15\\
+		p_{2, re} & n_{lager} < m_{lager} / 10\\
+		p_{2, re} - 1 & n_{lager} < m_{lager} / 8\\
+		p_{2, re} - 2 & \text{Sonst}
+	\end{cases}
 \end{equation}
 Diese regelbasierte Strategie erreicht in Tests vernünftige Ergebnisse und stellt wegen ihrer kompetitiven Unterbietung durchaus für RL-Agenten eine Herausforderung dar.
 Selbstverständlich ist allerdings anzumerken, dass durch weiteres Tuning durchaus bessere Strategien gefunden werden können.
