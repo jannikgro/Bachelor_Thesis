@@ -158,7 +158,12 @@ Für den hier definierten Markt lassen sich einige Überlegungen anstellen:
     \item Der Rückkaufpreis sollte stets so niedrig sein wie auf dem Markt realisierbar.
 \end{itemize}
 
-Diese Überlegungen führen zur regelbasierten Strategie mit der folgenden Formel:
+Diese Überlegungen führen zur regelbasierten Strategie mit dem Neupreis:
+\begin{equation}
+    p_{1, neu}(p_{2, neu}) = \max{(p_{2, neu} - 1, p_{einkauf} + 1)}
+\end{equation}
+Beim Gebraucht- und Rückkaufpreis wird je nach Lagerstand entschieden.
+Der Gebrauchtpreis wird in Abhängigkeit des Konkurrenzpreises und des Lagerstandes folgendermaßen gesetzt:
 \begin{equation}
     \pi(p_{2, gebraucht}, n_{lager})_{gebraucht} =
     \begin{cases}
@@ -168,4 +173,16 @@ Diese Überlegungen führen zur regelbasierten Strategie mit der folgenden Forme
         p_{2, gebraucht} - 2 & \text{Sonst}
     \end{cases}
 \end{equation}
-Dies ist ein Test.
+Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der Preis gesetzt als:
+\begin{equation}
+    \pi(p_{2, re}, n_{lager})_{re} =
+    \begin{cases}
+        p_{2, re} + 1 & n_{lager} < m_{lager} / 15\\
+        p_{2, re} & n_{lager} < m_{lager} / 10\\
+        p_{2, re} - 1 & n_{lager} < m_{lager} / 8\\
+        p_{2, re} - 2 & \text{Sonst}
+    \end{cases}
+\end{equation}
+Diese regelbasierte Strategie erreicht in Tests vernünftige Ergebnisse und stellt wegen ihrer kompetitiven Unterbietung durchaus für RL-Agenten eine Herausforderung dar.
+Selbstverständlich ist allerdings anzumerken, dass durch weiteres Tuning durchaus bessere Strategien gefunden werden können.
+Das erfordert allerdings Aufwand und eine umfangreiche Kenntnis des Marktes.
