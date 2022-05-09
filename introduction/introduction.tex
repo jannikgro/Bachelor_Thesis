@@ -36,12 +36,16 @@ In der Terminologie des Reinforcement Learnings wird ein einzelner Abschnitt als
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
 Das hier eingeführte Modell simuliert einen Recommerce-Markt mit zwei konkurrierenden Anbietern.
 Der Markt soll fair und symmetrisch sein, was bedeutet, dass beide Anbieter die gleichen Produkte verkaufen, gleiche Beliebtheit haben, abwechselnd und für die gleiche Länge die Preise setzen und die gleichen Kosten haben.
-Damit können die Gewinne der beiden Anbieter direkt verglichen werden und auf die Güte der Preisstrategien geschlossen werden.
+Damit können die Gewinne der beiden Anbieter direkt verglichen und auf die Güte der Preisstrategien geschlossen werden.
 Zum Markov-Entscheidungsprozess wird dieser Markt, wenn er aus der Sicht eines der beiden Anbieter betrachtet wird.
 Der andere Anbieter wird damit als Teil der Umgebung betrachtet.
 Das Verhalten des Konkurrenten kann deterministisch oder stochastisch sein, muss aber für die Markov-Eigenschaft unveränderlich sein.
 So werden im Folgenden die Anbieter mit 1 und 2 bezeichnet, wobei 1 der Anbieter ist, aus dessen Sicht das Marktgeschehen abläuft.
 Alle Definitionen gelten aber auch analog andersherum.
+
+Das Marktmodell hat zahlreiche Parameter und an vielen Stellen könnte man Werte durchaus anders festlegen.
+Für den Vergleich von Reinforcement-Learning-Algorithmen -- schließlich das Ziel dieser Arbeit -- ist allerdings ein vergleichbares Setup das Entscheidende.
+Daher wurden die Parameter auf Standardwerte festgelegt, die im Anhang in Tabelle \ref{tab:default_parameters} aufgeführt sind.
 
 Jede Preisstrategie muss in Abhängigkeit des Zustandes drei Preise setzen:
 \begin{enumerate}
@@ -52,8 +56,8 @@ Jede Preisstrategie muss in Abhängigkeit des Zustandes drei Preise setzen:
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
 Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0, p_{max}]^3$ definiert.
 Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0, 1, \ldots, p_{max}\}^3$ definieren.
-Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber exakte Lösungen wie im Abschnitt [unten].
-Zudem unterscheiden sich die RL-Verfahren für diskrete und stetige Aktionsräume.
+Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen wie im Abschnitt [unten].
+Zudem unterscheiden sich die Reinforcement-Learning-Verfahren für diskrete und stetige Aktionsräume.
 Die Preise des Konkurrenten werden als $p_{2, gebraucht}$, $p_{2, neu}$ und $p_{2, re}$ geschrieben.
 
 In jedem Schritt besuchen $k \in 2\mathbb{N}$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
@@ -90,7 +94,7 @@ Kauft ein Kunde ein gebrauchtes Produkt, obwohl das Lager leer ist, so muss der 
 Die Entschädigung ist auf $2 p_{max}$ pro enttäuschtem Kunden festgelegt.
 Das erzeugt einen starken Anreiz für die Anbieter, das Lager nicht leerlaufen zu lassen.
 Allerdings verursacht auch die Lagerhaltung Kosten: Am Ende eines jeden Schrittes werden Kosten von $p_{lager}$ pro eingelagertem Element berechnet.
-Das wiederum treibt die Anbieter dazu, ihr Lager möglichst klein zu halten und stellt sie vor die Herausforderung, mit dem Rückkaufpreis nicht nur auf ihren Konkurrenten zu reagieren, sondern auch ihr Lager zu regulieren.
+Das wiederum treibt die Anbieter dazu, ihr Lager möglichst klein zu halten und stellt sie vor die Herausforderung, mit Rückkauf- und Gebrauchtpreis nicht nur auf ihren Konkurrenten zu reagieren, sondern auch ihr Lager zu regulieren.
 
 Weiterhin verwaltet der Markt einen Zähler für die Anzahl der Produkte, die sich in Zirkulation befinden.
 Er wird als $n_{zirk}$ bezeichnet und uniform zufällig zwischen $0$ und $5 m_{lager}$ initialisiert.
@@ -123,7 +127,7 @@ Die Zähldichte der Wahrscheinlichkeitsverteilung ergibt sich dann wieder als So
 
 Auf einem Online-Marktplatz reagieren die Anbieter gegenseitig auf Preisveränderungen.
 Während der erste Anbieter seine Preise stets zu Beginn jedes Schrittes setzt, reagiert sein Wettbewerber in der Mitte eines Schrittes.
-Das bedeutet, dass nach stets $k/2$ Kunden die Wahrscheinlichkeitsverteilungen für Kunden- und Eigentümerverhalten neu berechnet wird.
+Das bedeutet, dass nach stets $k/2$ Kunden die Wahrscheinlichkeitsverteilungen für Kunden- und Eigentümerverhalten neu berechnet werden.
 So treffen für jeden Anbieter nach dem Setzen seiner Preise stets $k/2$ Kunden auf das Angebot, das neben den neuen Preisen noch die vorigen des Konkurrenten erhält.
 Weitere $k/2$ Kunden treffen dann auf diese Preise und die erneute Reakion des Wettbewerbers.
 Einzige Ausnahme ist hier der erste und der letzte Schritt.
