@@ -1,5 +1,24 @@
 \section{MDPs lösen: Zustands- und Aktionswerte}
-Die werden hier kurz eingeführt
+Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, r, p)$ (kurz MDP).
+Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
+$r: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ ist eine Zufallsvariable, die die Belohnung angibt.
+Weiterhin ist $p: \mathcal{S} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$ die Dichtefunktion der Zustandsübergänge.
+Zentraler Begriff beim Lösen eines MDPs die sogenannte Policyfunktion $\pi$.
+Sie kann deterministisch sein und als $\pi: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
+Weiterhin können Policies stochastisch sein, sie sind dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi: \mathcal{S}\times\mathcal{A}\rightarrow [0, 1]$.
+Mit einem Diskontierungsfaktor $\gamma \in [0,1]$ werden nun Zustandswerte in Bezug auf eine Policy als
+\begin{equation}
+    V_\pi: \mathcal{S} \rightarrow \mathbb{R}; s \mapsto \sum_{a\in\mathcal{A}}\pi(s, a) Q(s, a)
+\end{equation}
+definiert.
+Dabei wird als Abkürzung bereits die Aktionswertefunktion verwendet, die ihrerseits mithilfe der Zustandswerte als
+\begin{equation}
+    Q_\pi: \mathcal{S} \rightarrow \mathcal{A} \rightarrow \mathbb{R}; (s, a) \mapsto \mathbb{E}\left[r(s,a)+\gamma \sum_{s'\in\mathcal{S}}{p(s', s, a) V(s')}\right]
+\end{equation}
+definiert ist.
+Endzustände erhalten den Zustandswert 0.
+Ziel ist im Allgemeinen, eine Policyfunktion zu finden, die den Zustandswert des ersten Zustands maximiert.
+Nach dem Policy-Improvement-Theorem bedeutet das, dass auch die Zustandswerte aller anderen (erreichbaren) Zustände maximal (unter allen Policies) sind.
 
 \section{Exakte Lösungen für das Dynamic Pricing}
 Das sind coole Algorithmen
