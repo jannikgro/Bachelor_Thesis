@@ -50,7 +50,10 @@ Jede Preisstrategie muss in Abhängigkeit des Zustandes drei Preise setzen:
 	\item den Rückkaufpreis ($p_{1, re}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
 \end{enumerate}
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
-Damit ist der (stetige) Aktionsraum als $\mathcal{A}=[0, p_{max}]^3$ definiert.
+Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0, p_{max}]^3$ definiert.
+Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0, 1, \ldots, p_{max}\}^3$ definieren.
+Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber exakte Lösungen wie im Abschnitt [unten].
+Zudem unterscheiden sich die RL-Verfahren für diskrete und stetige Aktionsräume.
 Die Preise des Konkurrenten werden als $p_{2, gebraucht}$, $p_{2, neu}$ und $p_{2, re}$ geschrieben.
 
 In jedem Schritt besuchen $k \in 2\mathbb{N}$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
