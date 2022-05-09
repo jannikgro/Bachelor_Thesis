@@ -13,7 +13,7 @@ Mit einem Diskontierungsfaktor $\gamma \in [0,1]$ werden nun Zustandswerte in Be
 definiert.
 Dabei wird als Abkürzung bereits die Aktionswertefunktion verwendet, die ihrerseits mithilfe der Zustandswerte als
 \begin{equation}
-    Q_\pi: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}; (s, a) \mapsto \mathbb{E}\left[r(s,a)\right]+\gamma \sum_{s'\in\mathcal{S}}{p(s', s, a) V(s')}
+    Q_\pi: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}; (s, a) \mapsto \mathbb{E}\left[r(s,a)\right]+\gamma \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s'\right)}
 \end{equation}
 definiert ist.
 Endzustände erhalten den Zustandswert 0.
@@ -26,13 +26,13 @@ Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Üb
 Anschließend wird eine angenäherte Funktion für die Zustandswerte $V$ als Array gespeichert und mit beliebigen Werten initialisiert.
 Dann werden rundenweise für alle Zustände $s\in\mathcal{S}$ ihre Einträge in dieser Tabelle mithilfe der Bellman-Gleichung
 \begin{equation}
-    V(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p(s', s, a) V(s')}\right)}
+    V(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s'\right)}\right)}
 \end{equation}
 als Berechnungsvorschrift aktualisiert.
 Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy \cite{Sutton1998}.
 Die optimale Policy ist dann die folgende deterministische, sogenannte Greedy-Policy:
 \begin{equation}
-    \pi: s \mapsto \argmax_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p(s', s, a) V(s')}\right)}
+    \pi: s \mapsto \argmax_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s'\right)}\right)}
 \end{equation}
 Dieses Verfahren ist mit analogen Formeln auf Grundlage der Aktionswerte möglich.
 Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weitere Rechnungen als die Bestimmung der Aktion mit maximalem Wert.
@@ -41,7 +41,7 @@ Bei der Definition dieses Marktes ist die Lösung mittels dynamischer Programmie
 Dann wird zwischen dem Schrittzähler und dem (restlichen) Zustand unterschieden und eine Tabelle $V$ erstellt, die mit Zustand und Schrittzähler adressiert wird.
 Die Endzustände werden mit $0$ initialisiert und die anderen Zustände dieser leicht abgewandelten Bellman-Gleichung vom Ende bis zum Anfang einer Episode befüllt:
 \begin{equation}
-    V(s, t) \leftarrow \max_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p(s', s, a) V(s', t+1)}\right)}
+    V(s, t) \leftarrow \max_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s', t+1\right)}\right)}
 \end{equation}
 Hier muss nicht einmal Konvergenz abgewartet werden, sondern die Tabelle ist nach dem Befüllen mit den exakten Zustandswerten befüllt, und die optimale Policy ist wieder die Greedy-Policy.
 
@@ -66,7 +66,7 @@ Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste
     Wenn mehr Neuprodukte verkauft als Produkte zurückverkauft und weggeworfen werden, so ist hier ein noch größeres Array nötig.
 } $50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$ Einträge haben.
 Obwohl dieser Wert bereits jeden verfügbaren Speicher sprengt, ist die Anzahl der unterschiedlichen Preisstufen mit 10 für realistische Verhältnisse noch viel zu niedrig gewählt.
-Tatsächlich liegt der benötigte Speicher in $\mathcal{O}(p_{max}^6)$, was für eine Skalierung selbst bei ansonstem kleineren Zustandsraum unmöglich macht.
+Tatsächlich liegt der benötigte Speicher in $\mathcal{O}\left(p_{max}^6\right)$, was eine Skalierung selbst bei ansonstem kleineren Zustandsraum unmöglich macht.
 Weil dies sogar nur die Betrachtung des Speichers war -- bis Konvergenz erreicht ist, müsste jeder Zustand sehr oft durchlaufen werden -- muss geschlussfolgert werden, dass eine Lösung, die für alle Zustände die Zustandswerte ausrechnen möchte, rechentechnisch nicht machbar ist.
 
 Approximationen sind also unumgänglich.
