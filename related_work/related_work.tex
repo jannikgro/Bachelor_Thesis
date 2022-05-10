@@ -46,7 +46,7 @@ Die Endzustände werden mit $0$ initialisiert und die anderen Zustände dieser l
 \end{equation}
 Hier muss nicht einmal Konvergenz abgewartet werden, sondern die Tabelle ist nach dem Befüllen mit den exakten Zustandswerten befüllt, und die optimale Policy ist wieder die Greedy-Policy.
 
-Dynamische Programmierung wurde bereits erfolgreich für dynamische Preisgestaltung eingesetzt \cite{10.1145/3219819.3219833}, hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind.
+% Dynamische Programmierung wurde bereits erfolgreich für dynamische Preisgestaltung eingesetzt \cite{10.1145/3219819.3219833}, hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind.
 Erstens müssen die Wahrscheinlichkeitsverteilungen der Belohnungen und Zustandsübergänge bekannt sein.
 Das ist für die Realität nicht möglich und bereitet auch in dem in dieser Arbeit untersuchten Markt Probleme.
 So könnte man zwar die explizite Definition des Marktes zur Verfügung haben, allerdings sind die Wahrscheinlichkeiten nirgends explizit aufgeschrieben, sondern die Übergangswahrscheinlichkeiten werden durch die Simulation induziert.
@@ -109,8 +109,8 @@ Dass das Maximum der beiden Zufallsvariablen kleiner-gleich null ist, hat nun ei
 Es lässt sich weiterhin zeigen, dass die Verteilung des Maximums einen Erwartungswert von etwa $0.56$ hat. [Anhang]
 Um diese systematische Verzerrung zu umgehen, werden für Auswahl der Aktion und die Generierung des Schätzwertes unterschiedliche Netze herangezogen.
 
-Die Verallgemeinerung auf stetige Aktionsräume ist bei Deep-Q-Networks nicht ohne einige grundlegende Designänderungen möglich.
-Das dabei entstehende Verfahren heißt Deep Deterministic Policy Gradient (DDPG) und wurde 2014 publiziert. \cite{10.5555/3044805.3044850}
+% Die Verallgemeinerung auf stetige Aktionsräume ist bei Deep-Q-Networks nicht ohne einige grundlegende Designänderungen möglich.
+% Das dabei entstehende Verfahren heißt Deep Deterministic Policy Gradient (DDPG) und wurde 2014 publiziert. \cite{10.5555/3044805.3044850}
 Ein neuronales Netz mit den Parametern $\psi$ berechnet die Aktionswerteschätzfunktion $Q_\psi: \mathcal{S} \times \mathcal{A}\rightarrow \mathbb{R}$ (jetzt muss die Aktion mit in die Eingabe).
 Dabei ist die Bestimmung des Maximums kaum möglich: für neuronale Netze ist keine analytische Lösung möglich und numerische Verfahren sind viel zu aufwendig für die vielen benötigten Trainingsschritte.
 Ein weiteres neuronales Netz mit den Parametern $\phi$ berechnet explizit die deterministische Policyfunktion $\pi_\phi: \mathcal{S} \rightarrow \mathcal{A}$.
@@ -132,7 +132,7 @@ So kann der Gradient
 \end{equation}
 durch die automatische Differenzierung des Deep-Learning-Frameworks berechnet werden, und ein Optimierungsschritt in die Richtung des größten Anstiegs vorgenommen werden.
 
-Nachfolgende Analysen haben ergeben, dass die systematische Überschätzung der Funktionswerte bei DDPG sich besonders stark auf die Leistung auswirkt. \cite{DBLP:journals/corr/abs-1802-09477}
+% Nachfolgende Analysen haben ergeben, dass die systematische Überschätzung der Funktionswerte bei DDPG sich besonders stark auf die Leistung auswirkt. \cite{DBLP:journals/corr/abs-1802-09477}
 In diesem Paper wurden drei Verbesserungen für den DDPG-Algorithmus vorgeschlagen:
 \begin{enumerate}
     \item Es werden zwei seperate Netze für die Aktionswertefunktion gehalten.
