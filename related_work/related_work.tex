@@ -95,7 +95,7 @@ In den heutigen Deep-Learning-Frameworks wie PyTorch oder Tensorflow wird üblic
 Mit einem Optimizer wie Stochastic Gradient Descent [Paper] oder Adam [Paper] wird dieser Verlust dann mithilfe des Gradienten minimiert.
 Diese Verlustfunktion beim Deep-Q-Learning lautet für eine Schätzfunktion der Aktionswerte mit den Parametern $\psi$
 \begin{equation}
-    L_(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma \max_{a'\in\mathcal{A}}{Q_\psi(s',a')}\right)^2\right)\right]
+    L_(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma \max_{a'\in\mathcal{A}}{Q_\psi(s',a')}\right)\right)^2\right]
 \end{equation}
 Erfolgreiche Q-Learning-Umsetzungen verwenden einen Experiencebuffer, in dem die Erfahrung $\mathcal{D}$ gespeichert wird.
 Weiterhin speichern sie zwei Netze: neben dem, das trainiert wird, auch ein sogenanntes Zielnetz, was in der Schätzung des Zielwertes verwendet wird.
