@@ -21,6 +21,7 @@ Ziel ist im Allgemeinen, eine Policyfunktion zu finden, die den Zustandswert des
 Nach dem Policy-Improvement-Theorem bedeutet das, dass auch die Zustandswerte aller anderen (erreichbaren) Zustände maximal (unter allen Policies) sind.
 
 \section{Exakte Lösungen für das Dynamic Pricing}
+\label{section:dp}
 Ein klassisches Verfahren für das Lösen von Markov-Entscheidungsprozessen ist die dynamische Programmierung.
 Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Übergangswahrscheinlichkeiten $p$ sowie Belohnungen $r$ bekannt sind.
 Anschließend wird eine angenäherte Funktion für die Zustandswerte $V$ als Array gespeichert und mit beliebigen Werten initialisiert.
@@ -74,11 +75,41 @@ Sie beruhen auf der Einsicht, dass der Zustandsraum zwar sehr groß ist, aber vi
 Dadurch können Modelle mit deutlich weniger Parametern als Zuständen diese gewünschten Funktionen  mit für praktische Zwecke ausreichender Genauigkeit annähern.
 Alle folgenden Verfahren nutzen sogenannte künstliche neuronale Netze, die am weitesten verbreitete Technologie um komplexe nichtlineare Funktionen zu approximieren.
 
+\section{Q-Learning-Verfahren im stetigen Aktionsraum}
+Ein weit verbreitetes Verfahren zum Lösen von Markov-Entscheidungsprozessen ist das sogenannte Q-Learning.
+Die Idee ist hierbei, wie in dem in Abschnitt \ref{section:dp} beschriebenen Monte-Carlo-Verfahren, Aktionswerte einer optimalen Policy zu schätzen.
+Dazu wird als Berechnungsvorschrift die Bellman-Gleichung verwendet.
+Allerdings werden nicht unbedingt vollständige Episoden betrachtet, sondern der Aktionswert nach dem Folgezustand ergibt sich mittels der momentanen Schätzfunktion.
+Diese Technik, zur Verbesserung von Schätzwerten rekursiv bisherige Schätzwerte zu verwenden, wird Bootstrapping genannt und gilt als wichtige Technologie angesehen. \cite{Sutton1998}
+Nach dem Training wird wieder die Greedy-Policy verwendet.
+Während des Trainings wird eine $\varepsilon$-Soft-Policy genutzt, um für ausreichende Exploration zu sorgen.
+
+Dieses Verfahren lässt sich unmittelbar mit Tabellen umsetzen.
+Die Umsetzung dieses Verfahrens mit neuronalen Netzen führt zu dem erfolgreichen >>Deep-Q-Learning<<.
+Solche >>Deep-Q-Networks<< sind zunächst für diskrete Aktionsräume entworfen worden.
+Die Schätzung der Aktionswertefunktion wird dabei so umgesetzt, dass an den Input des Netzes nur den Zustand angelegt wird und dann in einer Berechnung auf so viele Ausgabeneuronen abgebildet wird, wie es Aktionen gibt.
+So erhält man bei nur einem der aufwendigen Läufe durch das neuronale Netz bereits alle Aktionswerte auf einmal.
+Die Wahl des Maximums und des Argmax sind dann unmittelbar möglich.
+Das Training findet iterativ statt, indem die bisherigen Schätzwerte des Netzes mit Zustandsübergängen $(s, a, r, s')$ aus der gesammelten Erfahrung $\mathcal{D}$ in Richtung des Zielwertes $r+\gamma \max_{a'\in\mathcal{A}}{Q(s',a')}$ bewegt werden.
+In den heutigen Deep-Learning-Frameworks wie PyTorch oder Tensorflow wird üblicherweise mit einer Verlustfunktion gearbeitet, die dann automatisch differenziert wird. [Verweis]
+Mit einem Optimizer wie Stochastic Gradient Descent [Paper] oder Adam [Paper] wird dieser Verlust dann mithilfe des Gradienten minimiert.
+Diese Verlustfunktion beim Deep-Q-Learning lautet für eine Schätzfunktion der Aktionswerte mit den Parametern $\psi$
+\begin{equation}
+    L_(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma \max_{a'\in\mathcal{A}}{Q_\psi(s',a')}\right)^2\right)\right]
+\end{equation}
+Erfolgreiche Q-Learning-Umsetzungen verwenden einen Experiencebuffer, in dem die Erfahrung $\mathcal{D}$ gespeichert wird.
+Weiterhin speichern sie zwei Netze: neben dem, das trainiert wird, auch ein sogenanntes Zielnetz, was in der Schätzung des Zielwertes verwendet wird.
+Das verhindert ungewollte Oszillationen und Instabilität. [Paper]
+Zahlreiche weitere Techniken zur Verbesserung von Deep-Q-Networks sind verbreitet. [Paper]
+Für die gleich folgenden Verfahren ist insbesondere die Erkenntnis wichtig, dass Q-Learning-Verfahren zur systematischen Überschätzung der Aktionswerte führt. [Paper]
+Die Erklärung dahinter ist einfach zu verstehen.
+Angenommen ein Zustand hat zwei Aktionen, die beide in einer optimalen Policy den tatsächlichen Zustandswert 0 haben (das ist ein Erwartungswert).
+Nun stehen aber nur zwei standardnormalverteilte Schätzwerte dieser Aktionswerte zur Verfügung.
+Der Erwartungswert des Maximums dieser Messwerte ist dann größer als 0 [Rechnung bitte].
+Um diese systematische Verzerrung zu umgehen, werden für Auswahl der Aktion und die Generierung des Schätzwertes unterschiedliche Netze herangezogen.
+
 \section{Policy-Gradient-Verfahren}
 Vom Policy-Gradient-Theorem über A2C zu PPO
-
-\section{Q-Learning-Verfahren im stetigen Aktionsraum}
-Schreib etwas zu DDPG und TD3
 
 \section{Soft Actor Critic}
 Nicht nur die Library aufrufen!
