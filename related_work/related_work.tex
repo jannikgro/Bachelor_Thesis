@@ -1,4 +1,5 @@
 \section{MDPs lösen: Zustands- und Aktionswerte}
+\label{section:mdp_fundamentals}
 Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, r, p)$ (kurz MDP).
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
 $r: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ ist eine Zufallsvariable, die die Belohnung angibt.
@@ -76,6 +77,7 @@ Dadurch können Modelle mit deutlich weniger Parametern als Zuständen diese gew
 Alle folgenden Verfahren nutzen sogenannte künstliche neuronale Netze, die am weitesten verbreitete Technologie um komplexe nichtlineare Funktionen zu approximieren.
 
 \section{Q-Learning-Verfahren im stetigen Aktionsraum}
+\label{section:qlearning}
 Ein weit verbreitetes Verfahren zum Lösen von Markov-Entscheidungsprozessen ist das sogenannte Q-Learning.
 Die Idee ist hierbei, wie in dem in Abschnitt \ref{section:dp} beschriebenen Monte-Carlo-Verfahren, Aktionswerte einer optimalen Policy zu schätzen.
 Dazu wird als Berechnungsvorschrift die Bellman-Gleichung verwendet.
@@ -133,7 +135,15 @@ So kann der Gradient
 durch die automatische Differenzierung des Deep-Learning-Frameworks berechnet werden, und ein Optimierungsschritt in die Richtung des größten Anstiegs vorgenommen werden.
 
 \section{Policy-Gradient-Verfahren}
-Vom Policy-Gradient-Theorem über A2C zu PPO
+Eine alternative Herangehensweise zu den wertebasierten Verfahren, zu denen die Q-Learning-Familie aus Abschnitt \ref{section:qlearning} gehören, sind die Policy-Gradient-Verfahren.
+Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt die Policyfunktion $\pi_\phi$ z.B. mit einem neuronalen Netz.
+Sie verfolgen das gleiche in Abschnitt \ref{section:mdp_fundamentals} formulierte Ziel, nämlich eine Policy zu finden, die den Zustandswert des Startzustandes und damit den erwarteten \textit{Return} einer Episode zu maximieren.
+Das ursprüngliche Verfahren dieser Klasse heißt REINFORCE und ist aus dem Jahr 19??, danach wurden zahlreiche Verbesserungen vorgenommen, die zu A2C und PPO führen.
+Grundidee ist hierbei, Gradientenanstieg für die Anpassung der Policy zu nutzen, sodass der Zustandswert des Startzustandes maximiert wird.
+Die Formel dazu lautet:
+\begin{equation}
+    \nabla_\phi V_{\pi_\phi}(s_0)
+\end{equation}
 
 \section{Soft Actor Critic}
 Nicht nur die Library aufrufen!
