@@ -112,7 +112,7 @@ Es lässt sich weiterhin zeigen, dass die Verteilung des Maximums einen Erwartun
 Um diese systematische Verzerrung zu umgehen, werden für Auswahl der Aktion und die Generierung des Schätzwertes unterschiedliche Netze herangezogen.
 
 Die Verallgemeinerung auf stetige Aktionsräume ist bei Deep-Q-Networks nicht ohne einige grundlegende Designänderungen möglich.
-Das dabei entstehende Verfahren heißt Deep Deterministic Policy Gradient (DDPG) und wurde 20?? publiziert. [Paper]
+Das dabei entstehende Verfahren heißt Deep Deterministic Policy Gradient (DDPG) und wurde 2014 publiziert. [Test]
 Ein neuronales Netz mit den Parametern $\psi$ berechnet die Aktionswerteschätzfunktion $Q_\psi: \mathcal{S} \times \mathcal{A}\rightarrow \mathbb{R}$ (jetzt muss die Aktion mit in die Eingabe).
 Dabei ist die Bestimmung des Maximums kaum möglich: für neuronale Netze ist keine analytische Lösung möglich und numerische Verfahren sind viel zu aufwendig für die vielen benötigten Trainingsschritte.
 Ein weiteres neuronales Netz mit den Parametern $\phi$ berechnet explizit die deterministische Policyfunktion $\pi_\phi: \mathcal{S} \rightarrow \mathcal{A}$.
@@ -133,6 +133,17 @@ So kann der Gradient
     \nabla_\phi \mathbb{E}_{s\sim\mathcal{D}}\left[Q_\psi(s, \pi_\phi(s))\right]
 \end{equation}
 durch die automatische Differenzierung des Deep-Learning-Frameworks berechnet werden, und ein Optimierungsschritt in die Richtung des größten Anstiegs vorgenommen werden.
+
+Nachfolgende Analysen haben ergeben, dass die systematische Überschätzung der Funktionswerte bei DDPG sich besonders stark auf die Leistung auswirkt. \cite{DBLP:journals/corr/abs-1802-09477}
+In diesem Paper wurden drei Verbesserungen für den DDPG-Algorithmus vorgeschlagen:
+\begin{enumerate}
+    \item Es werden zwei seperate Netze für die Aktionswertefunktion gehalten.
+    Für die Berechnung des Zielwertes wird immer das Minimum von beiden genommen.
+    \item Weil die Q-Netze manchmal kleinere Ausbuchtungen haben, die vom Gradientenanstieg ausgenutzt werden, wird bei der Berechnung des Zielwertes der Aktionsauswahl durch das Policynetz normalverteiltes Rauschen angefügt.
+    Die Aktionen werden dabei selbstverständlich auf den Aktionsraum geclippt.
+    \item Im Gegensatz zu vielen DDPG-Implementierungen wird das Policy-Netz nur alle zwei Q-Netz-Updates trainiert.
+\end{enumerate}
+Der entstehende Algorithmus wird als TD3 bezeichnet und hat bei vielen Tests durch bessere Performance überzeugt.
 
 \section{Policy-Gradient-Verfahren}
 Eine alternative Herangehensweise zu den wertebasierten Verfahren, zu denen die Q-Learning-Familie aus Abschnitt \ref{section:qlearning} gehören, sind die Policy-Gradient-Verfahren.
