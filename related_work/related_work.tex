@@ -127,7 +127,7 @@ Dabei wird bei DDPG wird ein Zielnetz mit Parametern $\psi'$ für die Schätzung
 \end{equation}
 aktualisert.
 Zur Optimierung der Policyfunktion in dem Sinne, dass sie für einen Zustand möglichst das Argmax berechnet, kann Gradientenanstieg verwendet werden.
-Das wird dadurch möglich, dass beide neuronale Netze differenzierbar sind und der Aktionsraum stetig ist.
+Das wird dadurch möglich, dass beide neuronalen Netze differenzierbar sind und der Aktionsraum stetig ist.
 So kann der Gradient
 \begin{equation}
     \nabla_\phi \mathbb{E}_{s\sim\mathcal{D}}\left[Q_\psi(s, \pi_\phi(s))\right]
@@ -149,11 +149,12 @@ Der entstehende Algorithmus wird als TD3 bezeichnet und hat bei vielen Tests dur
 Eine alternative Herangehensweise zu den wertebasierten Verfahren, zu denen die Q-Learning-Familie aus Abschnitt \ref{section:qlearning} gehören, sind die Policy-Gradient-Verfahren.
 Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt die Policyfunktion $\pi_\phi$ z.B. mit einem neuronalen Netz.
 Sie verfolgen das gleiche in Abschnitt \ref{section:mdp_fundamentals} formulierte Ziel, nämlich eine Policy zu finden, die den Zustandswert des Startzustandes und damit den erwarteten \textit{Return} einer Episode zu maximieren.
-Das ursprüngliche Verfahren dieser Klasse heißt REINFORCE und ist aus dem Jahr 19??, danach wurden zahlreiche Verbesserungen vorgenommen, die zu A2C und PPO führen.
+Das ursprüngliche Verfahren dieser Klasse heißt REINFORCE und ist aus dem Jahr 1992, danach wurden zahlreiche Verbesserungen vorgenommen, die zu A2C und PPO führen.
 Grundidee ist hierbei, Gradientenanstieg für die Anpassung der Policy zu nutzen, sodass der Zustandswert des Startzustandes maximiert wird.
-Die Formel dazu lautet:
+Dazu gibt es ein bedeutendes theoretisches Resultat, das eine Möglichkeit aufzeigt, den Gradienten aus gesampelten Episoden leicht zu schätzen.
+Das sogenannte Policy-Gradient-Theorem lässt sich für den REINFORCE-Algorithmus auf die folgende Form bringen:
 \begin{equation}
-    \nabla_\phi V_{\pi_\phi}(s_0)
+    \nabla_\phi V_{\pi_\phi}(S_0) \propto \mathbb{E}_{S_t, A_t}\left[G_t \log{\pi_\phi(S_t, A_t)}\right]
 \end{equation}
 
 \section{Soft Actor Critic}
