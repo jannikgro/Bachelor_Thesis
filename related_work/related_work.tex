@@ -146,16 +146,17 @@ In diesem Paper wurden drei Verbesserungen für den DDPG-Algorithmus vorgeschlag
 Der entstehende Algorithmus wird als TD3 bezeichnet und hat bei vielen Tests durch bessere Performance überzeugt.
 
 \section{Policy-Gradient-Verfahren}
-Eine alternative Herangehensweise zu den wertebasierten Verfahren, zu denen die Q-Learning-Familie aus Abschnitt \ref{section:qlearning} gehören, sind die Policy-Gradient-Verfahren.
+Eine alternative Herangehensweise zu den wertebasierten Verfahren, zu denen die Q-Learning-Familie aus Abschnitt \ref{section:qlearning} gehört, sind die Policy-Gradient-Verfahren.
 Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt die Policyfunktion $\pi_\phi$ z.B. mit einem neuronalen Netz.
 Sie verfolgen das gleiche in Abschnitt \ref{section:mdp_fundamentals} formulierte Ziel, nämlich eine Policy zu finden, die den Zustandswert des Startzustandes und damit den erwarteten \textit{Return} einer Episode zu maximieren.
 Das ursprüngliche Verfahren dieser Klasse heißt REINFORCE und ist aus dem Jahr 1992, danach wurden zahlreiche Verbesserungen vorgenommen, die zu A2C und PPO führen.
 Grundidee ist hierbei, Gradientenanstieg für die Anpassung der Policy zu nutzen, sodass der Zustandswert des Startzustandes maximiert wird.
-Dazu gibt es ein bedeutendes theoretisches Resultat, das eine Möglichkeit aufzeigt, den Gradienten aus gesampelten Episoden leicht zu schätzen.
-Das sogenannte Policy-Gradient-Theorem lässt sich für den REINFORCE-Algorithmus auf die folgende Form bringen:
+Dazu gibt es ein bedeutendes theoretisches Resultat, das eine Möglichkeit aufzeigt, den Gradienten aus gesampelten Episoden leicht zu schätzen, das sogenannte Policy-Gradient-Theorem.
+Es  lässt sich für den REINFORCE-Algorithmus als
 \begin{equation}
     \nabla_\phi V_{\pi_\phi}(S_0) \propto \mathbb{E}_{S_t, A_t}\left[G_t \log{\pi_\phi(S_t, A_t)}\right]
 \end{equation}
+formulieren, wobei $S_t$ und $A_t$ als Zufallsvariablen den Zustand und die Aktion im $t$-ten Schritt angeben, und $G_t$ den Result vom $t$-ten Schritt aus.
 
 \section{Soft Actor Critic}
 Nicht nur die Library aufrufen!
