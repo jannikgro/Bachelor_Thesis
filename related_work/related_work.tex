@@ -190,7 +190,7 @@ Dazu wird der Gradientenanstieg nach dem Sammeln von Erfahrung in kleinere Schri
 Das geschieht, um für eine Aktion $a \in \mathcal{A}$ in einem Zustand $s \in \mathcal{S}$ das Verhältnis aus neuer und alter Wahrscheinlichkeit $r(s, a, \phi, \phi_{old}) := \pi_\phi(s, a) / \pi_{\phi_{old}}(s, a)$ berechnen zu können.
 Damit wird mit dem Hyperparameter $\varepsilon \in [0,1]$ die Zielfunktion
 \begin{equation}
-    L(\phi, \phi_{old}) = \mathbb{E}_{S_t, A_t}\left[\min{\left(\clip{\left(1 + \varepsilon, 1 - \varepsilon, \hat{A}_t \cdot r(S_t, A_t, \phi, \phi_{old})\right)}, \hat{A}_t \cdot r(S_t, A_t, \phi, \phi_{old})\right)}\right]
+    L(\phi, \phi_{old}) = \mathbb{E}_{S_t, A_t}\left[\min{\left(\text{clip}{\left(1 + \varepsilon, 1 - \varepsilon, \hat{A}_t \cdot r(S_t, A_t, \phi, \phi_{old})\right)}, \hat{A}_t \cdot r(S_t, A_t, \phi, \phi_{old})\right)}\right]
 \end{equation}
 definiert, um sie zu maximieren.
 Idee dahinter ist, dass gute Aktionen -- egal wie gut sie waren -- die Wahrscheinlichkeit dieser Aktion um höchstens den Faktor $\varepsilon$ zu verbessern.
