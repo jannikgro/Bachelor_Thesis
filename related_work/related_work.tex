@@ -3,18 +3,18 @@
 Bei der Einführung der Notation wird sich an das Lehrbuch von Richard Sutton und Andrew Barto gehalten. \cite{Sutton1998}
 Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, p)$ (kurz MDP).
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
-Weiterhin ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $\mathcal{A}$ die Wahrscheinlichkeitsdichte, in den Zustand $s' \in \mathcal{A}$ überzugehen und dabei die Belohnung $r \in \mathbb{R}$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
+Weiterhin ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $a \in \mathcal{A}$ die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung $r \in \mathbb{R}$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
 Zentraler Begriff beim Lösen eines MDPs die sogenannte Policyfunktion.
 Sie kann deterministisch sein und als $\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
 Weiterhin können Policies stochastisch sein, die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, 1]$.
-Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = (S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1})$.\footnote{
-    In der Literatur wird oft eine verallgemeinernde Notation verwendet, die auch mit unendlich langen Episoden klar kommt.
+Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$.\footnote{
+    In der Literatur wird oft eine verallgemeinernde Notation verwendet, die auch mit unendlich langen Episoden kompatibel ist.
     Weil aber die Episodenlänge in \ref{section:markov} auf $n_{ep}$ festgelegt wurde, wird das hier direkt verwendet.
 }
 Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
 Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen von einem Schritt $t$ aus als 
 \begin{equation}
-    G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{t - i} \cdot R_t
+    G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \cdot R_t
 \end{equation}
 als Return (von Schritt $t$ aus) bezeichnet.
 Ziel ist, den Return der ganzen Episode, also $G_0$ zu maximieren.
@@ -24,41 +24,42 @@ Für einen Zustand $s \in \mathcal{S}$ unter einer Policy $\pi$ gibt die Funktio
     V_\pi(s) := \mathbb{E}_\pi\left[G_t | S_t = s\right]
 \end{equation}
 den sogenannten Zustandswert an.
-Er drückt die (diskontierte) Summe aller Rewards aus, die nach dem Besuch des Zustands $s$ noch erwartet werden.
+Er drückt die (diskontierte) Summe aller Rewards aus, die nach dem Besuch des Zustands $s$ noch erwartet werden, wenn die Aktionsauswahl mit der Policy $\pi$ geschieht.
 Analog wird für den Zustand $s \in \mathcal{S}$ und eine Aktion $a \in \mathcal{S}$ unter einer Policy $\pi$ der Aktionswert als
 \begin{equation}
-    Q_\pi(s) := \mathbb{E}_\pi\left[G_t | S_t = s, A_t = a\right]
+    Q_\pi(s, a) := \mathbb{E}_\pi\left[G_t | S_t = s, A_t = a\right]
 \end{equation}
-definiert, also der erwarteten (diskontierten) Summe an Belohnungen nach dem Besuch von $s$ und der Wahl von Aktion $a$, wenn danach der Policy $\pi$ gefolgt wird.
-Damit lässt sich das Ziel, den Return $G_0$ zu maximieren, auch äquivalent als Maximierung von $V(S_0)$ formulieren.
+definiert, also die erwartete (diskontierte) Summe an Belohnungen nach dem Besuch von $s$ und der Wahl von Aktion $a$, wenn danach der Policy $\pi$ gefolgt wird.
+Zustands- und Aktionswerte sind zentrale Begriffe im Reinforcement Learning, die in vielen Algorithmen verwendet werden.
+Das Ziel, den Return $G_0$ zu maximieren, lässt sich auch äquivalent als Maximierung von $V(S_0)$ formulieren.
 
 \section{Exakte Lösungen für das Dynamic Pricing}
 \label{section:dp}
 Ein klassisches Verfahren für das Lösen von Markov-Entscheidungsprozessen ist die dynamische Programmierung.
-Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Übergangswahrscheinlichkeiten $p$ sowie Belohnungen $r$ bekannt sind.
-Anschließend wird eine angenäherte Funktion für die Zustandswerte $V$ als Array gespeichert und mit beliebigen Werten initialisiert.
+Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Übergangs- und Belohnungswahrscheinlichkeiten $p$ bekannt sind.
+Anschließend wird eine angenäherte Funktion für die Zustandswerte $V^*$ als Array gespeichert und mit beliebigen Werten initialisiert.
 Dann werden rundenweise für alle Zustände $s\in\mathcal{S}$ ihre Einträge in dieser Tabelle mithilfe der Bellman-Gleichung
 \begin{equation}
-    V(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s'\right)}\right)}
+    V^*(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
 \end{equation}
 als Berechnungsvorschrift aktualisiert.
-Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy \cite{Sutton1998}.
+Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy. \cite{Sutton1998}
 Die optimale Policy ist dann die folgende deterministische, sogenannte Greedy-Policy:
 \begin{equation}
-    \pi: s \mapsto \argmax_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s'\right)}\right)}
+    \pi: s \mapsto \argmax_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
 \end{equation}
-Dieses Verfahren ist mit analogen Formeln auf Grundlage der Aktionswerte möglich.
-Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weitere Rechnungen als die Bestimmung der Aktion mit maximalem Wert.
+Dieses Verfahren ist mit analogen Formeln ebenfalls auf Grundlage der Aktionswerte möglich.
+Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weitere Rechnungen, nur die Bestimmung der Aktion mit maximalem Wert.
 
 Bei der Definition dieses Marktes ist die Lösung mittels dynamischer Programmierung sogar noch einfacher, weil die Episodenlänge begrenzt ist und es einen Schrittzähler gibt.
-Dann wird zwischen dem Schrittzähler und dem (restlichen) Zustand unterschieden und eine Tabelle $V$ erstellt, die mit Zustand und Schrittzähler adressiert wird.
+Dann wird zwischen dem Schrittzähler und dem (restlichen) Zustand unterschieden, und eine Tabelle $V$ erstellt, die mit Zustand und Schrittzähler adressiert wird.
 Die Endzustände werden mit $0$ initialisiert und die anderen Zustände dieser leicht abgewandelten Bellman-Gleichung vom Ende bis zum Anfang einer Episode befüllt:
 \begin{equation}
-    V(s, t) \leftarrow \max_{a\in\mathcal{A}}{\left(\mathbb{E}[r(s, a)] + \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s', t+1\right)}\right)}
+    V(s, t) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s', t + 1)\right)}\right)}
 \end{equation}
 Hier muss nicht einmal Konvergenz abgewartet werden, sondern die Tabelle ist nach dem Befüllen mit den exakten Zustandswerten befüllt, und die optimale Policy ist wieder die Greedy-Policy.
 
-Dynamische Programmierung wurde bereits erfolgreich für dynamische Preisgestaltung eingesetzt [Rainer], hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind.
+Dynamische Programmierung wurde bereits erfolgreich für dynamische Preisgestaltung eingesetzt \cite{10.1145/3219819.3219833}, hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind.
 Erstens müssen die Wahrscheinlichkeitsverteilungen der Belohnungen und Zustandsübergänge bekannt sein.
 Das ist für die Realität nicht möglich und bereitet auch in dem in dieser Arbeit untersuchten Markt Probleme.
 So könnte man zwar die explizite Definition des Marktes zur Verfügung haben, allerdings sind die Wahrscheinlichkeiten nirgends explizit aufgeschrieben, sondern die Übergangswahrscheinlichkeiten werden durch die Simulation induziert.
