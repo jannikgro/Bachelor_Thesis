@@ -157,6 +157,11 @@ Es  lässt sich für den REINFORCE-Algorithmus als
     \nabla_\phi V_{\pi_\phi}(S_0) \propto \mathbb{E}_{S_t, A_t}\left[G_t \nabla\log{\pi_\phi(S_t, A_t)}\right]
 \end{equation}
 formulieren, wobei $S_t$ und $A_t$ als Zufallsvariablen den Zustand und die Aktion im $t$-ten Schritt angeben, und $G_t$ den Result vom $t$-ten Schritt aus.
+Für Deep-Learning Frameworks mit automatischer Differenzierung bedeutet das
+\begin{equation}
+    L(\phi) = \mathbb{E}_{S_t, A_t}\left[G_t \log{\pi_\phi(S_t, A_t)}\right]
+\end{equation}
+als zu maximierende Zielfunktion.
 Der REINFORCE-Algorithmus sampelt nun Episoden unter Verwendung einer Policy und aktualisiert die Gewichte mithilfe einer Schätzung des angegebenen Gradienten.
 Die Updateregel ist intuitiv: Aktionen, auf denen ein positivem Return folgt, werden wahrscheinlicher gemacht und Aktionen mit negativem Return unwahrscheinlicher.
 
@@ -164,7 +169,7 @@ Doch REINFORCE hat für die praktische Anwendung einen offensichtlichen Nachteil
 In einer Umgebung, die nur negative Rewards vergibt, wird der Gradient immer negativ sein und damit auch für Aktionen, die in der Situation deutlich besser sind als andere.
 Abhilfe schafft hier die sogenannte Baseline, eine Funktion $b: \mathcal{S} \rightarrow \mathbb{R}$, die einen Vergleichswert für Zustände angibt.
 Sie ist sinnvollerweise eine Schätzung des Zustandswertes, um damit bewerten zu können, ob ein erreichter Return für einen Zustand gut ist.
-Das ist ein etabliertes Vorgehen, deshalb wird ab jetzt wie in der Literatur der Advantagewert $A_t := G_t - b(S_t)$ verwendet.
+Das ist ein etabliertes Vorgehen, deshalb wird ab jetzt wie in der Literatur der Advantagewert $\hat{A}_t := G_t - b(S_t)$ verwendet.
 Algorithmen, die nach diesem Prinzip funktionieren, werden Actor-Critic-Algorithmen genannt.
 Das ist eine Metapher für die zwei Netze Actor (berechnet die Policy) und Critic (schätzt den Zustandswert und ermöglicht damit die >>Kritik<< einer Aktion).
 In manchen Implementierungen teilen sich die beiden Netze vordere Schichten. [Paper]
@@ -172,6 +177,27 @@ Unterschiedliche Herangehensweisen gibt es beim Training des Critic-Netzes.
 Wenn es nach dem Sampling der Episoden direkt mittels überwachtem Lernen trainiert wird, so spricht man manchmal von >>REINFORCE mit Baseline<< oder >>Vanilla Policy Gradient Algorithm<<.
 Alternativ wird das Critic-Netz mittels Bootstrapping wie bei den Q-Learning-Verfahren trainiert.
 Letztere Version wird auch in diesem Paper untersucht.
+
+Im Gegensatz zu den Q-Learning-Verfahren aus dem Abschnitt \ref{section:qlearning} handelt es sich bei dieser Gruppe um On-Policy-Algorithmen.
+Das bedeutet, dass die Trainingsdaten mit der Policy gewonnen werden mussten, die auch trainiert wird.
+Training mit älteren Daten ist nicht möglich.
+Ein Problem bei Actor-Critic-Methoden ist, dass abrupte Änderungen der Policy die Besuchswahrscheinlichkeiten der Zustände radikal verändern kann, ein Grund für Instabilität.
+Die Lösungsidee dagegen ist, beim Lernen die Veränderung der Wahrscheinlichkeiten der Policy gering zu halten.
+Ein wichtiger Beitrag dazu war TRPO, das die Kullbeck-Leiber-Divergenz zwischen alten und neuen Wahrscheinlichkeiten begrenzt. [Paper]
+Es verwendet einige mathematische Rafinessen, wird aber hier nicht weiter behandelt.
+Stattdessen wird PPO betrachtet, was 2018 erschien und ebenfalls den Unterschied zwischen alten und neuen Wahrscheinlichkeiten begrenzt.
+Dazu wird der Gradientenanstieg nach dem Sammeln von Erfahrung in kleinere Schritte zerlegt und die alten Parameter $\phi_{old}$ gespeichert.
+Das geschieht, um für eine Aktion $a \in \mathcal{A}$ in einem Zustand $s \in \mathcal{S}$ das Verhältnis aus neuer und alter Wahrscheinlichkeit $r(s, a, \phi, \phi_{old}) := \pi_\phi(s, a) / \pi_{\phi_{old}}(s, a)$ berechnen zu können.
+Damit wird mit dem Hyperparameter $\varepsilon \in [0,1]$ die Zielfunktion
+\begin{equation}
+    L(\phi, \phi_{old}) = \mathbb{E}_{S_t, A_t}\left[\min{\left(\clip{\left(1 + \varepsilon, 1 - \varepsilon, \hat{A}_t \cdot r(S_t, A_t, \phi, \phi_{old})\right)}, \hat{A}_t \cdot r(S_t, A_t, \phi, \phi_{old})\right)}\right]
+\end{equation}
+definiert, um sie zu maximieren.
+Idee dahinter ist, dass gute Aktionen -- egal wie gut sie waren -- die Wahrscheinlichkeit dieser Aktion um höchstens den Faktor $\varepsilon$ zu verbessern.
+Genauso soll die Absenkung der Wahrscheinlichkeit für schlechte Aktionen auf die gleiche Art begrenzt werden.
+Hat sich die Wahrscheinlichkeit einer guten Aktion bereits um mehr als den Faktor $\varepsilon$ erhöht (bzw. der einer schlechten Aktion verringert), so fällt der Gradient auf null.
+Dass nicht nur geclippt, sondern auch minimiert wird, behandelt den Fall, dass die Wahrscheinlichkeit einer guten Aktion gesenkt bzw. die einer schlechten Aktion erhöht wurde.
+Gerät diese Wahrscheinlichkeit aus dem Vertrauensbereich (in die falsche Richtung) heraus, so soll dies weiterhin korrigiert werden.
 
 \section{Soft Actor Critic}
 Nicht nur die Library aufrufen!
