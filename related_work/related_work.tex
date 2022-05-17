@@ -147,16 +147,31 @@ Der entstehende Algorithmus wird als TD3 bezeichnet und hat bei vielen Tests dur
 
 \section{Policy-Gradient-Verfahren}
 Eine alternative Herangehensweise zu den wertebasierten Verfahren, zu denen die Q-Learning-Familie aus Abschnitt \ref{section:qlearning} gehört, sind die Policy-Gradient-Verfahren.
-Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt die Policyfunktion $\pi_\phi$ z.B. mit einem neuronalen Netz.
+Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt eine stochastische Policyfunktion $\pi_\phi$ z.B. mit einem neuronalen Netz.
 Sie verfolgen das gleiche in Abschnitt \ref{section:mdp_fundamentals} formulierte Ziel, nämlich eine Policy zu finden, die den Zustandswert des Startzustandes und damit den erwarteten \textit{Return} einer Episode zu maximieren.
 Das ursprüngliche Verfahren dieser Klasse heißt REINFORCE und ist aus dem Jahr 1992, danach wurden zahlreiche Verbesserungen vorgenommen, die zu A2C und PPO führen.
 Grundidee ist hierbei, Gradientenanstieg für die Anpassung der Policy zu nutzen, sodass der Zustandswert des Startzustandes maximiert wird.
 Dazu gibt es ein bedeutendes theoretisches Resultat, das eine Möglichkeit aufzeigt, den Gradienten aus gesampelten Episoden leicht zu schätzen, das sogenannte Policy-Gradient-Theorem.
 Es  lässt sich für den REINFORCE-Algorithmus als
 \begin{equation}
-    \nabla_\phi V_{\pi_\phi}(S_0) \propto \mathbb{E}_{S_t, A_t}\left[G_t \log{\pi_\phi(S_t, A_t)}\right]
+    \nabla_\phi V_{\pi_\phi}(S_0) \propto \mathbb{E}_{S_t, A_t}\left[G_t \nabla\log{\pi_\phi(S_t, A_t)}\right]
 \end{equation}
 formulieren, wobei $S_t$ und $A_t$ als Zufallsvariablen den Zustand und die Aktion im $t$-ten Schritt angeben, und $G_t$ den Result vom $t$-ten Schritt aus.
+Der REINFORCE-Algorithmus sampelt nun Episoden unter Verwendung einer Policy und aktualisiert die Gewichte mithilfe einer Schätzung des angegebenen Gradienten.
+Die Updateregel ist intuitiv: Aktionen, auf denen ein positivem Return folgt, werden wahrscheinlicher gemacht und Aktionen mit negativem Return unwahrscheinlicher.
+
+Doch REINFORCE hat für die praktische Anwendung einen offensichtlichen Nachteil: Die Bewertung, ob eine Aktion >>gut<< oder >>schlecht<< ist, richtet sich immer unmittelbar nach dem gemessenen Return.
+In einer Umgebung, die nur negative Rewards vergibt, wird der Gradient immer negativ sein und damit auch für Aktionen, die in der Situation deutlich besser sind als andere.
+Abhilfe schafft hier die sogenannte Baseline, eine Funktion $b: \mathcal{S} \rightarrow \mathbb{R}$, die einen Vergleichswert für Zustände angibt.
+Sie ist sinnvollerweise eine Schätzung des Zustandswertes, um damit bewerten zu können, ob ein erreichter Return für einen Zustand gut ist.
+Das ist ein etabliertes Vorgehen, deshalb wird ab jetzt wie in der Literatur der Advantagewert $A_t := G_t - b(S_t)$ verwendet.
+Algorithmen, die nach diesem Prinzip funktionieren, werden Actor-Critic-Algorithmen genannt.
+Das ist eine Metapher für die zwei Netze Actor (berechnet die Policy) und Critic (schätzt den Zustandswert und ermöglicht damit die >>Kritik<< einer Aktion).
+In manchen Implementierungen teilen sich die beiden Netze vordere Schichten. [Paper]
+Unterschiedliche Herangehensweisen gibt es beim Training des Critic-Netzes.
+Wenn es nach dem Sampling der Episoden direkt mittels überwachtem Lernen trainiert wird, so spricht man manchmal von >>REINFORCE mit Baseline<< oder >>Vanilla Policy Gradient Algorithm<<.
+Alternativ wird das Critic-Netz mittels Bootstrapping wie bei den Q-Learning-Verfahren trainiert.
+Letztere Version wird auch in diesem Paper untersucht.
 
 \section{Soft Actor Critic}
 Nicht nur die Library aufrufen!
