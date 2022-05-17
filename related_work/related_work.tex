@@ -1,25 +1,36 @@
 \section{MDPs lösen: Zustands- und Aktionswerte}
 \label{section:mdp_fundamentals}
-Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, r, p)$ (kurz MDP).
+Bei der Einführung der Notation wird sich an das Lehrbuch von Richard Sutton und Andrew Barto gehalten. \cite{Sutton1998}
+Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, p)$ (kurz MDP).
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
-$r: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ ist eine Zufallsvariable, die die Belohnung angibt.
-Weiterhin ist $p: \mathcal{S} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$ die Dichtefunktion der Zustandsübergänge.
-Zentraler Begriff beim Lösen eines MDPs die sogenannte Policyfunktion $\pi$.
-Sie kann deterministisch sein und als $\pi: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
-Weiterhin können Policies stochastisch sein, sie sind dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi: \mathcal{S}\times\mathcal{A}\rightarrow [0, 1]$.
-Mit einem Diskontierungsfaktor $\gamma \in [0,1]$ werden nun Zustandswerte in Bezug auf eine Policy als
+Weiterhin ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $\mathcal{A}$ die Wahrscheinlichkeitsdichte, in den Zustand $s' \in \mathcal{A}$ überzugehen und dabei die Belohnung $r \in \mathbb{R}$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
+Zentraler Begriff beim Lösen eines MDPs die sogenannte Policyfunktion.
+Sie kann deterministisch sein und als $\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
+Weiterhin können Policies stochastisch sein, die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, 1]$.
+Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = (S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1})$.\footnote{
+    In der Literatur wird oft eine verallgemeinernde Notation verwendet, die auch mit unendlich langen Episoden klar kommt.
+    Weil aber die Episodenlänge in \ref{section:markov} auf $n_{ep}$ festgelegt wurde, wird das hier direkt verwendet.
+}
+Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
+Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen von einem Schritt $t$ aus als 
 \begin{equation}
-    V_\pi: \mathcal{S} \rightarrow \mathbb{R}; s \mapsto \sum_{a\in\mathcal{A}}\pi(s, a) Q(s, a)
+    G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{t - i} \cdot R_t
 \end{equation}
-definiert.
-Dabei wird als Abkürzung bereits die Aktionswertefunktion verwendet, die ihrerseits mithilfe der Zustandswerte als
+als Return (von Schritt $t$ aus) bezeichnet.
+Ziel ist, den Return der ganzen Episode, also $G_0$ zu maximieren.
+
+Für einen Zustand $s \in \mathcal{S}$ unter einer Policy $\pi$ gibt die Funktion
 \begin{equation}
-    Q_\pi: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}; (s, a) \mapsto \mathbb{E}\left[r(s,a)\right]+\gamma \sum_{s'\in\mathcal{S}}{p\left(s', s, a\right) V\left(s'\right)}
+    V_\pi(s) := \mathbb{E}_\pi\left[G_t | S_t = s\right]
 \end{equation}
-definiert ist.
-Endzustände erhalten den Zustandswert 0.
-Ziel ist im Allgemeinen, eine Policyfunktion zu finden, die den Zustandswert des ersten Zustands maximiert.
-Nach dem Policy-Improvement-Theorem bedeutet das, dass auch die Zustandswerte aller anderen (erreichbaren) Zustände maximal (unter allen Policies) sind.
+den sogenannten Zustandswert an.
+Er drückt die (diskontierte) Summe aller Rewards aus, die nach dem Besuch des Zustands $s$ noch erwartet werden.
+Analog wird für den Zustand $s \in \mathcal{S}$ und eine Aktion $a \in \mathcal{S}$ unter einer Policy $\pi$ der Aktionswert als
+\begin{equation}
+    Q_\pi(s) := \mathbb{E}_\pi\left[G_t | S_t = s, A_t = a\right]
+\end{equation}
+definiert, also der erwarteten (diskontierten) Summe an Belohnungen nach dem Besuch von $s$ und der Wahl von Aktion $a$, wenn danach der Policy $\pi$ gefolgt wird.
+Damit lässt sich das Ziel, den Return $G_0$ zu maximieren, auch #quivalent als Maximierung von $V(S_0)$ formulieren.
 
 \section{Exakte Lösungen für das Dynamic Pricing}
 \label{section:dp}
@@ -190,7 +201,7 @@ Dazu wird der Gradientenanstieg nach dem Sammeln von Erfahrung in kleinere Schri
 Das geschieht, um für eine Aktion $a \in \mathcal{A}$ in einem Zustand $s \in \mathcal{S}$ das Verhältnis aus neuer und alter Wahrscheinlichkeit $r(t, \phi, \phi_{old}) := \pi_\phi(S_t, A_t) / \pi_{\phi_{old}}(S_t, A_t)$ berechnen zu können.
 Damit wird mit dem Hyperparameter $\varepsilon \in [0,1]$ die Zielfunktion
 \begin{equation}
-    L(\phi, \phi_{old}) = \mathbb{E}_{S_t, A_t}\left[\min{\left(\hat{A}_t \text{clip}{\left(1 - \varepsilon, r(t, \phi, \phi_{old}), 1 + \varepsilon\right)}, \hat{A}_t r(t, \phi, \phi_{old})\right)}\right]
+    L_\phi_{old}(\phi) = \mathbb{E}_{S_t, A_t}\left[\min{\left(\hat{A}_t \text{clip}{\left(1 - \varepsilon, r(t, \phi, \phi_{old}), 1 + \varepsilon\right)}, \hat{A}_t r(t, \phi, \phi_{old})\right)}\right]
 \end{equation}
 definiert, um sie zu maximieren.
 Idee dahinter ist, dass gute Aktionen -- egal wie gut sie waren -- die Wahrscheinlichkeit dieser Aktion um höchstens den Faktor $\varepsilon$ zu verbessern.
