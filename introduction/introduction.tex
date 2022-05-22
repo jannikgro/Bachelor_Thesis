@@ -2,11 +2,11 @@
 Nicht erst seitdem es Online-Marktplätze gibt, ist die Festlegung von Preisen eine zentrale Herausforderung im Geschäftsbetrieb.
 Durch Online-Marktplätze hat allerdings die Intensität des Wettbewerbs erheblich zugenommen, da Konkurrenzangebote leicht einsehbar sind und Preise in hochfrequentem Tempo gesetzt werden können.
 Zudem müssen alle Produkte des meist sehr breiten Angebots auf diese Weise mit aktuellen Preisen in Reaktion auf die Marktsituation versehen werden.
-Diese Umstände motivieren automatische Preisfindung, da menschliche Branchenkenner mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
+Diese Gründe motivieren automatische Preisfindung, da menschliche Branchenkenner mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
 
 Eine weitere Komponente kommt im sogenannten Recommerce hinzu.
-Recommerce beschreibt den Rückkauf, die Aufwertung und den Weitervertrieb von gebrauchten Produkten \cite{deges2019grundlagen}.
-Gerade mit Blick auf die ressourcenintensive Modebranche verspricht Recommerce eine Steigerung der Nachhaltigkeit durch Einführung einer Zirkularwirtschaft.
+Recommerce beschreibt den Rückkauf, die Aufwertung und den Weitervertrieb von gebrauchten Produkten im Internet\cite{deges2019grundlagen}.
+Gerade mit Blick auf die ressourcenintensive Modebranche verspricht Recommerce eine Steigerung der Nachhaltigkeit durch Einführung einer Kreislaufwirtschaft.
 Es eröffnet Eigentümern die Möglichkeit, durch den Rückverkauf ihrer nicht weiter benötigten Produkte Geld einzunehmen, und macht Kaufinteressenten gebrauchte und ggf. aufgewertete Produkte zu niedrigeren Preisen verfügbar.
 Zur Herausforderung, neue Produkte einzupreisen, kommt also noch hinzu, Preise für gebrauchten Produkte und Rückkaufpreise festzulegen.
 Dabei müssen auch Nebenbedingungen wie Lagerkosten beachtet werden, wodurch sich ein durchaus kompliziertes Problem ergibt.
@@ -24,9 +24,18 @@ Abbildung \ref{grafic:MarketOverview} zeigt eine grafische Visualisierung des in
 	\label{grafic:MarketOverview}
 \end{figure}
 
-Um das Problem der dynamischen Preisfindung zu lösen, wird das zu untersuchende Szenario zunächst in Abschnitt \ref{section:markov} als Markov-Entscheidungsprozess formalisiert.
-Anschließend wird in Abschnitt \ref{section:rulebased} eine regelbasierte Strategie eingeführt.
-Der Hauptteil der Arbeit widmet sich allerdings dem Vergleich von Reinforcement-Learning-Verfahren, um die Herausforderung zu meistern.
+Die Herangehensweisen für das Dynamic Pricing, die heute in der Geschäftswelt genutzt werden, basieren vor allem auf regelbasierten Strategien.
+Dafür legen Marktexperten Heuristiken an, die auf Erfahrungen und angestellten Überlegungen basieren.
+Auf diese Art können durchaus gute Preisstrategien erstellt werden.
+Allerdings werden dafür einerseits qualifizierte Marktkenner benötigt, und andererseits sind die Lösungen sehr speziell auf ein Marktszenario zugeschnitten.
+Verändern sich die Umstände oder soll die Lösung für einen neuen Markt aufgesetzt werden, so muss der gesamte manuelle Prozess neu durchschritten werden.
+
+Reinforcement Learning (RL) ermöglicht, nur auf Grundlage eines Marktes durch Ausprobieren und Erfahrungsammeln eine Preisstrategie zu optimieren.
+Das Training geschieht dabei üblicherweise in einer Simulation, da auf echten Märkten durch das notwendige Ausprobieren ein erheblicher finanzieller Schaden entstünde.
+
+Weil es sehr viele unterschiedliche RL-Algorithmen gibt, ist es eine interessante Frage, welche Vor- und Nachteile die einzelnen Algorithmen auf einem Recommerce-Markt haben.
+Einen solchen Vergleich herzustellen, ist Ziel dieser Arbeit.
+Zunächst wird das zu untersuchende Marktszenario in Abschnitt \ref{section:markov} als Markov-Entscheidungsprozess formalisiert und in Abschnitt \ref{section:rulebased} eine regelbasierte Strategie eingeführt.
 
 \section{Der Markt als Markov-Entscheidungsprozess}
 \label{section:markov}
