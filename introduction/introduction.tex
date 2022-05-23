@@ -1,11 +1,11 @@
 \section{Ein Überblick zu Recommerce und Preisstrategien}
 Nicht erst seitdem es Online-Marktplätze gibt, ist die Festlegung von Preisen eine zentrale Herausforderung im Geschäftsbetrieb.
 Durch Online-Marktplätze hat allerdings die Intensität des Wettbewerbs erheblich zugenommen, da Konkurrenzangebote leicht einsehbar sind und Preise in hochfrequentem Tempo gesetzt werden können.
-Zudem müssen alle Produkte des meist sehr breiten Angebots auf diese Weise mit aktuellen Preisen in Reaktion auf die Marktsituation versehen werden.
+Zudem müssen alle Produkte des meist sehr breiten Angebots auf diese Weise mit aktuellen Preisen in Abhängigkeit der Marktsituation versehen werden.
 Diese Gründe motivieren automatische Preisfindung, da menschliche Branchenkenner mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
 
 Eine weitere Komponente kommt im sogenannten Recommerce hinzu.
-Recommerce beschreibt den Rückkauf, die Aufwertung und den Weitervertrieb von gebrauchten Produkten im Internet\cite{deges2019grundlagen}.
+Recommerce beschreibt den Rückkauf, die Aufwertung und den Weitervertrieb von gebrauchten Produkten im Internet. % \cite{deges2019grundlagen}
 Gerade mit Blick auf die ressourcenintensive Modebranche verspricht Recommerce eine Steigerung der Nachhaltigkeit durch Einführung einer Kreislaufwirtschaft.
 Es eröffnet Eigentümern die Möglichkeit, durch den Rückverkauf ihrer nicht weiter benötigten Produkte Geld einzunehmen, und macht Kaufinteressenten gebrauchte und ggf. aufgewertete Produkte zu niedrigeren Preisen verfügbar.
 Zur Herausforderung, neue Produkte einzupreisen, kommt also noch hinzu, Preise für gebrauchten Produkte und Rückkaufpreise festzulegen.
@@ -53,7 +53,7 @@ So werden im Folgenden die Anbieter mit 1 und 2 bezeichnet, wobei 1 der Anbieter
 Alle Definitionen gelten aber auch analog andersherum.
 
 Das Marktmodell hat zahlreiche Parameter und an vielen Stellen könnte man Werte durchaus anders festlegen.
-Für den Vergleich von Reinforcement-Learning-Algorithmen -- schließlich das Ziel dieser Arbeit -- ist allerdings ein vergleichbares Setup das Entscheidende.
+Für den Vergleich von Reinforcement-Learning-Algorithmen ist allerdings ein vergleichbares Setup das Entscheidende.
 Daher wurden die Parameter auf Standardwerte festgelegt, die im Anhang in Tabelle \ref{tab:default_parameters} aufgeführt sind.
 
 Jede Preisstrategie muss in Abhängigkeit des Zustandes drei Preise setzen:
@@ -65,7 +65,7 @@ Jede Preisstrategie muss in Abhängigkeit des Zustandes drei Preise setzen:
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
 Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0, p_{max}]^3$ definiert.
 Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0, 1, \ldots, p_{max}\}^3$ definieren.
-Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen wie im Abschnitt [unten].
+Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen wie im Abschnitt \ref{section:dp}.
 Zudem unterscheiden sich die Reinforcement-Learning-Verfahren für diskrete und stetige Aktionsräume.
 Die Preise des Konkurrenten werden als $p_{2, gebraucht}$, $p_{2, neu}$ und $p_{2, re}$ geschrieben.
 
@@ -136,7 +136,7 @@ Die Zähldichte der Wahrscheinlichkeitsverteilung ergibt sich dann wieder als So
 
 Auf einem Online-Marktplatz reagieren die Anbieter gegenseitig auf Preisveränderungen.
 Während der erste Anbieter seine Preise stets zu Beginn jedes Schrittes setzt, reagiert sein Wettbewerber in der Mitte eines Schrittes.
-Das bedeutet, dass nach stets $k/2$ Kunden die Wahrscheinlichkeitsverteilungen für Kunden- und Eigentümerverhalten neu berechnet werden.
+Das bedeutet, dass immer nach $k/2$ Kunden die Wahrscheinlichkeitsverteilungen für Kunden- und Eigentümerverhalten neu berechnet werden.
 So treffen für jeden Anbieter nach dem Setzen seiner Preise stets $k/2$ Kunden auf das Angebot, das neben den neuen Preisen noch die vorigen des Konkurrenten erhält.
 Weitere $k/2$ Kunden treffen dann auf diese Preise und die erneute Reakion des Wettbewerbers.
 Einzige Ausnahme ist hier der erste und der letzte Schritt.
@@ -184,7 +184,7 @@ Deshalb ist es eine zu beleuchtende Frage, ob die untersuchten Verfahren auch mi
 
 Jetzt muss noch einmal beleuchtet werden, dass für den beschriebenen Markt keine weiteren Größen beobachtet werden müssen und somit die Markov-Eigenschaft tatsächlich erfüllt ist.
 Das Verhalten des Marktes ist vollständig definiert und kommt mit den genannten Größen aus.
-Auch der regelbasierte Wettbewerber in Abschnitt \ref{section:rulebased} verwenden für ihr Verhalten nur die aufgezählten Variablen.
+Auch der regelbasierte Wettbewerber in Abschnitt \ref{section:rulebased} verwenden für sein Verhalten nur die aufgezählten Variablen.
 Messgrößen wie die vorher gesetzten Preise, die Anzahl der weggeworfenen Objekte oder die Anzahl der bisherigen Verkäufe könnte man im Zustand vermuten (sie sind ja schließlich auf der grafischen Visualisierung des Marktes), beeinflussen aber nicht das künftige Verhalten.
 Eine Gedächtnisfunktion der Kunden (und dann notwendigerweise auch der Agenten) über vergangenes Verhalten ist eine mögliche Erweiterung, die das Modell praxisnäher bringen würde.
 So könnten Kunden die vergangene Preispolitik in ihre Entscheidung mit einbeziehen und Anbietern ein höheres oder niedrigeres Renommee zubilligen.
@@ -233,5 +233,5 @@ Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der
 	\end{cases}
 \end{equation}
 Diese regelbasierte Strategie erreicht in Tests vernünftige Ergebnisse und stellt wegen ihrer kompetitiven Unterbietung durchaus für RL-Agenten eine Herausforderung dar.
-Selbstverständlich ist allerdings anzumerken, dass durch weiteres Tuning durchaus bessere Strategien gefunden werden können.
+Selbstverständlich ist allerdings anzumerken, dass durch weiteres Tuning bessere Strategien gefunden werden können.
 Das erfordert allerdings Aufwand und eine umfangreiche Kenntnis des Marktes.
