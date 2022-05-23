@@ -1,36 +1,254 @@
 \section{MDPs lösen: Zustands- und Aktionswerte}
-Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, r, p)$ (kurz MDP).
+\label{section:mdp_fundamentals}
+Bei der Einführung der Notation wird sich an das Lehrbuch von Richard Sutton und Andrew Barto gehalten. \cite{Sutton1998}
+Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, p)$ (kurz MDP).
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
-$r: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ ist eine Zufallsvariable, die die Belohnung angibt.
-Weiterhin ist $p: \mathcal{S} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$ die Dichtefunktion der Zustandsübergänge.
-Zentraler Begriff beim Lösen eines MDPs die sogenannte Policyfunktion $\pi$.
-Sie kann deterministisch sein und als $\pi: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
-Weiterhin können Policies stochastisch sein, sie sind dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi: \mathcal{S}\times\mathcal{A}\rightarrow [0, 1]$.
-Mit einem Diskontierungsfaktor $\gamma \in [0,1]$ werden nun Zustandswerte in Bezug auf eine Policy als
+Weiterhin ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $a \in \mathcal{A}$ die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung $r \in \mathbb{R}$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
+Zentraler Begriff beim Lösen eines MDPs die sogenannte Policyfunktion.
+Sie kann deterministisch sein und als $\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
+Weiterhin können Policies stochastisch sein, die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, \infty)$.
+Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$.\footnote{
+	In der Literatur wird oft eine verallgemeinernde Notation verwendet, die auch mit unendlich langen Episoden kompatibel ist.
+	Weil aber die Episodenlänge in \ref{section:markov} auf $n_{ep}$ festgelegt wurde, wird das hier direkt verwendet.
+}
+Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
+Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen von einem Schritt $t$ aus als 
 \begin{equation}
-    V_\pi: \mathcal{S} \rightarrow \mathbb{R}; s \mapsto \sum_{a\in\mathcal{A}}\pi(s, a) Q(s, a)
+	G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \cdot R_t
 \end{equation}
-definiert.
-Dabei wird als Abkürzung bereits die Aktionswertefunktion verwendet, die ihrerseits mithilfe der Zustandswerte als
+als Return (von Schritt $t$ aus) bezeichnet.
+Ziel ist, den Return der ganzen Episode, also $G_0$ zu maximieren.
+
+Für einen Zustand $s \in \mathcal{S}$ unter einer Policy $\pi$ gibt die Funktion
 \begin{equation}
-    Q_\pi: \mathcal{S} \rightarrow \mathcal{A} \rightarrow \mathbb{R}; (s, a) \mapsto \mathbb{E}\left[r(s,a)+\gamma \sum_{s'\in\mathcal{S}}{p(s', s, a) V(s')}\right]
+	V_\pi(s) := \mathbb{E}_\pi\left[G_t | S_t = s\right]
 \end{equation}
-definiert ist.
-Endzustände erhalten den Zustandswert 0.
-Ziel ist im Allgemeinen, eine Policyfunktion zu finden, die den Zustandswert des ersten Zustands maximiert.
-Nach dem Policy-Improvement-Theorem bedeutet das, dass auch die Zustandswerte aller anderen (erreichbaren) Zustände maximal (unter allen Policies) sind.
+den sogenannten Zustandswert an.
+Er drückt die (diskontierte) Summe aller Rewards aus, die nach dem Besuch des Zustands $s$ noch erwartet werden, wenn die Aktionsauswahl mit der Policy $\pi$ geschieht.
+Analog wird für den Zustand $s \in \mathcal{S}$ und eine Aktion $a \in \mathcal{S}$ unter einer Policy $\pi$ der Aktionswert als
+\begin{equation}
+	Q_\pi(s, a) := \mathbb{E}_\pi\left[G_t | S_t = s, A_t = a\right]
+\end{equation}
+definiert, also die erwartete (diskontierte) Summe an Belohnungen nach dem Besuch von $s$ und der Wahl von Aktion $a$, wenn danach der Policy $\pi$ gefolgt wird.
+Zustands- und Aktionswerte sind zentrale Begriffe im Reinforcement Learning, die in vielen Algorithmen verwendet werden.
+Das Ziel, den Return $G_0$ zu maximieren, lässt sich auch äquivalent als Maximierung von $V(S_0)$ formulieren.
 
 \section{Exakte Lösungen für das Dynamic Pricing}
-Das sind coole Algorithmen
+\label{section:dp}
+Ein klassisches Verfahren für das Lösen von Markov-Entscheidungsprozessen ist die dynamische Programmierung.
+Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Übergangs- und Belohnungswahrscheinlichkeiten $p$ bekannt sind.
+Anschließend wird eine angenäherte Funktion für die Zustandswerte $V^*$ als Array gespeichert und mit beliebigen Werten initialisiert.
+Dann werden rundenweise für alle Zustände $s\in\mathcal{S}$ ihre Einträge in dieser Tabelle mithilfe der Bellman-Gleichung
+\begin{equation}
+	V^*(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
+\end{equation}
+als Berechnungsvorschrift aktualisiert.
+Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy. \cite{Sutton1998}
+Die optimale Policy ist dann die folgende deterministische, sogenannte Greedy-Policy:
+\begin{equation}
+	\pi: s \mapsto \argmax_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
+\end{equation}
+Dieses Verfahren ist mit analogen Formeln ebenfalls auf Grundlage der Aktionswerte möglich.
+Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weitere Rechnungen, nur die Bestimmung der Aktion mit maximalem Wert.
 
-\section{Policy-Gradient-Verfahren}
-Vom Policy-Gradient-Theorem über A2C zu PPO
+Bei der Definition dieses Marktes ist die Lösung mittels dynamischer Programmierung sogar noch einfacher, weil die Episodenlänge begrenzt ist und es einen Schrittzähler gibt.
+Dann wird zwischen dem Schrittzähler und dem (restlichen) Zustand unterschieden, und eine Tabelle $V$ erstellt, die mit Zustand und Schrittzähler adressiert wird.
+Die Endzustände werden mit $0$ initialisiert und die anderen Zustände dieser leicht abgewandelten Bellman-Gleichung vom Ende bis zum Anfang einer Episode befüllt:
+\begin{equation}
+	V(s, t) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s', t + 1)\right)}\right)}
+\end{equation}
+Hier muss nicht einmal Konvergenz abgewartet werden, sondern die Tabelle ist nach dem Befüllen mit den exakten Zustandswerten befüllt, und die optimale Policy ist wieder die Greedy-Policy.
+
+Dynamische Programmierung wurde bereits erfolgreich für dynamische Preisgestaltung eingesetzt, hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind. \cite{10.1145/3219819.3219833}
+Erstens müssen die Wahrscheinlichkeitsverteilungen der Belohnungen und Zustandsübergänge bekannt sein.
+Das ist für die Realität nicht möglich und bereitet auch in dem in dieser Arbeit untersuchten Markt Probleme.
+So könnte man zwar die explizite Definition des Marktes zur Verfügung haben, allerdings sind die Wahrscheinlichkeiten nirgends explizit aufgeschrieben, sondern die Übergangswahrscheinlichkeiten werden durch die Simulation induziert.
+Sie explizit zu bekommen, ist möglich, erfordert aber eine umfangreiche mathematische Analyse.
+
+Dieses Problem lässt sich allerdings noch im Rahmen abgewandelter DP-Verfahren lösen.
+Grundidee dieser Monte-Carlo-Verfahren ist es, eine Tabelle für die Schätzung der Aktionswerte zu speichern und damit eine Greedy-Policy zu erstellen.
+Es werden nach und nach Episoden generiert und mit den empirischen Daten die Schätzung der Aktionswerte verbessert.
+In jedem Schritt wird dabei mit einer Wahrscheinlichkeit von $1-\varepsilon$ dieser Greedy-Policy gefolgt, allerdings mit einer Wahrscheinlichkeit von $\varepsilon$ eine zufällige Aktion ausgewählt.
+Tatsächlich lässt sich zeigen, dass dieses Verfahren in der Asymptotik eine optimale Policy liefert, wenn $\varepsilon$ gegen null konvergiert, aber stets größer als null ist. \cite{Sutton1998}
+
+\section{Approximation als Ausweg bei zu großem Zustands- und Aktionsraum}
+Doch auch dieses Verfahren kann auf den beschriebenen Markt kaum angewandt werden.
+In jedem Fall müsste die Formulierung mit dem diskreten Aktionsraum gewählt werden.
+Hindernis ist aber auch hier der große Zustands- und Aktionsraum: soll das Monte-Carlo-Verfahren angewandt werden, so ist dafür eine Tabelle der Größe $|\mathcal{S} \times \mathcal{A}|$ erforderlich.
+Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste die Tabelle mindestens\footnote{
+	Diese Zahl ist eine untere Schranke, da für die Anzahl der Produkte in Zirkulation nur $5 m_{lager}=500$ veranschlagt wurde.
+	Wenn mehr Neuprodukte verkauft als Produkte zurückverkauft und weggeworfen werden, so ist hier ein noch größeres Array nötig.
+} $50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$ Einträge haben.
+Obwohl dieser Wert bereits jeden verfügbaren Speicher sprengt, ist die Anzahl der unterschiedlichen Preisstufen mit 10 für realistische Verhältnisse noch viel zu niedrig gewählt.
+Tatsächlich liegt der benötigte Speicher in $\mathcal{O}\left(p_{max}^6\right)$, was eine Skalierung selbst bei ansonstem kleineren Zustandsraum unmöglich macht.
+Weil dies sogar nur die Betrachtung des Speichers war -- bis Konvergenz erreicht ist, müsste jeder Zustand (in der Monte-Carlo-Lösung) sehr oft durchlaufen werden -- muss geschlussfolgert werden, dass eine Lösung, die für alle Zustände die Zustandswerte ausrechnen möchte, rechentechnisch nicht machbar ist.
+
+Approximationen sind also unumgänglich.
+Sie beruhen auf der Einsicht, dass der Zustandsraum zwar sehr groß ist, aber viele Zustände sich sehr ähnlich sind.
+Dadurch können Modelle mit deutlich weniger Parametern als Zuständen diese gewünschten Funktionen  mit für praktische Zwecke ausreichender Genauigkeit annähern.
+Alle folgenden Verfahren nutzen sogenannte künstliche neuronale Netze, die am weitesten verbreitete Technologie um komplexe nichtlineare Funktionen zu approximieren. \cite{lapan2020deep}
 
 \section{Q-Learning-Verfahren im stetigen Aktionsraum}
-Schreib etwas zu DDPG und TD3
+\label{section:qlearning}
+Ein weit verbreitetes Verfahren zum Lösen von Markov-Entscheidungsprozessen ist das sogenannte Q-Learning.
+Die Idee ist hierbei, wie in dem in Abschnitt \ref{section:dp} beschriebenen Monte-Carlo-Verfahren, Aktionswerte einer optimalen Policy zu schätzen.
+Dazu wird als Berechnungsvorschrift die Bellman-Gleichung verwendet.
+Allerdings werden nicht unbedingt vollständige Episoden betrachtet, sondern der Aktionswert nach dem Folgezustand ergibt sich mittels der momentanen Schätzfunktion.
+Diese Technik, zur Verbesserung von Schätzwerten rekursiv bisherige Schätzwerte zu verwenden, wird Bootstrapping genannt und gilt als wichtige Technologie angesehen. \cite{Sutton1998}
+Nach dem Training wird wieder die Greedy-Policy verwendet.
+Während des Trainings wird eine $\varepsilon$-Soft-Policy genutzt, um für ausreichende Exploration zu sorgen.
+
+Dieses Verfahren lässt sich unmittelbar mit Tabellen umsetzen.
+Die Umsetzung dieses Verfahrens mit neuronalen Netzen führt zu dem erfolgreichen >>Deep-Q-Learning<<.
+Solche >>Deep-Q-Networks<< (DQNs) sind zunächst für diskrete Aktionsräume entworfen worden.
+Die Schätzung der Aktionswertefunktion wird dabei so umgesetzt, dass an den Input des Netzes nur den Zustand angelegt wird und dann in einer Berechnung auf so viele Ausgabeneuronen abgebildet wird, wie es Aktionen gibt.
+So erhält man bei nur einem der aufwendigen Läufe durch das neuronale Netz bereits alle Aktionswerte auf einmal.
+Die Wahl des Maximums und des Argmax sind dann unmittelbar möglich.
+Das Training findet iterativ statt, indem die bisherigen Schätzwerte des Netzes mit Zustandsübergängen $(s, a, r, s')$ aus der gesammelten Erfahrung $\mathcal{D}$ in Richtung des Zielwertes $r+\gamma \max_{a'\in\mathcal{A}}{Q(s',a')}$ bewegt werden.
+In den heutigen Deep-Learning-Frameworks wie PyTorch oder Tensorflow wird üblicherweise mit einer Verlustfunktion gearbeitet, die dann automatisch differenziert wird. \cite{NEURIPS2019_9015}
+Mit einem Optimizer wie Stochastic Gradient Descent oder Adam \cite{adam2014} wird dieser Verlust dann mithilfe des Gradienten minimiert.
+Diese Verlustfunktion beim Deep-Q-Learning lautet für eine Schätzfunktion der Aktionswerte mit den Parametern $\psi$
+\begin{equation}
+	L(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma \max_{a'\in\mathcal{A}}{Q_\psi(s',a')}\right)\right)^2\right]
+\end{equation}
+Erfolgreiche Q-Learning-Umsetzungen verwenden einen Experiencebuffer, in dem die Erfahrung $\mathcal{D}$ gespeichert wird.
+Weiterhin speichern sie zwei Netze: neben dem, das trainiert wird, auch ein sogenanntes Zielnetz, was in der Schätzung des Zielwertes verwendet wird.
+Das verhindert ungewollte Oszillationen und Instabilität. \cite{atari2014}
+Zahlreiche weitere Techniken zur Verbesserung von Deep-Q-Networks sind verbreitet und verbessern das Training erheblich. \cite{qlearningcomparison2017}
+Für die gleich folgenden Verfahren ist insbesondere die Erkenntnis wichtig, dass Q-Learning-Verfahren zur systematischen Überschätzung der Aktionswerte neigen. \cite{qlearningoverestimation}
+Die Erklärung dahinter ist einfach zu verstehen.
+Angenommen ein Zustand hat zwei Aktionen, die beide in einer optimalen Policy den tatsächlichen Zustandswert 0 haben (das ist ein Erwartungswert).
+Nun stehen aber nur zwei unabhängige, standardnormalverteilte Schätzwerte dieser Aktionswerte zur Verfügung.
+Dass das Maximum der beiden Zufallsvariablen kleiner-gleich null ist, hat nun eine Wahrscheinlichkeit von nur $(1/2)^2=1/4$.
+Es lässt sich weiterhin zeigen, dass die Verteilung des Maximums einen Erwartungswert von etwa $0.56$ hat. [Anhang]
+Um diese systematische Verzerrung zu umgehen, werden für Auswahl der Aktion und die Generierung des Schätzwertes unterschiedliche Netze herangezogen.
+
+Die Verallgemeinerung auf stetige Aktionsräume ist bei Deep-Q-Networks nicht ohne einige grundlegende Designänderungen möglich.
+Das dabei entstehende Verfahren heißt Deep Deterministic Policy Gradient (DDPG) und wurde 2014 publiziert. \cite{10.5555/3044805.3044850}
+Ein neuronales Netz mit den Parametern $\psi$ berechnet die Aktionswerteschätzfunktion $Q_\psi: \mathcal{S} \times \mathcal{A}\rightarrow \mathbb{R}$ (jetzt muss die Aktion mit in die Eingabe).
+Dabei ist die Bestimmung des Maximums kaum möglich: für neuronale Netze ist keine analytische Lösung möglich und numerische Verfahren sind viel zu aufwendig für die vielen benötigten Trainingsschritte.
+Ein weiteres neuronales Netz mit den Parametern $\phi$ berechnet explizit die deterministische Policyfunktion $\pi_\phi: \mathcal{S} \rightarrow \mathcal{A}$.
+Das Training des Q-Netzes findet wie beim DQN statt, außer dass für den Zielwert die Policyfunktion verwendet wird.
+Die dazugehörige Verlustfunktion lautet:
+\begin{equation}
+	L(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma Q_{\psi'}(s',\pi_\phi(s'))\right)\right)^2\right]
+\end{equation}
+Dabei wird bei DDPG wird ein Zielnetz mit Parametern $\psi'$ für die Schätzung der Policyfunktion verwendet, was nach jedem Optimierungsschritt mit dem Hyperparameter $\rho \in [0, 1]$ und der Polyak-Mittelung
+\begin{equation}
+	\psi' \leftarrow (1 - \rho) \psi' + \rho \psi
+\end{equation}
+aktualisert wird.
+Zur Optimierung der Policyfunktion in dem Sinne, dass sie für einen Zustand möglichst das Argmax berechnet, wird Gradientenanstieg verwendet.
+Das wird dadurch möglich, dass beide neuronalen Netze differenzierbar sind und der Aktionsraum stetig ist.
+So kann der Gradient
+\begin{equation}
+	\nabla_\phi \mathbb{E}_{s\sim\mathcal{D}}\left[Q_\psi(s, \pi_\phi(s))\right]
+\end{equation}
+durch die automatische Differenzierung des Deep-Learning-Frameworks berechnet werden, und ein Optimierungsschritt in die Richtung des größten Anstiegs vorgenommen werden.
+
+Nachfolgende Analysen haben ergeben, dass die systematische Überschätzung der Funktionswerte bei DDPG sich besonders stark auf die Leistung auswirkt. \cite{DBLP:journals/corr/abs-1802-09477}
+In diesem Paper wurden drei Verbesserungen für den DDPG-Algorithmus vorgeschlagen:
+\begin{enumerate}
+	\item Es werden zwei seperate Netze für die Aktionswertefunktion gehalten.
+	Für die Berechnung des Zielwertes wird immer das Minimum von beiden genommen.
+	\item Weil die Q-Netze manchmal kleinere Ausbuchtungen haben, die vom Gradientenanstieg ausgenutzt werden, wird bei der Berechnung des Zielwertes der Aktionsauswahl durch das Policynetz normalverteiltes Rauschen angefügt.
+	Die Aktionen werden dabei selbstverständlich auf den Aktionsraum geclippt.
+	\item Im Gegensatz zu vielen DDPG-Implementierungen wird das Policy-Netz nur alle zwei Q-Netz-Updates trainiert.
+\end{enumerate}
+Der entstehende Algorithmus wird als TD3 bezeichnet und hat bei vielen Tests durch bessere Performance überzeugt.
+
+Alle diese Q-Learning-Verfahren sind Off-Policy-Algorithmen.
+Das bedeutet, dass ihr Training auch mit Zustandsübergängen stattfinden kann, die nicht von der aktuellen Policy erzeugt wurden.
+Der Grund dafür ist, dass bei einer perfekten Policy die für \textbf{jeden} Zustandsübergang $(s, a, r, s')$ die Bellman-Gleichung
+\begin{equation}
+	Q(s, a) = r + \max_{a' \in \mathcal{A}}{Q(s', a')}
+\end{equation}
+erfüllt ist.
+Das ist zwar bei Approximationslösungen nicht erreichbar, die Minimierung des Erwartungswert über die quadrierten Differenzen zeigt aber die Entfernung von diesem Ziel.
+Anzumerken ist allerdings, dass das Training schlechter wird, wenn die Verteilung der Zustandsübergänge zu weit von der aktuellen Policy abweicht.
+Off-Policy-Verfahren haben gegenüber den gleich vorgestellten On-Policy-Algorithmen den Vorteil, dass beim Training auf verschiedenen Instanzen Erfahrung gesammelt werden kann, ohne permanent aktualisierte Parameter verschicken zu müssen.
+
+\section{Policy-Gradient-Verfahren}
+Eine alternative Herangehensweise zu den wertebasierten Verfahren, zu denen die Q-Learning-Familie aus Abschnitt \ref{section:qlearning} gehört, sind die Policy-Gradient-Verfahren.
+Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt eine stochastische Policyfunktion $\pi_\phi$ z.B. mit einem neuronalen Netz.
+Sie verfolgen das gleiche in Abschnitt \ref{section:mdp_fundamentals} formulierte Ziel, nämlich eine Policy zu finden, die den Zustandswert des Startzustandes und damit den erwarteten \textit{Return} einer Episode zu maximieren.
+Das ursprüngliche Verfahren dieser Klasse heißt REINFORCE \cite{10.1007/BF00992696} und ist aus dem Jahr 1992, danach wurden zahlreiche Verbesserungen vorgenommen, die zu A2C und PPO führen.
+Grundidee ist hierbei, Gradientenanstieg für die Anpassung der Policy zu nutzen, sodass der Zustandswert des Startzustandes maximiert wird.
+Dazu gibt es ein bedeutendes theoretisches Resultat, das eine Möglichkeit aufzeigt, den Gradienten aus gesampelten Episoden leicht zu schätzen, das sogenannte Policy-Gradient-Theorem.
+Es lässt sich für den REINFORCE-Algorithmus als
+\begin{equation}
+	\nabla_\phi V_{\pi_\phi}(S_0) \propto \mathbb{E}_{S_t, A_t}\left[G_t \nabla\log{\pi_\phi(S_t, A_t)}\right]
+\end{equation}
+formulieren, wobei $S_t$ und $A_t$ als Zufallsvariablen den Zustand und die Aktion im $t$-ten Schritt angeben, und $G_t$ den Result vom $t$-ten Schritt aus.
+Für Deep-Learning Frameworks mit automatischer Differenzierung bedeutet das
+\begin{equation}
+	L(\phi) = \mathbb{E}_{S_t, A_t}\left[G_t \log{\pi_\phi(S_t, A_t)}\right]
+\end{equation}
+als zu maximierende Zielfunktion.
+Der REINFORCE-Algorithmus sampelt nun Episoden unter Verwendung einer Policy und aktualisiert die Gewichte mithilfe einer Schätzung des angegebenen Gradienten.
+Die Updateregel ist intuitiv: Aktionen, auf denen ein positivem Return folgt, werden wahrscheinlicher gemacht und Aktionen mit negativem Return unwahrscheinlicher.
+
+Doch REINFORCE hat für die praktische Anwendung einen offensichtlichen Nachteil: Die Bewertung, ob eine Aktion >>gut<< oder >>schlecht<< ist, richtet sich immer unmittelbar nach dem gemessenen Return.
+In einer Umgebung, die nur negative Rewards vergibt, wird der Gradient immer negativ sein und damit auch für Aktionen, die in der Situation deutlich besser sind als andere.
+Abhilfe schafft hier die sogenannte Baseline, eine Funktion $b: \mathcal{S} \rightarrow \mathbb{R}$, die einen Vergleichswert für Zustände angibt.
+Sie ist sinnvollerweise eine Schätzung des Zustandswertes, um damit bewerten zu können, ob ein erreichter Return für einen Zustand gut ist.
+Das ist ein etabliertes Vorgehen, deshalb wird ab jetzt wie in der Literatur der Advantagewert $\hat{A}_t := G_t - b(S_t)$ verwendet.
+Algorithmen, die nach diesem Prinzip funktionieren, werden Actor-Critic-Algorithmen genannt.
+Das ist eine Metapher für die zwei Netze Actor (berechnet die Policy) und Critic (schätzt den Zustandswert und ermöglicht damit die >>Kritik<< einer Aktion).
+In manchen Implementierungen teilen sich die beiden Netze vordere Schichten.
+Unterschiedliche Herangehensweisen gibt es beim Training des Critic-Netzes.
+Wenn es nach dem Sampling der Episoden direkt mittels überwachtem Lernen trainiert wird, so spricht man manchmal von >>REINFORCE mit Baseline<< oder >>Vanilla Policy Gradient Algorithm<<.
+Alternativ wird das Critic-Netz mittels Bootstrapping wie bei den Q-Learning-Verfahren trainiert.
+Die letztere Variante wird in dieser Arbeit untersucht.
+
+Im Gegensatz zu den Q-Learning-Verfahren aus dem Abschnitt \ref{section:qlearning} handelt es sich bei dieser Gruppe um On-Policy-Algorithmen.
+Das bedeutet, dass die Trainingsdaten mit der Policy gewonnen werden mussten, die auch trainiert wird.
+Training mit älteren Daten ist nicht möglich.
+
+Ein Problem bei Actor-Critic-Methoden ist, dass abrupte Änderungen der Policy die Besuchswahrscheinlichkeiten der Zustände radikal verändern kann, ein Grund für Instabilität.
+Die Lösungsidee dagegen ist, beim Lernen die Veränderung der Wahrscheinlichkeiten der Policy gering zu halten.
+Ein wichtiger Beitrag dazu war TRPO, das die Kullback-Leibler-Divergenz zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{trpo2015}
+Es verwendet einige mathematische Rafinessen, wird aber hier nicht weiter behandelt.
+Stattdessen wird PPO behandelt, was 2018 erschien und ebenfalls den Unterschied zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{ppo2018}
+Dazu wird der Gradientenanstieg nach dem Sammeln von Erfahrung in kleinere Schritte zerlegt und die alten Parameter $\phi_{old}$ gespeichert.
+Das geschieht, um für eine Aktion $a \in \mathcal{A}$ in einem Zustand $s \in \mathcal{S}$ das Verhältnis aus neuer und alter Wahrscheinlichkeit $r(t, \phi, \phi_{old}) := \pi_\phi(S_t, A_t) / \pi_{\phi_{old}}(S_t, A_t)$ berechnen zu können.
+Damit wird mit dem Hyperparameter $\varepsilon \in [0, 1]$ die Zielfunktion
+\begin{equation}
+	L_{\phi_{old}}(\phi) = \mathbb{E}_{S_t, A_t}\left[\min{\left(\hat{A}_t \text{clip}{\left(1 - \varepsilon, r(t, \phi, \phi_{old}), 1 + \varepsilon\right)}, \hat{A}_t r(t, \phi, \phi_{old})\right)}\right]
+\end{equation}
+definiert, um sie zu maximieren.
+Idee dahinter ist, die Wahrscheinlichkeit guter Aktionen -- egal wie gut sie waren -- um höchstens den Faktor $\varepsilon$ zu verbessern.
+Die Absenkung der Wahrscheinlichkeit für schlechte Aktionen soll auf die gleiche Art begrenzt werden.
+Hat sich die Wahrscheinlichkeit einer guten Aktion bereits um mehr als den Faktor $\varepsilon$ erhöht (bzw. der einer schlechten Aktion verringert), so fällt der Gradient auf null.
+Dass nicht nur geclippt, sondern auch minimiert wird, behandelt den Fall, dass die Wahrscheinlichkeit einer guten Aktion gesenkt bzw. die einer schlechten Aktion erhöht wurde.
+Gerät diese Wahrscheinlichkeit aus dem Vertrauensbereich (in die falsche Richtung) heraus, so soll dies weiterhin korrigiert werden.
 
 \section{Soft Actor Critic}
-Nicht nur die Library aufrufen!
+Eines der neuesten Verfahren ist der sogenannte Soft-Actor-Critic-Algorithmus.
+Er wurde 2018 von einer Forschungsgruppe aus Berkeley entwickelt und wurde 2018 publiziert. \cite{haarnoja2018soft}
+Soft Actor Critic (SAC) kann als Verallgemeinerung von TD3 angesehen werden.
+Es schätzt ebenfalls Aktionswerte und hat ein neuronales Netz für eine diesmal stochastische Policy.
+Eine zentrale Änderung gegenüber den anderen Verfahren ist die Umformulierung des RL-Ziels, den erwarteten Return einer Episode zu maximieren.
+Es wird darum ergänzt, dass bei jedem Schritt die Entropie $\mathcal{H}$ des Actors hoch sein soll.
+Das bedeutet, dass eine Policy $\pi$ gefunden werden soll, die möglichst zufällig arbeitet und dennoch sehr gute Ergebnisse liefert.
+Mit dem Parameter $\alpha$ wird die Balance aus Entropie und Belohnungen eingestellt.
+Die Formulierung dieses >>soften<< Returns lautet:
+\begin{equation}
+	G_{soft,t} := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} (\cdot R_t + \alpha \mathcal{H}(\pi(\cdot | S_t)))
+\end{equation}
+Das Training der Aktionswertefunktion findet genau wie bei TD3 statt.
+Die genutzte Implementierung verwendet ebenfalls zwei Aktionswertnetze, verzichtet aber auf das im Originalpaper vorgeschlagene zusätzliche Netz zur Zustandswertschätzung. \cite{stable-baselines}
+Die Verlustfunktion zur Optimierung der Policy schreibt sich mit folgendem Ausdruck:
+\begin{equation}
+	L_{Q_\theta}(\phi) = \mathcal{E}_{S_t \sim \mathcal{D}} \left[D_{KL}\left(\phi_\phi(\cdot | S_t) | \frac{\exp(Q_\theta(S_t, \cdot))}{Z_\theta(S_t)}\right)\right]
+\end{equation}
+Es wird dabei aus den Aktionswerten eine Wahrscheinlichkeitsverteilung gebaut, indem sie exponentiert und duch einen Normierungsfaktor $Z_\theta(S_t)$ geteilt werden.
+Dieser Normierungsfaktor wird nur mathematisch dafür benötigt, dass das Integral über den gesamten Aktionsraum 1 ergibt.
+Für den Algorithmus wird er aber nicht berechnet, da er nicht von $\theta$ abhängt und deshalb bei der Gradientenberechnung in die Lernrate hineingezogen wird.
+Diese konstruierte Wahrscheinlichkeitsverteilung gewichtet wie erwartet die Aktionen mit hohem Aktionswert höher.
+In diese Richtung soll dann die Policy verändert werden.
+Im Programm muss aber diese komplizierte Verlustfunktion nicht abgeleitet werden, sondern lässt sich mit einigen Umformungen deutlich leichter formulieren.
 
-\section{Bestimmung der richtigen Hyperparameters}
-Schreib etwas zu sinnvollen Standardwerten und vielleicht zu Grid-Search.
+Soft Actor Critic ist angetreten, um bei der höheren Sample-Effizienz eines Off-Policy-Algorithmus weiterhin die Stabilität der On-Policy-Algorithmen zu haben.
+Mit Soft Actor Critic konnten schwierige Aufgaben in verschiedenen Bereichen gelöst werden.
+Nach dem aktuellen Stand der Forschung ist Soft Actor Critic einer der beliebtesten RL-Algorithmen für den kontinuierlichen Aktionsraum.

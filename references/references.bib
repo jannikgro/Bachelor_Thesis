@@ -1,71 +1,238 @@
-@Inproceedings{firstDemoReference,
-    author    = {My Name and A Co-Author},
-    title     = {Useless Stuff That No One Cares About},
-    booktitle = {\bibstoc{coolest}{XX}},
-    year      = {2025},
-    pages     = {42--1337},
-    publisher = ACM,
-    numpages  = {1296},
+@inproceedings{firstDemoReference,
+  author    = {My Name and A Co-Author},
+  title     = {Useless Stuff That No One Cares About},
+  booktitle = {\bibstoc{coolest}{XX}},
+  year      = {2025},
+  pages     = {42--1337},
+  publisher = ACM,
+  numpages  = {1296}
 }
 
-@Article{secondDemoReference,
-    author    = {My Name and First Co-Author and Second Co-Author and Third Co-Author and Fourth Co-Author},
-    title     = {Dear Lord! How Did This Get Accepted?},
-    journal   = ZMLGM,
-    year      = {2030},
-    volume    = {42},
-    number    = {1},
-    pages     = {2--1024},
-    publisher = {No Clue},
+@article{secondDemoReference,
+  author    = {My Name and First Co-Author and Second Co-Author and Third Co-Author and Fourth Co-Author},
+  title     = {Dear Lord! How Did This Get Accepted?},
+  journal   = ZMLGM,
+  year      = {2030},
+  volume    = {42},
+  number    = {1},
+  pages     = {2--1024},
+  publisher = {No Clue}
 }
 
-@Article{DBLP:journals/corr/abs-1712-01815,
-  author    = {David Silver and
-               Thomas Hubert and
-               Julian Schrittwieser and
-               Ioannis Antonoglou and
-               Matthew Lai and
-               Arthur Guez and
-               Marc Lanctot and
-               Laurent Sifre and
-               Dharshan Kumaran and
-               Thore Graepel and
-               Timothy P. Lillicrap and
-               Karen Simonyan and
-               Demis Hassabis},
-  title     = {Mastering Chess and Shogi by Self-Play with a General Reinforcement
-               Learning Algorithm},
-  journal   = {CoRR},
-  volume    = {abs/1712.01815},
-  year      = {2017},
-  url       = {http://arxiv.org/abs/1712.01815},
+@article{DBLP:journals/corr/abs-1712-01815,
+  author     = {David Silver and
+                Thomas Hubert and
+                Julian Schrittwieser and
+                Ioannis Antonoglou and
+                Matthew Lai and
+                Arthur Guez and
+                Marc Lanctot and
+                Laurent Sifre and
+                Dharshan Kumaran and
+                Thore Graepel and
+                Timothy P. Lillicrap and
+                Karen Simonyan and
+                Demis Hassabis},
+  title      = {Mastering Chess and Shogi by Self-Play with a General Reinforcement
+                Learning Algorithm},
+  journal    = {CoRR},
+  volume     = {abs/1712.01815},
+  year       = {2017},
+  url        = {http://arxiv.org/abs/1712.01815},
   eprinttype = {arXiv},
-  eprint    = {1712.01815},
-  timestamp = {Mon, 13 Aug 2018 16:46:01 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-1712-01815.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+  eprint     = {1712.01815},
+  timestamp  = {Mon, 13 Aug 2018 16:46:01 +0200},
+  biburl     = {https://dblp.org/rec/journals/corr/abs-1712-01815.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
 }
 
-@Book{Sutton1998,
-  added-at = {2019-07-13T10:11:53.000+0200},
-  author = {Sutton, Richard S. and Barto, Andrew G.},
-  biburl = {https://www.bibsonomy.org/bibtex/2f46601cf8b13d39d1378af0d79438b12/lanteunis},
-  edition = {Second},
+@book{Sutton1998,
+  added-at  = {2019-07-13T10:11:53.000+0200},
+  author    = {Sutton, Richard S. and Barto, Andrew G.},
+  biburl    = {https://www.bibsonomy.org/bibtex/2f46601cf8b13d39d1378af0d79438b12/lanteunis},
+  edition   = {Second},
   interhash = {ac6b144aaec1819919a2fba9f705c852},
   intrahash = {f46601cf8b13d39d1378af0d79438b12},
-  keywords = {},
+  keywords  = {},
   publisher = {The MIT Press},
   timestamp = {2019-07-13T10:11:53.000+0200},
-  title = {Reinforcement Learning: An Introduction},
-  url = {http://incompleteideas.net/book/the-book-2nd.html},
-  year = {2018 }
+  title     = {Reinforcement Learning: An Introduction},
+  url       = {http://incompleteideas.net/book/the-book-2nd.html},
+  year      = {2018 }
 }
 
 @book{deges2019grundlagen,
-  title={Grundlagen des E-Commerce: Strategien, Modelle, Instrumente},
-  author={Deges, F.},
-  isbn={9783658263201},
-  url={https://books.google.de/books?id=Fz\_ADwAAQBAJ},
-  year={2019},
-  publisher={Springer Fachmedien Wiesbaden}
+  title     = {Grundlagen des E-Commerce: Strategien, Modelle, Instrumente},
+  author    = {Deges, F.},
+  isbn      = {9783658263201},
+  url       = {https://books.google.de/books?id=Fz\_ADwAAQBAJ},
+  year      = {2019},
+  publisher = {Springer Fachmedien Wiesbaden}
+}
+
+@inproceedings{10.5555/3044805.3044850,
+  author    = {Silver, David and Lever, Guy and Heess, Nicolas and Degris, Thomas and Wierstra, Daan and Riedmiller, Martin},
+  title     = {Deterministic Policy Gradient Algorithms},
+  year      = {2014},
+  publisher = {JMLR.org},
+  abstract  = {In this paper we consider deterministic policy gradient algorithms for reinforcement learning with continuous actions. The deterministic policy gradient has a particularly appealing form: it is the expected gradient of the action-value function. This simple form means that the deterministic policy gradient can be estimated much more efficiently than the usual stochastic policy gradient. To ensure adequate exploration, we introduce an off-policy actor-critic algorithm that learns a deterministic target policy from an exploratory behaviour policy. We demonstrate that deterministic policy gradient algorithms can significantly outperform their stochastic counterparts in high-dimensional action spaces.},
+  booktitle = {Proceedings of the 31st International Conference on International Conference on Machine Learning - Volume 32},
+  pages     = {I–387–I–395},
+  location  = {Beijing, China},
+  series    = {ICML'14}
+}
+
+@article{DBLP:journals/corr/abs-1802-09477,
+  author     = {Scott Fujimoto and
+                Herke van Hoof and
+                David Meger},
+  title      = {Addressing Function Approximation Error in Actor-Critic Methods},
+  journal    = {CoRR},
+  volume     = {abs/1802.09477},
+  year       = {2018},
+  url        = {http://arxiv.org/abs/1802.09477},
+  eprinttype = {arXiv},
+  eprint     = {1802.09477},
+  timestamp  = {Sat, 28 Sep 2019 00:58:01 +0200},
+  biburl     = {https://dblp.org/rec/journals/corr/abs-1802-09477.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{10.1145/3219819.3219833,
+  author    = {Schlosser, Rainer and Boissier, Martin},
+  title     = {Dynamic Pricing under Competition on Online Marketplaces: A Data-Driven Approach},
+  year      = {2018},
+  isbn      = {9781450355520},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3219819.3219833},
+  booktitle = {Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  pages     = {705–714},
+  numpages  = {10},
+  keywords  = {dynamic pricing, e-commerce, decision making, demand learning},
+  location  = {London, United Kingdom},
+  series    = {KDD '18}
+}
+
+@book{lapan2020deep,
+  title     = {Deep Reinforcement Learning Hands-On: Apply modern RL methods to practical problems of chatbots, robotics, discrete optimization, web automation, and more, 2nd Edition},
+  author    = {Lapan, M.},
+  isbn      = {9781838820046},
+  url       = {https://books.google.de/books?id=O0vODwAAQBAJ},
+  year      = {2020},
+  publisher = {Packt Publishing}
+}
+
+@incollection{NEURIPS2019_9015,
+  title     = {PyTorch: An Imperative Style, High-Performance Deep Learning Library},
+  author    = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  booktitle = {Advances in Neural Information Processing Systems 32},
+  editor    = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+  pages     = {8024--8035},
+  year      = {2019},
+  publisher = {Curran Associates, Inc.},
+  url       = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+}
+
+@misc{adam2014,
+  url       = {https://arxiv.org/abs/1412.6980},
+  author    = {Kingma, Diederik P. and Ba, Jimmy},
+  keywords  = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {Adam: A Method for Stochastic Optimization},
+  publisher = {arXiv},
+  year      = {2014},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@misc{atari2014,
+  doi       = {10.48550/ARXIV.1312.5602},
+  url       = {https://arxiv.org/abs/1312.5602},
+  author    = {Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Graves, Alex and Antonoglou, Ioannis and Wierstra, Daan and Riedmiller, Martin},
+  keywords  = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {Playing Atari with Deep Reinforcement Learning},
+  publisher = {arXiv},
+  year      = {2013},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@misc{qlearningcomparison2017,
+  doi       = {10.48550/ARXIV.1710.02298},
+  url       = {https://arxiv.org/abs/1710.02298},
+  author    = {Hessel, Matteo and Modayil, Joseph and van Hasselt, Hado and Schaul, Tom and Ostrovski, Georg and Dabney, Will and Horgan, Dan and Piot, Bilal and Azar, Mohammad and Silver, David},
+  keywords  = {Artificial Intelligence (cs.AI), Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {Rainbow: Combining Improvements in Deep Reinforcement Learning},
+  publisher = {arXiv},
+  year      = {2017},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@misc{qlearningoverestimation,
+  doi       = {10.48550/ARXIV.1509.06461},
+  url       = {https://arxiv.org/abs/1509.06461},
+  author    = {van Hasselt, Hado and Guez, Arthur and Silver, David},
+  keywords  = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {Deep Reinforcement Learning with Double Q-learning},
+  publisher = {arXiv},
+  year      = {2015},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@article{10.1007/BF00992696,
+  author     = {Williams, Ronald J.},
+  title      = {Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning},
+  year       = {1992},
+  issue_date = {May 1992},
+  publisher  = {Kluwer Academic Publishers},
+  address    = {USA},
+  volume     = {8},
+  number     = {3–4},
+  issn       = {0885-6125},
+  url        = {https://doi.org/10.1007/BF00992696},
+  doi        = {10.1007/BF00992696},
+  abstract   = {This article presents a general class of associative reinforcement learning algorithms for connectionist networks containing stochastic units. These algorithms, called REINFORCE algorithms, are shown to make weight adjustments in a direction that lies along the gradient of expected reinforcement in both immediate-reinforcement tasks and certain limited forms of delayed-reinforcement tasks, and they do this without explicitly computing gradient estimates or even storing information from which such estimates could be computed. Specific examples of such algorithms are presented, some of which bear a close relationship to certain existing algorithms while others are novel but potentially interesting in their own right. Also given are results that show how such algorithms can be naturally integrated with backpropagation. We close with a brief discussion of a number of additional issues surrounding the use of such algorithms, including what is known about their limiting behaviors as well as further considerations that might be used to help develop similar but potentially more powerful reinforcement learning algorithms.},
+  journal    = {Mach. Learn.},
+  month      = {may},
+  pages      = {229–256},
+  numpages   = {28},
+  keywords   = {Reinforcement learning, mathematical analysis, connectionist networks, gradient descent}
+}
+
+@misc{trpo2015,
+  doi       = {10.48550/ARXIV.1502.05477},
+  url       = {https://arxiv.org/abs/1502.05477},
+  author    = {Schulman, John and Levine, Sergey and Moritz, Philipp and Jordan, Michael I. and Abbeel, Pieter},
+  keywords  = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {Trust Region Policy Optimization},
+  publisher = {arXiv},
+  year      = {2015},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@misc{ppo2018,
+  doi       = {10.48550/ARXIV.1707.06347},
+  url       = {https://arxiv.org/abs/1707.06347},
+  author    = {Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg},
+  keywords  = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {Proximal Policy Optimization Algorithms},
+  publisher = {arXiv},
+  year      = {2017},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@misc{haarnoja2018soft,
+  title         = {Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor},
+  author        = {Tuomas Haarnoja and Aurick Zhou and Pieter Abbeel and Sergey Levine},
+  year          = {2018},
+  eprint        = {1801.01290},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
+}
+
+@misc{stable-baselines,
+  author       = {Hill, Ashley and Raffin, Antonin and Ernestus, Maximilian and Gleave, Adam and Kanervisto, Anssi and Traore, Rene and Dhariwal, Prafulla and Hesse, Christopher and Klimov, Oleg and Nichol, Alex and Plappert, Matthias and Radford, Alec and Schulman, John and Sidor, Szymon and Wu, Yuhuai},
+  title        = {Stable Baselines},
+  year         = {2018},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{https://github.com/hill-a/stable-baselines}}
 }
