@@ -30,7 +30,7 @@ Auf diese Art können durchaus gute Preisstrategien erstellt werden.
 Allerdings werden dafür einerseits qualifizierte Marktkenner benötigt, und andererseits sind die Lösungen sehr speziell auf ein Marktszenario zugeschnitten.
 Verändern sich die Umstände oder soll die Lösung für einen neuen Markt aufgesetzt werden, so muss der gesamte manuelle Prozess neu durchschritten werden.
 
-Reinforcement Learning (RL) ermöglicht, nur auf Grundlage eines Marktes durch Ausprobieren und Erfahrungsammeln eine Preisstrategie zu optimieren.
+Reinforcement Learning (RL) ermöglicht, nur auf Grundlage eines Marktes durch Ausprobieren und Erfahrung sammeln eine Preisstrategie zu optimieren.
 Das Training geschieht dabei üblicherweise in einer Simulation, da auf echten Märkten durch das notwendige Ausprobieren ein erheblicher finanzieller Schaden entstünde.
 
 Weil es sehr viele unterschiedliche RL-Algorithmen gibt, ist es eine interessante Frage, welche Vor- und Nachteile die einzelnen Algorithmen auf einem Recommerce-Markt haben.
@@ -138,7 +138,7 @@ Auf einem Online-Marktplatz reagieren die Anbieter gegenseitig auf Preisverände
 Während der erste Anbieter seine Preise stets zu Beginn jedes Schrittes setzt, reagiert sein Wettbewerber in der Mitte eines Schrittes.
 Das bedeutet, dass immer nach $k/2$ Kunden die Wahrscheinlichkeitsverteilungen für Kunden- und Eigentümerverhalten neu berechnet werden.
 So treffen für jeden Anbieter nach dem Setzen seiner Preise stets $k/2$ Kunden auf das Angebot, das neben den neuen Preisen noch die vorigen des Konkurrenten erhält.
-Weitere $k/2$ Kunden treffen dann auf diese Preise und die erneute Reakion des Wettbewerbers.
+Weitere $k/2$ Kunden treffen dann auf diese Preise und die erneute Reaktion des Wettbewerbers.
 Einzige Ausnahme ist hier der erste und der letzte Schritt.
 Weil der Prozess erst in Gang gesetzt werden muss, muss der Konkurrent den ersten halben Schritt mit Defaultwerten verbringen.
 Im Gegenzug wird er bei seinen Preisen im letzten Schritt (die dann noch für einen halben Schritt gelten) keine Preisreaktion mehr bekommen.
@@ -168,7 +168,7 @@ Diese besagt, dass die Wahrscheinlichkeiten der Zustandsübergänge und der Belo
 Dass die für den Zustandsraum ausgewählten Dimensionen das künftige Verhalten des Systems beeinflussen, ist durch die Definition des Marktverhaltens klar.
 So werden Gebraucht- und Neupreis des Konkurrenten noch für die erste Hälfte dieses Schrittes direkt für das Kundenverhalten verwendet.
 Der Rückkaufpreis beeinflusst das Verhalten der Eigentümer, deren Anzahl wiederum durch die Anzahl der Elemente in Zirkulation gegeben ist.
-Der eigene Lagerstand erklärt durch Lagerkosten- und strafen einen Teil des eigenen Gewinnes, genau wie der Lagerstand des Konkurrenten einen Teil seines Verhaltens erklärt.
+Der eigene Lagerstand erklärt durch Lagerkosten und -strafen einen Teil des eigenen Gewinnes, genau wie der Lagerstand des Konkurrenten einen Teil seines Verhaltens erklärt.
 
 Der Schrittzähler als Teil des Zustands verdient noch einmal eine kurze Diskussion.
 In zahlreichen Literaturbeispielen wird er nicht benötigt, hier ist er aber wegen der festen Episodenlänge ein Teil der Beobachtung.
