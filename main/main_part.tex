@@ -23,7 +23,25 @@ Bei der Diskussion der Q-Learning-Verfahren beschränkt sich diese Analyse direk
 Deep-Q-Networks mit diskreten Aktionen müssen jede einelne Aktion aus $\mathcal{A_\mathbb{N}}$ mit einem Aktionswert versehen.
 Das sind bei der Konfiguration mit $p_{max}=10$ bereits 1000 Ausgabeneuronen und das Wachstumsverhalten ist kubisch in der Anzahl der Preisstufen.
 Diese Eigenschaft verhindert den Einsatz für DQNs und Verfahren mit diskreten Aktionsräumen allgemein für dieses Problem.
-Im Anhang zeigt Diagramm [noch zu erstellen] das Training von DQNs auf diesem Setup und bestätigt die Untauglichkeit.
+Im Anhang zeigt Diagramm [noch zu erstellen] das Training von DQNs auf diesem Setup und bestätigt dessen Untauglichkeit.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/DDPG_learning_curve.pdf}
+	\caption{Lernkurven von DDPG und TD3 mit unterschiedlichen Lernraten}
+	\label{grafic:DDPGLearningCurve}
+\end{figure}
+
+Die Lernkurven der beiden sehr ähnlichen Verfahren DDPG und TD3 sind in Abbildung \ref{grafic:DDPGLearningCurve} dargestellt.
+Für jeden der beiden Algorithmen wurden acht Trainingsläufe durchgeführt, die mit unterschiedlichen Lernraten parametrisiert wurden.
+Der Standardwert liegt für beide Algorithmen bei $1e-3$.
+Es wurden Trainingsläufe mit diesen Lernraten sowie kleineren und größeren durchgeführt.
+Die beim Training beobachteten Muster gleichen sich sowohl bei den beiden Algorithmen als auch den unterschiedlichen Parametrisierungen.
+
+Zu Beginn des Trainings ist bei einigen Läufen eine Verbesserung der gemittelten Returns, die primäre Leistungskennziffer, zu beobachten.
+Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen und eine konstante Leistung stellt sich ein.
+Dabei treten Häufungen bei der Leistung -2000 und -700 auf.
+Bei einigen Trainingsdurchläufen wird ein Niveau von -300 erreicht, dieses aber nie überschritten.
 
 \section{Trainingsdauer und Sample Efficiency}
 
