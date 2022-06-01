@@ -43,6 +43,22 @@ Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen und eine 
 Dabei treten Häufungen bei der Leistung -2000 und -700 auf.
 Bei einigen Trainingsdurchläufen wird ein Niveau von -300 erreicht, dieses aber nie überschritten.
 
+Betrachtet man die Zusammensetzung der Gewinne -- die Diagramme dazu befinden sich im Anhang -- erkennt man, dass ein Teil der Agenten durch das Setzen hoher Neupreise wenige Kunden mit hoher Rendite gewinnen konnte.
+Die mit dem Neuverkauf erwirtschafteten Gewinne liegen jedoch nie über 100 in der Episode und damit deutlich niedriger als bei anderen Policies.
+Ein Teil der Algorithmen verharrt auf Preisen, die niedriger sind als die Einkaufspreise.
+Diese ziehen besonders viele Kunden an und erhöhen dadurch noch den Verlust.
+Bei der Reduktion der Rückkaufkosten konnten einige Agenten akzeptable Leistungen erreichen, aber keiner der Algorithmen konnte mit dem Verkauf gebrauchter Produkte Geld einnehmen.
+Einige der Agenten mussten sogar ständig dafür Strafe zahlen, dass sie keine Gebrauchtprodukte liefern konnten.
+
+Die Trainingsdurchläufe zeigen, dass sich die Leistung oft ruckartig verändern.
+Der dabei in den Lernkurven zu erkennende lineare Auf- oder Abstieg ist der Durchschnittsbildung über die letzten hundert Episoden geschuldet.
+Tatsächlich findet die Änderung sprunghaft statt, wie man es an den Scatterplots ablesen kann.
+Zahlreiche der Trainingsdurchläufe sind von starken Einbrüchen der Leistung geprägt.
+Diese Instabilität bei DDPG und TD3 sind als Problem bekannt.
+
+Die Tatsache, dass die Agenten lange auf einer Stelle bleibt und auch die gleichen verbeserungswürdigen Aktionen immer wieder ausführt, kann auf unzureichende Exploration schließen lassen.
+Allerdings konnten auch eine verrauschte Aktionswahl zur besseren Exploration keine Verbesserung der Leistung erreichen.
+
 \section{Trainingsdauer und Sample Efficiency}
 
 \section{Stabilität}
