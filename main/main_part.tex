@@ -65,20 +65,32 @@ Wegen der großen Zahl der Aktionen wird hier jedoch nur die stetige Variante ge
 Es wurde von den Hyperparameter ausgegangen, die in den Originalpapern vorgeschlagen wurden.
 Sie finden sich auch im Anhang [genauer Abschnitt].
 
-Grafik ? stellt die Lernkurven der Algorithmen dar.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/a2c_vs_ppo.pdf}
+	\caption{Lernkurven von A2C und PPO auf dem Duopol mit unterbietendem Wettbewerber}
+	\label{grafic:OnPolicyLearningCurves}
+\end{figure}
+
+Grafik \ref{grafic:OnPolicyLearningCurves} stellt die Lernkurven der Algorithmen dar.
 Dabei wurde PPO mit zwei Hyperparametrisierungen verwendet, die sich im Parameter $\epsilon$ unterscheiden.
-Das eine Mal wird 0,2 wie im Originalpaper verwendet, das andere Mal 0,3.
-Jedes dieser Experimente wurde acht Mal unabhängig für eine Million Schritte laufen gelassen.
+Das eine Mal wird $0.2$ wie im Originalpaper verwendet, das andere Mal $0.3$.
+Jedes dieser Experimente wurde acht Mal unabhängig für eine Million Schritte (zwanzigtausen Episoden) laufen gelassen.
 Die Lernkurven verwenden wieder die laufenden Durchschnitte der Episodenreturns.
 Der Bereich zwischen maximalem und minimalem Episodenreturns dieser acht Agenten ist eingefärbt.
 Die Linie stellt ihren Durchschnitt dar.
-Obwohl die Agenten weiterhin mit starken Verlusten beginnen, stellt diese Grafik nur den Bereich zwischen 0 und 1000 dar, um durch die Skalierung einen genaueren Vergleich im oberen Leistungsbereich zu ermöglichen.
+In dieser Grafik wird der Verlustbereich ausgeblendet.
+Sie stellt nur den Bereich zwischen 0 und 1000 dar, um durch die Skalierung einen genaueren Vergleich im oberen Leistungsbereich zu ermöglichen.
 
 Aus den Grafiken geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
-Sie erreichen über Ergebnisse über 500, was nach den Erfahrungen mit dem regelbasierten Wettbewerber ein gutes Ergebnis darstellt.
-Dabei erreichen die Advantage-Actor-Critic-Agenten das Leistungsniveau nach deutlich weniger Episoden als die PPO-Agenten.
+Sie unterscheiden sich in der Spitzenperformance mit Ergebnissen über 500 nicht grundlegend.
+Das übertrifft das Durchschnittsergebnis ? des regelbasierten Agenten, wenn er auf diesem Duopolszenario (gegen seine eigene Policy) antritt.
+Auf Grundlage dieser Ergebnisse kann man feststellen, dass die Parametrisierung mit $\varepsilon=0.3$ leicht bessere Performance einbringt als die Standardparametrisierung, die wiederung A2C leicht schlägt.
+Allerdings erreicht auch A2C in einigen der Spitzen ein sehr hohes Niveau, die Unterschiede zwischen diesen Algorithmen in der Spitzenperformance verschwindend.
+
+Die Advantage-Actor-Critic-Agenten erreichen das hohe Leistungsniveau allerdings nach deutlich weniger Episoden als die PPO-Agenten.
 Ihr Durchschnitt überschreitet die Schwelle zum Gewinn nach nur 110 Episoden (umgerechnet 5500 Schritte).
-Dagegen ist das Training der A2C-Agenten merklich instabil.
+Allerdings ist das Training der A2C-Agenten ausgesprochen instabil.
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{main/a2c_detailed_analysis.pdf}
@@ -91,36 +103,37 @@ Dagegen ist das Training der A2C-Agenten merklich instabil.
 	\label{grafic:A2CInstability}
 \end{figure}
 Die Grafik \ref{grafic:A2CInstability} stellt Details eines einzelnen A2C-Durchlaufes dar.
-Es handelt sich dabei um einen typischen Durchlauf, der innerhalb der ersten 2000 Episoden eine Performance von 748 erreicht.
-Man sieht, dass die Aktionsauswahl permanent hin- und herschwankt.
+Es handelt sich dabei um einen typischen Durchlauf mit guter Peak-Performance.
+Innerhalb der ersten 2000 Episoden erreicht er eine Performance von 748.
+Man sieht, dass die Aktionsauswahl während des Trainings permanent hin- und herschwankt.
 Wie auch bei den anderen A2C-Agenten stürzt seine Leistung mitunter deutlich ab und fällt dabei weit in die Verlustzone.
 Nicht immer erholen sich die Agenten davon, oft erhalten sie weiterhin schlechte Ergebnisse.
-Diese heftigen Abstürze führen dazu, dass die Mittelwertlinie wieder unter 0 fällt, obwohl einige der Agenten weiterhin gute Ergebnisse liefern.
+Diese heftigen Abstürze führen dazu, dass die Mittelwertlinie der A2C-Agenten in Abbildung \ref{grafic:OnPolicyLearningCurves} wieder unter 0 fällt, obwohl einige der Agenten weiterhin gute Ergebnisse liefern.
 
 Im Gegenzug dazu ist die Trainingsstabilität bei den PPO-Varianten deutlich höher.
 Zwischen den acht Trainingsdurchläufen der PPO-Agenten gibt es kaum Unterschiede in der Entwicklung.
 Die Leistungsentwicklung liegt in einem schmalen Band und Abstürze finden nicht statt.
-Allerdings benötigt PPO in der Standardkonfiguration etwa 5000 Episoden und in der Version mit $0,3$ als $\varepsilon$ etwa 2700 Episoden, um die Gewinnzone zu erreichen.
+Allerdings benötigt PPO in der Standardkonfiguration etwa 2600 Episoden und in der Version mit $0.3$ als $\varepsilon$ ungefähr 1600 Episoden, um die Gewinnzone zu erreichen.
 Auch danach ist das Training langsam.
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{main/ppo_detailed_analysis.pdf}
-	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0,2$) analog zu Abbildung \ref{grafic:A2CInstability}}
+	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0.2$) analog zu Abbildung \ref{grafic:A2CInstability}}
 	\label{grafic:PPOStability}
 \end{figure}
 In Abbildung \ref{grafic:PPOStability} ist ein detaillierter Blick in einen typischen PPO-Trainingsdurchlauf zu sehen.
-Dieser erreicht erst nach etwa 15000 Episoden ein Leistungsniveau von 740, weist aber bei Return und der Aktionsauswahl eine stabile Entwicklung auf.
+Dieser erreicht erst nach etwa 15000 Episoden ein Leistungsniveau von 740, weist aber bei Return und der Aktionsauswahl eine durchweg stabile Entwicklung auf.
 
 Dieser Unterschied von PPO zu A2C überrascht nicht, er existiert \textit{by design}.
 Diese Experimente zeigen, dass PPO in seiner Intention, die Trainingsstabilität zu erhöhen, erfolgreich ist.
 Diese Erhöhung der Trainingsstabilität findet dadurch statt, dass die Änderung der stochastischen Policy bei den Trainingsschritten begrenzt wird.
 Aus dieser Begrenzung der Policyänderung ist die geringere Lerngeschwindigkeit dann eine logische Schlussfolgerung.
 
-So lässt sich auch erklären, warum der Durchlauf mit $\varepsilon=0,3$ schneller trainiert.
+So lässt sich auch erklären, warum der Durchlauf mit $\varepsilon=0.3$ schneller trainiert.
 Mit größerem $\varepsilon$ wird pro Sample eine größere Policyänderung erlaubt, was zu schnellerem Training führt.
 Allerdings steigt damit wieder das Risiko von Instabilität, weshalb die Parametrisierung des PPO-Algorithmus einen Trade-off zwischen Trainingsgeschwindigkeit und Stabilität eröffnet.
-Die Wahl des Standardparameters $0,2$ mag in diesen Experimenten konservativ erscheinen, $0,3$ verursacht ebenfalls keine Instabilitäten.
-Das Experiment ? im Anhang zeigt, wie sich PPO bei größerem $\varepsilon$ verhält.
+Die Wahl des Standardparameters $0.2$ mag in diesen Experimenten konservativ erscheinen, $0.3$ verursacht ebenfalls keine Instabilitäten.
+Das Experiment [noch zu erstellen] im Anhang zeigt, wie sich PPO bei größerem $\varepsilon$ verhält.
 
 Eine Beobachtung in Abbildung \ref{grafic:PPOStability} verdient noch einmal besondere Beachtung, weil sie zunächst paradox erscheint:
 Obwohl der RL-Agent den regelbasierten Agenten nach etwas Training übertrifft, wird er später wieder wieder überholt.
@@ -129,8 +142,8 @@ Jedoch ist das Gegenteil der Fall.
 Der PPO-Agent erlernt zunächst, die Preise für Neu- und Gebrauchtware höher zu setzen.
 Dieses Training dauert aus inzwischen diskutierten Gründen relativ lange, aber bei Neuverkaufspreisen, die größer als vier sind, macht er die Erfahrung, dass der regelbasierte Wettbewerber ihn immer um 1 unterbietet.
 Durch wechselseitiges Unterbieten führt eine Preisabwärtsspirale dazu, dass sich der Preis nur knapp überhalb des Einkaufspreises einpegelt.
-Die dabei äußerst niedrige Rendite ermöglicht jedoch keine Gewinne, sodass der Agent in seinem weiteren Training die Erfahrung macht, dass er seinen Gewinn steigern kann, indem er seinen Preis höher ansätzt.
-Er wird dann zwar immer noch unterboten, allerdings nur um eins.
+Die dabei äußerst niedrige Rendite ermöglicht jedoch nur niedrige Gewinne, sodass der Agent in seinem weiteren Training die Erfahrung macht, dass er seinen Gewinn steigern kann, indem er seine Preise höher setzt.
+Er wird dann zwar immer noch unterboten, allerdings nur um den Wert eins.
 Dabei nimmt er in Kauf, dass mehr Kunden wegen des niedrigen Preises beim Konkurrenten kaufen und dieser auch an jedem Kunden noch mehr verdient.
 Mit den Kunden, die der RL-Agent aber noch bekommt, kann er aber seine Gewinne im Vergleich zum niedrigpreisigen Markt dennoch steigern.
 Der Effekt besteht also darin, dass der RL-Agent in Reaktion auf den ihn immer unterbietenden Konkurrenten diesem einen überproportionalen Gewinnanstieg erlaubt, um selbst mehr Gewinne machen zu können.

@@ -240,7 +240,7 @@ Das Training der Aktionswertefunktion findet genau wie bei TD3 statt.
 Die genutzte Implementierung verwendet ebenfalls zwei Aktionswertnetze, verzichtet aber auf das im Originalpaper vorgeschlagene zusätzliche Netz zur Zustandswertschätzung. \cite{stable-baselines}
 Die Verlustfunktion zur Optimierung der Policy schreibt sich mit folgendem Ausdruck:
 \begin{equation}
-	L_{Q_\theta}(\phi) = \mathcal{E}_{S_t \sim \mathcal{D}} \left[D_{KL}\left(\phi_\phi(\cdot | S_t) | \frac{\exp(Q_\theta(S_t, \cdot))}{Z_\theta(S_t)}\right)\right]
+	L_{Q_\theta}(\phi) = \mathbb{E}_{S_t \sim \mathcal{D}} \left[D_{KL}\left(\pi_\phi(\cdot | S_t) | \frac{\exp(Q_\theta(S_t, \cdot))}{Z_\theta(S_t)}\right)\right]
 \end{equation}
 Es wird dabei aus den Aktionswerten eine Wahrscheinlichkeitsverteilung gebaut, indem sie exponentiert und duch einen Normierungsfaktor $Z_\theta(S_t)$ geteilt werden.
 Dieser Normierungsfaktor wird nur mathematisch dafür benötigt, dass das Integral über den gesamten Aktionsraum 1 ergibt.
