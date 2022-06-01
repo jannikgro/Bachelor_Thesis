@@ -83,15 +83,15 @@ Dagegen ist das Training der A2C-Agenten merklich instabil.
 	\centering
 	\includegraphics[width=\textwidth]{main/a2c_detailed_analysis.pdf}
 	\caption{
-		Detaillierte Betrachtung eines A2C-Trainingsdurchlaufes zur Visualisierung der Instabilität:
-		(links) Lernkurve mit erst ordentlichem Verlauf, erreicht Durchschnittsgewinn von 748 innerhalb der ersten 2000 Episoden, stürzt danach mehrfach ab;
+		Detaillierte Betrachtung eines A2C-Trainingsdurchlaufes zur Visualisierung der Instabilität, wobei Vendor\_0 der RL-Agent und Vendor\_1 der regelbasierte, direkte Wettbewerber während des Trainings ist:
+		(links) Lernkurve mit schnellem initialem Anstieg, danach mehrere Abstürze und Erholungen;
 		(mitte) durchschnittliche Auswahl der Neupreise, zeigt erhebliche Schwankungen;
-		(rechts) durchschnittliche Auswahl der Gebrauchtpreise, ebenfalls instabil;
+		(rechts) durchschnittliche Auswahl der Gebrauchtpreise, ebenfalls instabil
 	}
 	\label{grafic:A2CInstability}
 \end{figure}
-Die Grafik ? stellt Details eines einzelnen A2C-Durchlaufes dar.
-Es handelt sich dabei um einen mittleren Durchlauf, der Agent hatte sein Maximum bei 5?? und erreicht damit Platz 5 von 8.
+Die Grafik \ref{grafic:A2CInstability} stellt Details eines einzelnen A2C-Durchlaufes dar.
+Es handelt sich dabei um einen typischen Durchlauf, der innerhalb der ersten 2000 Episoden eine Performance von 748 erreicht.
 Man sieht, dass die Aktionsauswahl permanent hin- und herschwankt.
 Wie auch bei den anderen A2C-Agenten stürzt seine Leistung mitunter deutlich ab und fällt dabei weit in die Verlustzone.
 Nicht immer erholen sich die Agenten davon, oft erhalten sie weiterhin schlechte Ergebnisse.
@@ -102,6 +102,14 @@ Zwischen den acht Trainingsdurchläufen der PPO-Agenten gibt es kaum Unterschied
 Die Leistungsentwicklung liegt in einem schmalen Band und Abstürze finden nicht statt.
 Allerdings benötigt PPO in der Standardkonfiguration etwa 5000 Episoden und in der Version mit $0,3$ als $\varepsilon$ etwa 2700 Episoden, um die Gewinnzone zu erreichen.
 Auch danach ist das Training langsam.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/ppo_detailed_analysis.pdf}
+	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0,2$) analog zu Abbildung \ref{grafic:A2CInstability}}
+	\label{grafic:PPOStability}
+\end{figure}
+In Abbildung \ref{grafic:PPOStability} ist ein detaillierter Blick in einen typischen PPO-Trainingsdurchlauf zu sehen.
+Dieser erreicht erst nach etwa 15000 Episoden ein Leistungsniveau von 740, weist aber bei Return und der Aktionsauswahl eine stabile Entwicklung auf.
 
 Dieser Unterschied von PPO zu A2C überrascht nicht, er existiert \textit{by design}.
 Diese Experimente zeigen, dass PPO in seiner Intention, die Trainingsstabilität zu erhöhen, erfolgreich ist.
@@ -113,6 +121,21 @@ Mit größerem $\varepsilon$ wird pro Sample eine größere Policyänderung erla
 Allerdings steigt damit wieder das Risiko von Instabilität, weshalb die Parametrisierung des PPO-Algorithmus einen Trade-off zwischen Trainingsgeschwindigkeit und Stabilität eröffnet.
 Die Wahl des Standardparameters $0,2$ mag in diesen Experimenten konservativ erscheinen, $0,3$ verursacht ebenfalls keine Instabilitäten.
 Das Experiment ? im Anhang zeigt, wie sich PPO bei größerem $\varepsilon$ verhält.
+
+Eine Beobachtung in Abbildung \ref{grafic:PPOStability} verdient noch einmal besondere Beachtung, weil sie zunächst paradox erscheint:
+Obwohl der RL-Agent den regelbasierten Agenten nach etwas Training übertrifft, wird er später wieder wieder überholt.
+Das erweckt den Eindruck, als ob der Agent im Verlaufe des Training schlechter würde.
+Jedoch ist das Gegenteil der Fall.
+Der PPO-Agent erlernt zunächst, die Preise für Neu- und Gebrauchtware höher zu setzen.
+Dieses Training dauert aus inzwischen diskutierten Gründen relativ lange, aber bei Neuverkaufspreisen, die größer als vier sind, macht er die Erfahrung, dass der regelbasierte Wettbewerber ihn immer um 1 unterbietet.
+Durch wechselseitiges Unterbieten führt eine Preisabwärtsspirale dazu, dass sich der Preis nur knapp überhalb des Einkaufspreises einpegelt.
+Die dabei äußerst niedrige Rendite ermöglicht jedoch keine Gewinne, sodass der Agent in seinem weiteren Training die Erfahrung macht, dass er seinen Gewinn steigern kann, indem er seinen Preis höher ansätzt.
+Er wird dann zwar immer noch unterboten, allerdings nur um eins.
+Dabei nimmt er in Kauf, dass mehr Kunden wegen des niedrigen Preises beim Konkurrenten kaufen und dieser auch an jedem Kunden noch mehr verdient.
+Mit den Kunden, die der RL-Agent aber noch bekommt, kann er aber seine Gewinne im Vergleich zum niedrigpreisigen Markt dennoch steigern.
+Der Effekt besteht also darin, dass der RL-Agent in Reaktion auf den ihn immer unterbietenden Konkurrenten diesem einen überproportionalen Gewinnanstieg erlaubt, um selbst mehr Gewinne machen zu können.
+Dass sich dieser Effekt so wiederfindet, ist der Tatsache geschuldet, dass das einzige Optimierungskriterium für die Agenten der eigene Gewinn ist.
+Eine Rewardformulierung, die ein Übertreffen des Konkurrenten mit einbezieht wird in Abschnitt [wenn es noch im Scope ist] behandelt.
 
 \section{Trainingsdauer und Sample Efficiency}
 
