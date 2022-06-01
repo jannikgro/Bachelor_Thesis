@@ -79,6 +79,17 @@ Sie erreichen über Ergebnisse über 500, was nach den Erfahrungen mit dem regel
 Dabei erreichen die Advantage-Actor-Critic-Agenten das Leistungsniveau nach deutlich weniger Episoden als die PPO-Agenten.
 Ihr Durchschnitt überschreitet die Schwelle zum Gewinn nach nur 110 Episoden (umgerechnet 5500 Schritte).
 Dagegen ist das Training der A2C-Agenten merklich instabil.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/a2c_detailed_analysis.pdf}
+	\caption{
+		Detaillierte Betrachtung eines A2C-Trainingsdurchlaufes zur Visualisierung der Instabilität:
+		(links) Lernkurve mit erst ordentlichem Verlauf, erreicht Durchschnittsgewinn von 748 innerhalb der ersten 2000 Episoden, stürzt danach mehrfach ab;
+		(mitte) durchschnittliche Auswahl der Neupreise, zeigt erhebliche Schwankungen;
+		(rechts) durchschnittliche Auswahl der Gebrauchtpreise, ebenfalls instabil;
+	}
+	\label{grafic:A2CInstability}
+\end{figure}
 Die Grafik ? stellt Details eines einzelnen A2C-Durchlaufes dar.
 Es handelt sich dabei um einen mittleren Durchlauf, der Agent hatte sein Maximum bei 5?? und erreicht damit Platz 5 von 8.
 Man sieht, dass die Aktionsauswahl permanent hin- und herschwankt.
