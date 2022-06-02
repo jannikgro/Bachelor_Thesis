@@ -162,7 +162,7 @@ Die Grafik ? im Anhang zeigt, dass unterschiedliche manuell eingestellte Entropi
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{main/a2c_vs_sac.pdf}
-	\caption{Lernkurve von Soft Actor Critic bei 4000 Episoden, A2C als Vergleich angegeben}
+	\caption{Lernkurve von Soft Actor Critic über 4000 Episoden, A2C als Vergleich angegeben}
 	\label{grafic:SACLearningCurve}
 \end{figure}
 
@@ -178,6 +178,17 @@ Der weitere Trainingsverlauf ist sehr stabil.
 Alle acht Agenten bewegen sich für den Rest des Trainings in einem sehr schmalen Bereich, wobei der Durchschnittsreturn der Agenten bei etwa 660 konstant bleibt.
 Eine Verbesserung der Leistung findet nach etwa 1500 Episoden nicht mehr statt und auch die Spitzenwerte einiger der SAC-Agenten werden ab dort nicht wieder erreicht.
 Der Durchschnitt der acht SAC-Agenten liegt zwar dauerhaft über dem Durchschnitt der A2C-Agenten, aber einige A2C-Durchläufe übertreffen in ihren Spitzenwerten alle SAC-Agenten.
+Mit der Spitzenperformance der PPO-Agenten kann SAC ebenfalls nicht mithalten.
+
+Für die Frage >>Wie lange dauert das Training?<< gibt es zwei mögliche Kenngrößen.
+Einmal können die benötigten Samples herangezogen werden, die Sample Efficiency, oder es kann die tatsächliche Zeit auf der Uhr bewertet werden.
+Letztere hängt stark von der Hardware sowie der Geschwindigkeit der Simulation im Vergleich zum Optimieren der Parameter ab.
+Bei der für diese Experimente verwendeten Implementierung und Hardware benötigt das Training pro Schritt mit SAC etwa $3.7$ Mal so lang wie mit PPO.
+Das Sammeln der Beispiele aus dem Markt nimmt bei PPO etwa 25\% der Trainingszeit ein, bei SAC nur etwa 6\%.
+Die Geschwindigkeiten von A2C sind denen von PPO sehr ähnlich.
+Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere Samplebedarf bei PPO.
+Er erreicht die Gewinnzone nur etwa 50\% später als SAC.
+Dabei wird klar, dass A2C in reinem Zeitbedarf den anderen Algorithmen deutlich überlegen ist.
 
 \section{Stabilität}
 
