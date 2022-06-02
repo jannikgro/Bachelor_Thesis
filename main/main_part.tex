@@ -178,7 +178,19 @@ Der weitere Trainingsverlauf ist sehr stabil.
 Alle acht Agenten bewegen sich für den Rest des Trainings in einem sehr schmalen Bereich, wobei der Durchschnittsreturn der Agenten bei etwa 660 konstant bleibt.
 Eine Verbesserung der Leistung findet nach etwa 1500 Episoden nicht mehr statt und auch die Spitzenwerte einiger der SAC-Agenten werden ab dort nicht wieder erreicht.
 Der Durchschnitt der acht SAC-Agenten liegt zwar dauerhaft über dem Durchschnitt der A2C-Agenten, aber einige A2C-Durchläufe übertreffen in ihren Spitzenwerten alle SAC-Agenten.
-Mit der Spitzenperformance der PPO-Agenten kann SAC ebenfalls nicht mithalten.
+Mit der Spitzenperformance der PPO-Agenten kann SAC ebenfalls nicht ganz mithalten.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/sac_detailed_analysis.pdf}
+	\caption{Detaillierte Betrachtung eines SAC-Trainingsdurchlaufes}
+	\label{grafic:SACDetails}
+\end{figure}
+
+Wie auch für die anderen Algorithmen wurde für SAC ein typischer Durchlauf und die gemittelten Aktionen in Abbildung \ref{grafic:SACDetails} abgedruckt.
+Dieser ist stabil und weist abgesehen vom Start mit höheren Werten ein ähnliches Profil wie der PPO-Durchlauf auf:
+Zunächst sinken die Preise auf ein niedriges Niveau und steigen dann leicht an.
+Während die Gebrauchtpreise zwischen diesem SAC- und dem PPO-Durchlauf sehr ähnlich sind, liegen die Neupreise hier auf etwas höherem Niveau.
 
 Für die Frage >>Wie lange dauert das Training?<< gibt es zwei mögliche Kenngrößen.
 Einmal können die benötigten Samples herangezogen werden, die Sample Efficiency, oder es kann die tatsächliche Zeit auf der Uhr bewertet werden.
