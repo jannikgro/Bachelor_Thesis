@@ -60,6 +60,7 @@ Die Tatsache, dass die Agenten lange auf einer Stelle bleibt und auch die gleich
 Allerdings konnten auch eine verrauschte Aktionswahl zur besseren Exploration keine Verbesserung der Leistung erreichen.
 
 \section{On-Policy-Learning -- A2C und PPO}
+\label{section:main_ppo}
 Die beiden On-Policy-Verfahren A2C und PPO gibt es für diskrete wie für stetige Aktionsräume.
 Wegen der großen Zahl der Aktionen wird hier jedoch nur die stetige Variante genommen.
 Es wurde von den Hyperparameter ausgegangen, die in den Originalpapern vorgeschlagen wurden.
@@ -150,7 +151,33 @@ Der Effekt besteht also darin, dass der RL-Agent in Reaktion auf den ihn immer u
 Dass sich dieser Effekt so wiederfindet, ist der Tatsache geschuldet, dass das einzige Optimierungskriterium für die Agenten der eigene Gewinn ist.
 Eine Rewardformulierung, die ein Übertreffen des Konkurrenten mit einbezieht wird in Abschnitt [wenn es noch im Scope ist] behandelt.
 
-\section{Trainingsdauer und Sample Efficiency}
+\section{Soft Actor Critic}
+Das in Abschnitt \ref{section:sac} erläuternte Soft-Actor-Critic-Verfahren ist in erster Linie für stetige Aktionsräume entwickelt worden und wird hier auch in der stetigen Variante genutzt.
+Beim Verfahren wurden die gängigen Hyperparameter eingesetzt.
+Die Übersicht dazu findet sich im Anhang in Tabelle ?.
+Bei den hier gezeigten Ergebnissen wurde der Entropiekoeffizient $\alpha$ automatisch trainiert.
+Er hat sich bei allen Trainingsdurchläufen zwischen $1$ und $1.5$ eingependelt.
+Die Grafik ? im Anhang zeigt, dass unterschiedliche manuell eingestellte Entropiekoeffizienten ähnliche Trainingsergebnisse erreichen, wobei sich die Vermutung bestätigt, dass sehr niedrige Entropiekoeffizienten zu wenig Exploration bezwecken und Läufe mit deutlich höheren Entropiekoeffizienten bei schlechterer Leistung verharren.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/a2c_vs_sac.pdf}
+	\caption{Lernkurve von Soft Actor Critic bei 4000 Episoden, A2C als Vergleich angegeben}
+	\label{grafic:SACLearningCurve}
+\end{figure}
+
+Grafik \ref{grafic:SACLearningCurve} zeigt die Lernkurve von acht Soft-Actor-Critic-Agenten bei einem Trainingsdurchlauf mit 4000 Episoden (200000 Schritte).
+Zum Vergleich sind acht Trainingsdurchläufe mit A2C angegeben, die den aus Abschnitt \ref{section:main_ppo} bekannten Verlauf aufweisen.
+Soft-Actor-Critic wurde als Off-Policy-Algorithmus neben dem Erreichen von wettbewerbsfähigen Ergebnissen für zwei Hauptziele entwickelt:
+Erstens soll es eine sehr hohe Sample Efficiency haben, was bedeutet, dass es beim Training deutlich weniger Schritten benötigt.
+Zweitens soll SAC eine sehr hohe Trainingsstabilität haben.
+Die Lernkurve bestätigt, dass Soft-Actor-Critic diese zwei Hauptziele erreicht.
+Profitabel arbeitet der Agent nach etwa 300 Episoden, was etwa auf dem Level von A2C liegt und erheblich besser als PPO ist.
+Spitzenperformance wird ähnlich wie bei A2C nach 500 bis 1000 Episoden erreicht.
+Der weitere Trainingsverlauf ist sehr stabil.
+Alle acht Agenten bewegen sich für den Rest des Trainings in einem sehr schmalen Bereich, wobei der Durchschnittsreturn der Agenten bei etwa 660 konstant bleibt.
+Eine Verbesserung der Leistung findet nach etwa 1500 Episoden nicht mehr statt und auch die Spitzenwerte einiger der SAC-Agenten werden ab dort nicht wieder erreicht.
+Der Durchschnitt der acht SAC-Agenten liegt zwar dauerhaft über dem Durchschnitt der A2C-Agenten, aber einige A2C-Durchläufe übertreffen in ihren Spitzenwerten alle SAC-Agenten.
 
 \section{Stabilität}
 
