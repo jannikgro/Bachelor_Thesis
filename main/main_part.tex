@@ -221,12 +221,17 @@ Dadurch, dass der Agent stets gegen sich selbst spielt, wird die Markov-Eigensch
 Die Motivation hinter Self-Play ist, dass der Agent einerseits stets einem ebenbürtigen Gegner gegenübersteht, aber andererseits auch, dass er ständig Strategien gegen die eigene entwickelt, die dann wiederum herausgefordert werden.
 Dadurch soll der Agent gegen eine Vielzahl von Policies gestählert werden.
 Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in der vorangegangenen Analyse als grundsätzlich geeignet für diesen Markt erwiesen haben: A2C, PPO und SAC.
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{main/self_play.pdf}
 	\caption{Lernkurve von A2C, PPO und SAC beim Self-Play; A2C und SAC wurden über 2000 Episoden trainiert, PPO über 8000}
 	\label{grafic:SelfPlayLearningCurve}
-\end{figure}
+\end{figure}x
+In der Abbildung \ref{grafic:SelfPlayLearningCurve} sind die Lernkurven der drei Algorithmen beim Training gegen sich selbst abgedruckt.
+Diese Kurven zeigen zunächst grundsätzlichen Lernerfolg bei allen drei dieser Agenten, sind aber alleine nicht aussagekräftig, ob die Agenten sich tatsächlich gegen die Konkurrenz behaupten können.
+Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen Abschnitten verglichen werden.
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.8\textwidth]{main/self_play_detailed.pdf}
@@ -237,10 +242,6 @@ Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in 
     }
 	\label{grafic:SelfPlayDetails}
 \end{figure}
-In der Abbildung \ref{grafic:SelfPlayLearningCurve} sind die Lernkurven der drei Algorithmen beim Training gegen sich selbst abgedruckt.
-Diese Kurven zeigen zunächst grundsätzlichen Lernerfolg bei allen drei dieser Agenten, sind aber alleine nicht aussagekräftig, ob die Agenten sich tatsächlich gegen die Konkurrenz behaupten können.
-Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen Abschnitten verglichen werden.
-
 Um Vergleichbarkeit herstellen zu können, wurde während des Self-Plays alle 100 Episoden ein Modell gespeichert und jedes dieser Modelle anschließend auf 250 Episoden getestet.
 Damit wurden Verteilungen und Kenngrößen gemessen, um eine akkurate Lernkurve erstellen zu können, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleicht.
 Von allen Algorithmen wurde ein mittlerer Durchlauf ausgewählt und in der Abbildung \ref{grafic:SelfPlayDetails} veranschaulicht.
@@ -250,5 +251,3 @@ Das ist über dem Niveau, das der regelbasierte Wettbewerber gegen sich selbst e
 Auch wenn das nicht explizites Trainingsziel war, übertreffen die Agenten dennoch die regelbasierte Konkurrenz.
 Bemerkenswert an diesen Ergebnissen ist jedoch, dass sie erreicht wurden, ohne den regelbasierten Wettbewerber je vorher gesehen zu haben.
 Die Lernkurven lassen zudem vermuten, dass bei PPO eine weitere Steigerung der Leistung möglich ist.\footnote{Wenn ich hier noch länger gewartet hätte, hätte ich den Draft nicht mehr fertig bekommen}
-
-\section{Analyse und Vergleich der ermittelten Policies}
