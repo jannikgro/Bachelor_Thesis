@@ -229,6 +229,17 @@ Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in 
 	\label{grafic:SelfPlayLearningCurve}
 \end{figure}
 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{main/self_play_detailed.pdf}
+	\caption{
+        Einzelne Self-Play-Trainingsdurchläufe der Algorithmen:
+        (links) Trainingsverlauf im Vergleich zum regelbasierten Agenten;
+        (rechts) Verteilung der Gewinne des RL-Agenten im Vergeleich zum regelbasierten an der Stelle mit maximaler Belohnung
+    }
+	\label{grafic:SelfPlayDetails}
+\end{figure}
+
 In der Abbildung \ref{grafic:SelfPlayLearningCurve} sind die Lernkurven der drei Algorithmen beim Training gegen sich selbst abgedruckt.
 Diese Kurven zeigen zunächst grundsätzlichen Lernerfolg bei allen drei dieser Agenten, sind aber alleine nicht aussagekräftig, ob die Agenten sich tatsächlich gegen die Konkurrenz behaupten können.
 Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen Abschnitten verglichen werden.
@@ -242,16 +253,5 @@ Das ist über dem Niveau, das der regelbasierte Wettbewerber gegen sich selbst e
 Auch wenn das nicht explizites Trainingsziel war, übertreffen die Agenten dennoch die regelbasierte Konkurrenz.
 Bemerkenswert an diesen Ergebnissen ist jedoch, dass sie erreicht wurden, ohne den regelbasierten Wettbewerber je vorher gesehen zu haben.
 Die Lernkurven lassen zudem vermuten, dass bei PPO eine weitere Steigerung der Leistung möglich ist.\footnote{Wenn ich hier noch länger gewartet hätte, hätte ich den Draft nicht mehr fertig bekommen}
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{main/self_play_detailed.pdf}
-	\caption{
-        Einzelne Self-Play-Trainingsdurchläufe der Algorithmen:
-        (links) Trainingsverlauf im Vergleich zum regelbasierten Agenten;
-        (rechts) Verteilung der Gewinne des RL-Agenten im Vergeleich zum regelbasierten an der Stelle mit maximaler Belohnung
-    }
-	\label{grafic:SelfPlayDetails}
-\end{figure}
 
 \section{Analyse und Vergleich der ermittelten Policies}
