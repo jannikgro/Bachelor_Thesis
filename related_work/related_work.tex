@@ -196,10 +196,11 @@ Das ist ein etabliertes Vorgehen, deshalb wird ab jetzt wie in der Literatur der
 Algorithmen, die nach diesem Prinzip funktionieren, werden Actor-Critic-Algorithmen genannt.
 Das ist eine Metapher für die zwei Netze Actor (berechnet die Policy) und Critic (schätzt den Zustandswert und ermöglicht damit die >>Kritik<< einer Aktion).
 In manchen Implementierungen teilen sich die beiden Netze vordere Schichten.
-Unterschiedliche Herangehensweisen gibt es beim Training des Critic-Netzes.
-Wenn es nach dem Sampling der Episoden direkt mittels überwachtem Lernens trainiert wird, so spricht man manchmal von >>REINFORCE mit Baseline<< oder >>Vanilla Policy Gradient Algorithm<<.
-Alternativ wird das Critic-Netz mittels Bootstrapping wie bei den Q-Learning-Verfahren trainiert.
-Die letztere Variante wird in dieser Arbeit untersucht.
+Um aus den Trainingsdaten den Advantagewert zu schätzen, gibt es mehrere Herangehensweisen.
+Eine Möglichkeit ist es, die Episoden bis zum Ende zu sampeln und die dabei gemessenen Werte zu verwenden.
+Das ist ein Schätzer ohne Bias, aber mit großer Varianz.
+Alternativ kann Bootstrapping verwendet werden, was die Varianz reduziert aber Bias einführt.
+Um einen Kompromiss zwischen Bias und Varianz zu finden, wurde der Generalized Advantage Estimator vorgeschlagen, \cite{https://doi.org/10.48550/arxiv.1506.02438} der auch in diesen Implementierungen verwendet wird.
 
 Im Gegensatz zu den Q-Learning-Verfahren aus dem Abschnitt \ref{section:qlearning} handelt es sich bei dieser Gruppe um On-Policy-Algorithmen.
 Das bedeutet, dass die Trainingsdaten mit der Policy gewonnen werden mussten, die auch trainiert wird.
@@ -249,6 +250,7 @@ Für den Algorithmus wird er aber nicht berechnet, da er nicht von $\theta$ abh�
 Diese konstruierte Wahrscheinlichkeitsverteilung gewichtet wie erwartet die Aktionen mit hohem Aktionswert höher.
 In diese Richtung soll dann die Policy verändert werden.
 Im Programm muss aber diese komplizierte Verlustfunktion nicht abgeleitet werden, sondern lässt sich mit einigen Umformungen deutlich leichter formulieren.
+Der Entropieparameter $\alpha$ kann entweder manuell eingestellt oder während des Trainings automatisch erlernt werden. \cite{https://doi.org/10.48550/arxiv.1812.05905}
 
 Soft Actor Critic ist angetreten, um bei der höheren Sample-Effizienz eines Off-Policy-Algorithmus weiterhin die Stabilität der On-Policy-Algorithmen zu haben.
 Mit Soft Actor Critic konnten schwierige Aufgaben in verschiedenen Bereichen gelöst werden.

@@ -19,6 +19,7 @@ Für den Vergleich der Algorithmen werden diese zunächst innerhalb ihrer Gruppe
 Danach werden die Algorithmen, die sich als grundsätzlich geeignet erwiesen haben, hinsichtlich verschiedener Kriterien verglichen.
 
 \section{DDPG und TD3}
+\label{section:main_ddpg}
 Bei der Diskussion der Q-Learning-Verfahren beschränkt sich diese Analyse direkt auf die Verfahren, die im stetigen Raum angewendet werden.
 Deep-Q-Networks mit diskreten Aktionen müssen jede einelne Aktion aus $\mathcal{A_\mathbb{N}}$ mit einem Aktionswert versehen.
 Das sind bei der Konfiguration mit $p_{max}=10$ bereits 1000 Ausgabeneuronen und das Wachstumsverhalten ist kubisch in der Anzahl der Preisstufen.
@@ -152,6 +153,7 @@ Dass sich dieser Effekt so wiederfindet, ist der Tatsache geschuldet, dass das e
 Eine Rewardformulierung, die ein Übertreffen des Konkurrenten mit einbezieht wird in Abschnitt [wenn es noch im Scope ist] behandelt.
 
 \section{Soft Actor Critic}
+\label{section:main_sac}
 Das in Abschnitt \ref{section:sac} erläuternte Soft-Actor-Critic-Verfahren ist in erster Linie für stetige Aktionsräume entwickelt worden und wird hier auch in der stetigen Variante genutzt.
 Beim Verfahren wurden die gängigen Hyperparameter eingesetzt.
 Die Übersicht dazu findet sich im Anhang in Tabelle ?.
@@ -202,6 +204,16 @@ Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere 
 Er erreicht die Gewinnzone nur etwa 50\% später als SAC.
 Dabei wird klar, dass A2C in reinem Zeitbedarf den anderen Algorithmen deutlich überlegen ist.
 
-\section{Stabilität}
+\section{Training gegen die eigene Policy}
+Die in den Abschnitten \ref{section:main_ddpg}, \ref{section:main_ppo} und \ref{section:main_sac} betrachteten Durchläufe trainierten die RL-Agenten alle gegen den in Abschnitt \ref{section:rulebased} definierten regelbasierten Wettbewerber.
+Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, stellt jedoch für praktische Anwendungen eine Reihe von Problemen auf.
+Erstens muss dafür die Policy des Konkurrenten bekannt sein.
+Weil jedoch davon ausgegangen werden kann, dass der Konkurrent seine Preisstrategie nicht verraten wird, müsste sie unter Inkaufnahme von Ungenauigkeiten aus historischen Daten geschätzt werden.
+Zweitens ist die mittels RL trainierte Strategie nur gegen diese bestimmte regelbasierte Strategie gerichtet.
+Ändert der Wettbewerber seine Preisstratie plötzlich, schwächt das die Performance der RL-Strategie und macht neues Training erforderlich.
+Um jedoch die neue Strategie für das erneute RL-Training verstehen zu können, werden wieder historische Daten benötigt, die zunächst nicht vorliegen.
+
+Deshalb wünscht man sich eine Strategie, die gegen möglichst viele Wettbewerberstrategien bestehen kann, nicht auf eine spezielle overfittet ist.
+Deepmind hatte eine ähnliche Herausforderung beim Training von Go- und Schachstrategien, das sie durch Self-Play gelöst haben. \cite{Silver2017, https://doi.org/10.48550/arxiv.1712.01815}
 
 \section{Analyse und Vergleich der ermittelten Policies}
