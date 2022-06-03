@@ -3,7 +3,7 @@ Der Vergleich der RL-Algorithmen findet auf dem in \ref{section:markov} definier
 Dieser Markt wird auf der Testplattform simuliert, die im Rahmen des Bachelorprojektes entwickelt wurde.
 Er wird über die Gym-Schnittstelle durch die Agenten angesprochen.
 Für die zu vergleichenden Algorithmen werden hauptsächlich die Implementierungen der Bibliothek \textit{Stable Baselines} verwendet. \cite{stable-baselines}
-Stable Baselines ist ist eine weit verbreitete eine Open-Source RL-Bibliothek, die in Python geschrieben ist.
+Stable Baselines ist eine weit verbreitete eine Open-Source RL-Bibliothek, die in Python geschrieben ist.
 Sie baut auf PyTorch auf, einem der beliebtesten Deep-Learning-Frameworks, das in der Forschung weite Verbreitung findet. \cite{NEURIPS2019_9015}
 Die in Stable Baselines implementierten Algorithmen entsprechen in den meisten Fällen unmittelbar den vorgeschlagenen Algorithmen der Originalpaper und zeichnen sich durch eine hohe Lesbarkeit des Codes aus.
 Alle Hyperparameter sind konfigurierbar.
@@ -17,6 +17,7 @@ Alle Verfahren werden mit neuronalen Netzen durchgeführt, die zwei versteckte S
 Das Verhalten der Algorithmen für unterschiedliche Netzgrößen ist aber sehr ähnlich, wie die Experimente mit unterschiedlichen Netzgrößen im Bereich [noch zu erstellen] des Anhangs zeigen.
 Für den Vergleich der Algorithmen werden diese zunächst innerhalb ihrer Gruppen betrachtet und auf generelle Eignung für dieses Setup geprüft.
 Danach werden die Algorithmen, die sich als grundsätzlich geeignet erwiesen haben, hinsichtlich verschiedener Kriterien verglichen.
+Alle Messungen wurden auf dem Duopol-Szenario durchgeführt.
 
 \section{DDPG und TD3}
 \label{section:main_ddpg}
@@ -57,7 +58,7 @@ Tatsächlich findet die Änderung sprunghaft statt, wie man es an den Scatterplo
 Zahlreiche der Trainingsdurchläufe sind von starken Einbrüchen der Leistung geprägt.
 Diese Instabilität bei DDPG und TD3 sind als Problem bekannt.
 
-Die Tatsache, dass die Agenten lange auf einer Stelle bleibt und auch die gleichen verbeserungswürdigen Aktionen immer wieder ausführt, kann auf unzureichende Exploration schließen lassen.
+Die Tatsache, dass die Agenten lange auf einer Stelle bleibt und auch die gleichen verbesserungswürdigen Aktionen immer wieder ausführt, kann auf unzureichende Exploration schließen lassen.
 Allerdings konnten auch eine verrauschte Aktionswahl zur besseren Exploration keine Verbesserung der Leistung erreichen.
 
 \section{On-Policy-Learning -- A2C und PPO}
@@ -150,7 +151,7 @@ Dabei nimmt er in Kauf, dass mehr Kunden wegen des niedrigen Preises beim Konkur
 Mit den Kunden, die der RL-Agent aber noch bekommt, kann er aber seine Gewinne im Vergleich zum niedrigpreisigen Markt dennoch steigern.
 Der Effekt besteht also darin, dass der RL-Agent in Reaktion auf den ihn immer unterbietenden Konkurrenten diesem einen überproportionalen Gewinnanstieg erlaubt, um selbst mehr Gewinne machen zu können.
 Dass sich dieser Effekt so wiederfindet, ist der Tatsache geschuldet, dass das einzige Optimierungskriterium für die Agenten der eigene Gewinn ist.
-Eine Rewardformulierung, die ein Übertreffen des Konkurrenten mit einbezieht wird in Abschnitt [wenn es noch im Scope ist] behandelt.
+Eine Rewardformulierung, die ein Übertreffen des Konkurrenten mit einbezieht, wird in Abschnitt [wenn es noch im Scope ist] behandelt.
 
 \section{Soft Actor Critic}
 \label{section:main_sac}
@@ -210,7 +211,7 @@ Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses
 Erstens muss dafür die Policy des Konkurrenten bekannt sein.
 Weil jedoch davon ausgegangen werden kann, dass der Konkurrent seine Preisstrategie nicht verraten wird, müsste sie unter Inkaufnahme von Ungenauigkeiten aus historischen Daten geschätzt werden.
 Zweitens ist die mittels RL trainierte Strategie nur gegen diese bestimmte regelbasierte Strategie gerichtet.
-Ändert der Wettbewerber seine Preisstratie plötzlich, schwächt das die Performance der RL-Strategie und macht neues Training erforderlich.
+Ändert der Wettbewerber seine Preisstrategie plötzlich, schwächt das die Performance der RL-Strategie und macht neues Training erforderlich.
 Um jedoch die neue Strategie für das erneute RL-Training verstehen zu können, werden wieder historische Daten benötigt, die zunächst nicht vorliegen.
 
 Deshalb wünscht man sich eine Strategie, die gegen möglichst viele Wettbewerberstrategien bestehen kann, nicht auf eine spezielle overfittet ist.
@@ -227,9 +228,10 @@ Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in 
 	\includegraphics[width=\textwidth]{main/self_play.pdf}
 	\caption{Lernkurve von A2C, PPO und SAC beim Self-Play; A2C und SAC wurden über 2000 Episoden trainiert, PPO über 8000}
 	\label{grafic:SelfPlayLearningCurve}
-\end{figure}x
+\end{figure}
 In der Abbildung \ref{grafic:SelfPlayLearningCurve} sind die Lernkurven der drei Algorithmen beim Training gegen sich selbst abgedruckt.
-Diese Kurven zeigen zunächst grundsätzlichen Lernerfolg bei allen drei dieser Agenten, sind aber alleine nicht aussagekräftig, ob die Agenten sich tatsächlich gegen die Konkurrenz behaupten können.
+Diese Kurven zeigen zunächst, dass Lernerfolg bei allen dieser drei Agenten erreicht wird.
+Sie sind aber alleine nicht aussagekräftig, ob die Agenten sich tatsächlich gegen die Konkurrenz behaupten können.
 Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen Abschnitten verglichen werden.
 
 \begin{figure}[htbp]
@@ -238,12 +240,12 @@ Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen
 	\caption{
         Einzelne Self-Play-Trainingsdurchläufe der Algorithmen:
         (links) Trainingsverlauf im Vergleich zum regelbasierten Agenten;
-        (rechts) Verteilung der Gewinne des RL-Agenten im Vergeleich zum regelbasierten an der Stelle mit maximaler Belohnung
+        (rechts) Verteilung der Gewinne des RL-Agenten im Vergleich zum regelbasierten an der Stelle mit maximaler Belohnung
     }
 	\label{grafic:SelfPlayDetails}
 \end{figure}
 Um Vergleichbarkeit herstellen zu können, wurde während des Self-Plays alle 100 Episoden ein Modell gespeichert und jedes dieser Modelle anschließend auf 250 Episoden getestet.
-Damit wurden Verteilungen und Kenngrößen gemessen, um eine akkurate Lernkurve erstellen zu können, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleicht.
+Damit wurden Verteilungen und Kenngrößen gemessen, um eine akurate Lernkurve erstellen zu können, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleicht.
 Von allen Algorithmen wurde ein mittlerer Durchlauf ausgewählt und in der Abbildung \ref{grafic:SelfPlayDetails} veranschaulicht.
 Dabei stellt sich heraus, dass die Agenten den Markt erfolgreich erlernt haben.
 Die Maxima dieser mittleren Durchläufe liegen bei 745 (A2C), 545 (PPO) und 630 (SAC).

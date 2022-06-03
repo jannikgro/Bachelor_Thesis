@@ -1,7 +1,7 @@
 \section{Ein Überblick zu Recommerce und Preisstrategien}
 Nicht erst seitdem es Online-Marktplätze gibt, ist die Festlegung von Preisen eine zentrale Herausforderung im Geschäftsbetrieb.
 Durch Online-Marktplätze hat allerdings die Intensität des Wettbewerbs erheblich zugenommen, da Konkurrenzangebote leicht einsehbar sind und Preise in hochfrequentem Tempo gesetzt werden können.
-Zudem müssen alle Produkte des meist sehr breiten Angebots auf diese Weise mit aktuellen Preisen in Abhängigkeit der Marktsituation versehen werden.
+Zudem müssen alle Produkte des meist sehr breiten Angebots auf diese Weise mit in Abhängigkeit der Marktsituation eingepreist werden.
 Diese Gründe motivieren automatische Preisfindung, da menschliche Branchenkenner mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
 
 Eine weitere Komponente kommt im sogenannten Recommerce hinzu.
@@ -30,7 +30,7 @@ Auf diese Art können durchaus gute Preisstrategien erstellt werden.
 Allerdings werden dafür einerseits qualifizierte Marktkenner benötigt, und andererseits sind die Lösungen sehr speziell auf ein Marktszenario zugeschnitten.
 Verändern sich die Umstände oder soll die Lösung für einen neuen Markt aufgesetzt werden, so muss der gesamte manuelle Prozess neu durchschritten werden.
 
-Reinforcement Learning (RL) ermöglicht, nur auf Grundlage eines Marktes durch Ausprobieren und Erfahrung sammeln eine Preisstrategie zu optimieren.
+Reinforcement Learning (RL) ermöglicht, nur auf Grundlage eines Marktes durch Ausprobieren und Sammeln von Erfahrung eine Preisstrategie zu optimieren.
 Das Training geschieht dabei üblicherweise in einer Simulation, da auf echten Märkten durch das notwendige Ausprobieren ein erheblicher finanzieller Schaden entstünde.
 
 Weil es sehr viele unterschiedliche RL-Algorithmen gibt, ist es eine interessante Frage, welche Vor- und Nachteile die einzelnen Algorithmen auf einem Recommerce-Markt haben.
@@ -47,7 +47,7 @@ Das hier eingeführte Modell simuliert einen Recommerce-Markt mit zwei konkurrie
 Der Markt soll fair und symmetrisch sein, was bedeutet, dass beide Anbieter die gleichen Produkte verkaufen, gleiche Beliebtheit haben, abwechselnd und für die gleiche Länge die Preise setzen und die gleichen Kosten haben.
 Damit können die Gewinne der beiden Anbieter direkt verglichen und auf die Güte der Preisstrategien geschlossen werden.
 Zum Markov-Entscheidungsprozess wird dieser Markt, wenn er aus der Sicht eines der beiden Anbieter betrachtet wird.
-Der andere Anbieter wird damit als Teil der Umgebung betrachtet.
+Der andere Anbieter ist damit ein Teil der Umgebung.
 Das Verhalten des Konkurrenten kann deterministisch oder stochastisch sein, muss aber für die Markov-Eigenschaft unveränderlich sein.
 So werden im Folgenden die Anbieter mit 1 und 2 bezeichnet, wobei 1 der Anbieter ist, aus dessen Sicht das Marktgeschehen abläuft.
 Alle Definitionen gelten aber auch analog andersherum.

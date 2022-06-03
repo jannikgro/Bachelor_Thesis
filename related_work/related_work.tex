@@ -101,7 +101,7 @@ Während des Trainings wird eine $\varepsilon$-Soft-Policy genutzt, um für ausr
 Dieses Verfahren lässt sich unmittelbar mit Tabellen umsetzen.
 Die Umsetzung dieses Verfahrens mit neuronalen Netzen führt zu dem erfolgreichen >>Deep-Q-Learning<<.
 Solche >>Deep-Q-Networks<< (DQNs) sind zunächst für diskrete Aktionsräume entworfen worden.
-Die Schätzung der Aktionswertefunktion wird dabei so umgesetzt, dass an den Input des Netzes nur den Zustand angelegt wird und dann in einer Berechnung auf so viele Ausgabeneuronen abgebildet wird, wie es Aktionen gibt.
+Die Schätzung der Aktionswertefunktion wird dabei so umgesetzt, dass an den Input des Netzes nur der Zustand angelegt wird und dann in einer Berechnung auf so viele Ausgabeneuronen abgebildet wird, wie es Aktionen gibt.
 So erhält man bei nur einem der aufwendigen Läufe durch das neuronale Netz bereits alle Aktionswerte auf einmal.
 Die Wahl des Maximums und des Argmax sind dann unmittelbar möglich.
 Das Training findet iterativ statt, indem die bisherigen Schätzwerte des Netzes mit Zustandsübergängen $(s, a, r, s')$ aus der gesammelten Erfahrung $\mathcal{D}$ in Richtung des Zielwertes $r+\gamma \max_{a'\in\mathcal{A}}{Q(s',a')}$ bewegt werden.
