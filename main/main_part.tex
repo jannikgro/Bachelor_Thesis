@@ -221,14 +221,12 @@ Dadurch, dass der Agent stets gegen sich selbst spielt, wird die Markov-Eigensch
 Die Motivation hinter Self-Play ist, dass der Agent einerseits stets einem ebenbürtigen Gegner gegenübersteht, aber andererseits auch, dass er ständig Strategien gegen die eigene entwickelt, die dann wiederum herausgefordert werden.
 Dadurch soll der Agent gegen eine Vielzahl von Policies gestählert werden.
 Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in der vorangegangenen Analyse als grundsätzlich geeignet für diesen Markt erwiesen haben: A2C, PPO und SAC.
-
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{main/self_play.pdf}
 	\caption{Lernkurve von A2C, PPO und SAC beim Self-Play; A2C und SAC wurden über 2000 Episoden trainiert, PPO über 8000}
 	\label{grafic:SelfPlayLearningCurve}
 \end{figure}
-
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.8\textwidth]{main/self_play_detailed.pdf}
