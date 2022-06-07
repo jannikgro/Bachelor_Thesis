@@ -49,7 +49,7 @@ Die optimale Policy ist dann die folgende deterministische, sogenannte Greedy-Po
 	\pi: s \mapsto \argmax_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
 \end{equation}
 Dieses Verfahren ist mit analogen Formeln ebenfalls auf Grundlage der Aktionswerte möglich.
-Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weitere Rechnungen, nur die Bestimmung der Aktion mit maximalem Wert.
+Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weiteren Rechnungen, nur die Bestimmung der Aktion mit maximalem Wert.
 
 Bei der Definition dieses Marktes ist die Lösung mittels dynamischer Programmierung sogar noch einfacher, weil die Episodenlänge begrenzt ist und es einen Schrittzähler gibt.
 Dann wird zwischen dem Schrittzähler und dem (restlichen) Zustand unterschieden, und eine Tabelle $V$ erstellt, die mit Zustand und Schrittzähler adressiert wird.
@@ -101,7 +101,7 @@ Während des Trainings wird eine $\varepsilon$-Soft-Policy genutzt, um für ausr
 Dieses Verfahren lässt sich unmittelbar mit Tabellen umsetzen.
 Die Umsetzung dieses Verfahrens mit neuronalen Netzen führt zu dem erfolgreichen >>Deep-Q-Learning<<.
 Solche >>Deep-Q-Networks<< (DQNs) sind zunächst für diskrete Aktionsräume entworfen worden.
-Die Schätzung der Aktionswertefunktion wird dabei so umgesetzt, dass an den Input des Netzes nur den Zustand angelegt wird und dann in einer Berechnung auf so viele Ausgabeneuronen abgebildet wird, wie es Aktionen gibt.
+Die Schätzung der Aktionswertefunktion wird dabei so umgesetzt, dass an den Input des Netzes nur der Zustand angelegt wird und dann in einer Berechnung auf so viele Ausgabeneuronen abgebildet wird, wie es Aktionen gibt.
 So erhält man bei nur einem der aufwendigen Läufe durch das neuronale Netz bereits alle Aktionswerte auf einmal.
 Die Wahl des Maximums und des Argmax sind dann unmittelbar möglich.
 Das Training findet iterativ statt, indem die bisherigen Schätzwerte des Netzes mit Zustandsübergängen $(s, a, r, s')$ aus der gesammelten Erfahrung $\mathcal{D}$ in Richtung des Zielwertes $r+\gamma \max_{a'\in\mathcal{A}}{Q(s',a')}$ bewegt werden.
@@ -137,7 +137,7 @@ Dabei wird bei DDPG wird ein Zielnetz mit Parametern $\psi'$ für die Schätzung
 \begin{equation}
 	\psi' \leftarrow (1 - \rho) \psi' + \rho \psi
 \end{equation}
-aktualisert wird.
+aktualisiert wird.
 Zur Optimierung der Policyfunktion in dem Sinne, dass sie für einen Zustand möglichst das Argmax berechnet, wird Gradientenanstieg verwendet.
 Das wird dadurch möglich, dass beide neuronalen Netze differenzierbar sind und der Aktionsraum stetig ist.
 So kann der Gradient
@@ -149,7 +149,7 @@ durch die automatische Differenzierung des Deep-Learning-Frameworks berechnet we
 Nachfolgende Analysen haben ergeben, dass die systematische Überschätzung der Funktionswerte bei DDPG sich besonders stark auf die Leistung auswirkt. \cite{DBLP:journals/corr/abs-1802-09477}
 In diesem Paper wurden drei Verbesserungen für den DDPG-Algorithmus vorgeschlagen:
 \begin{enumerate}
-	\item Es werden zwei seperate Netze für die Aktionswertefunktion gehalten.
+	\item Es werden zwei separate Netze für die Aktionswertefunktion gehalten.
 	Für die Berechnung des Zielwertes wird immer das Minimum von beiden genommen.
 	\item Weil die Q-Netze manchmal kleinere Ausbuchtungen haben, die vom Gradientenanstieg ausgenutzt werden, wird bei der Berechnung des Zielwertes der Aktionsauswahl durch das Policynetz normalverteiltes Rauschen angefügt.
 	Die Aktionen werden dabei selbstverständlich auf den Aktionsraum geclippt.
@@ -196,10 +196,11 @@ Das ist ein etabliertes Vorgehen, deshalb wird ab jetzt wie in der Literatur der
 Algorithmen, die nach diesem Prinzip funktionieren, werden Actor-Critic-Algorithmen genannt.
 Das ist eine Metapher für die zwei Netze Actor (berechnet die Policy) und Critic (schätzt den Zustandswert und ermöglicht damit die >>Kritik<< einer Aktion).
 In manchen Implementierungen teilen sich die beiden Netze vordere Schichten.
-Unterschiedliche Herangehensweisen gibt es beim Training des Critic-Netzes.
-Wenn es nach dem Sampling der Episoden direkt mittels überwachtem Lernen trainiert wird, so spricht man manchmal von >>REINFORCE mit Baseline<< oder >>Vanilla Policy Gradient Algorithm<<.
-Alternativ wird das Critic-Netz mittels Bootstrapping wie bei den Q-Learning-Verfahren trainiert.
-Die letztere Variante wird in dieser Arbeit untersucht.
+Um aus den Trainingsdaten den Advantagewert zu schätzen, gibt es mehrere Herangehensweisen.
+Eine Möglichkeit ist es, die Episoden bis zum Ende zu sampeln und die dabei gemessenen Werte zu verwenden.
+Das ist ein Schätzer ohne Bias, aber mit großer Varianz.
+Alternativ kann Bootstrapping verwendet werden, was die Varianz reduziert aber Bias einführt.
+Um einen Kompromiss zwischen Bias und Varianz zu finden, wurde der Generalized Advantage Estimator vorgeschlagen, \cite{https://doi.org/10.48550/arxiv.1506.02438} der auch in diesen Implementierungen verwendet wird.
 
 Im Gegensatz zu den Q-Learning-Verfahren aus dem Abschnitt \ref{section:qlearning} handelt es sich bei dieser Gruppe um On-Policy-Algorithmen.
 Das bedeutet, dass die Trainingsdaten mit der Policy gewonnen werden mussten, die auch trainiert wird.
@@ -208,7 +209,7 @@ Training mit älteren Daten ist nicht möglich.
 Ein Problem bei Actor-Critic-Methoden ist, dass abrupte Änderungen der Policy die Besuchswahrscheinlichkeiten der Zustände radikal verändern kann, ein Grund für Instabilität.
 Die Lösungsidee dagegen ist, beim Lernen die Veränderung der Wahrscheinlichkeiten der Policy gering zu halten.
 Ein wichtiger Beitrag dazu war TRPO, das die Kullback-Leibler-Divergenz zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{trpo2015}
-Es verwendet einige mathematische Rafinessen, wird aber hier nicht weiter behandelt.
+Es verwendet einige mathematische Tricks, wird aber hier nicht weiter behandelt.
 Stattdessen wird PPO behandelt, was 2018 erschien und ebenfalls den Unterschied zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{ppo2018}
 Dazu wird der Gradientenanstieg nach dem Sammeln von Erfahrung in kleinere Schritte zerlegt und die alten Parameter $\phi_{old}$ gespeichert.
 Das geschieht, um für eine Aktion $a \in \mathcal{A}$ in einem Zustand $s \in \mathcal{S}$ das Verhältnis aus neuer und alter Wahrscheinlichkeit $r(t, \phi, \phi_{old}) := \pi_\phi(S_t, A_t) / \pi_{\phi_{old}}(S_t, A_t)$ berechnen zu können.
@@ -224,6 +225,7 @@ Dass nicht nur geclippt, sondern auch minimiert wird, behandelt den Fall, dass d
 Gerät diese Wahrscheinlichkeit aus dem Vertrauensbereich (in die falsche Richtung) heraus, so soll dies weiterhin korrigiert werden.
 
 \section{Soft Actor Critic}
+\label{section:sac}
 Eines der neuesten Verfahren ist der sogenannte Soft-Actor-Critic-Algorithmus.
 Er wurde 2018 von einer Forschungsgruppe aus Berkeley entwickelt und wurde 2018 publiziert. \cite{haarnoja2018soft}
 Soft Actor Critic (SAC) kann als Verallgemeinerung von TD3 angesehen werden.
@@ -240,7 +242,7 @@ Das Training der Aktionswertefunktion findet genau wie bei TD3 statt.
 Die genutzte Implementierung verwendet ebenfalls zwei Aktionswertnetze, verzichtet aber auf das im Originalpaper vorgeschlagene zusätzliche Netz zur Zustandswertschätzung. \cite{stable-baselines}
 Die Verlustfunktion zur Optimierung der Policy schreibt sich mit folgendem Ausdruck:
 \begin{equation}
-	L_{Q_\theta}(\phi) = \mathcal{E}_{S_t \sim \mathcal{D}} \left[D_{KL}\left(\phi_\phi(\cdot | S_t) | \frac{\exp(Q_\theta(S_t, \cdot))}{Z_\theta(S_t)}\right)\right]
+	L_{Q_\theta}(\phi) = \mathbb{E}_{S_t \sim \mathcal{D}} \left[D_{KL}\left(\pi_\phi(\cdot | S_t) | \frac{\exp(Q_\theta(S_t, \cdot))}{Z_\theta(S_t)}\right)\right]
 \end{equation}
 Es wird dabei aus den Aktionswerten eine Wahrscheinlichkeitsverteilung gebaut, indem sie exponentiert und duch einen Normierungsfaktor $Z_\theta(S_t)$ geteilt werden.
 Dieser Normierungsfaktor wird nur mathematisch dafür benötigt, dass das Integral über den gesamten Aktionsraum 1 ergibt.
@@ -248,6 +250,7 @@ Für den Algorithmus wird er aber nicht berechnet, da er nicht von $\theta$ abh�
 Diese konstruierte Wahrscheinlichkeitsverteilung gewichtet wie erwartet die Aktionen mit hohem Aktionswert höher.
 In diese Richtung soll dann die Policy verändert werden.
 Im Programm muss aber diese komplizierte Verlustfunktion nicht abgeleitet werden, sondern lässt sich mit einigen Umformungen deutlich leichter formulieren.
+Der Entropieparameter $\alpha$ kann entweder manuell eingestellt oder während des Trainings automatisch erlernt werden. \cite{https://doi.org/10.48550/arxiv.1812.05905}
 
 Soft Actor Critic ist angetreten, um bei der höheren Sample-Effizienz eines Off-Policy-Algorithmus weiterhin die Stabilität der On-Policy-Algorithmen zu haben.
 Mit Soft Actor Critic konnten schwierige Aufgaben in verschiedenen Bereichen gelöst werden.

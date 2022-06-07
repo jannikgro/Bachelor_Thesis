@@ -1,6 +1,7 @@
+\section{Hyperparameter}
 \begin{table}[t]
     \centering
-    \begin{tabular}{l p{0.5\textwidth}>{\bfseries}l}
+    \begin{tabular}{l l l}
         \toprule
         Symbol        & Erklärung                                                                   & Standardwert\\\midrule
         $n_{ep}$      & Anzahl der Schritte in einer Episode                                        & $50$\\
@@ -13,4 +14,66 @@
     \end{tabular}
     \caption{Marktparameters mit kurzer Erklärung und für diese Experimente verwendete Standardwerte}
     \label{tab:default_parameters}
+\end{table}
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{p{0.5\textwidth} l}
+        \toprule
+        Parameter                                     & Wert\\\midrule
+        Lernrate                                      & $10^{-3}$\\
+        Größe des Experiencebuffers                   & $10^6$\\
+        Episoden bis zum Beginn des Lernens           & $100$\\
+        Größe eines Minibatches                       & $100$\\
+        Koeffizient für die Polyak-Mittelung ($\tau$) & $0.005$\\
+        Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+    \end{tabular}
+    \caption{Hyperparameter für DDPG und TD3}
+    \label{tab:DDPGHyperparameters}
+\end{table}
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{p{0.5\textwidth} l}
+        \toprule
+        Parameter                                     & Wert\\\midrule
+        Lernrate                                      & $7\cdot 10^{-4}$\\
+        Anzahl der Schritte pro Update                & $5$\\
+        Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+    \end{tabular}
+    \caption{Hyperparameter für Advantage Actor Critic}
+    \label{tab:A2CHyperparameter}
+\end{table}
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{p{0.5\textwidth} l}
+        \toprule
+        Parameter                                     & Wert\\\midrule
+        Lernrate                                      & $3 \cdot 10^{-4}$\\
+        Anzahl der Schritte pro Update                & $2048$\\
+        Größe eines Minibatches                       & $64$\\\
+        Anzahl der Epochen pro Update                 & $10$\\
+        \textit{clip\_range} ($\varepsilon$)          & $0.2$\\
+        Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+    \end{tabular}
+    \caption{Hyperparameter Proximal Policy Optimization}
+    \label{tab:PPOHyperparameters}
+\end{table}
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{p{0.5\textwidth} l}
+        \toprule
+        Parameter                                     & Wert\\\midrule
+        Lernrate                                      & $3 \cdot 10^{-4}$\\
+        Größe des Experiencebuffers                   & $10^6$\\
+        Episoden bis zum Beginn des Lernens           & $100$\\
+        Größe eines Minibatches                       & $256$\\\
+        Entropiekoeffizient ($\alpha$)                & automatisch\\
+        Koeffizient für die Polyak-Mittelung ($\tau$) & $0.005$\\
+        Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+    \end{tabular}
+    \caption{Hyperparameter Soft Actor Critic}
+    \label{tab:SACHyperparameters}
 \end{table}
