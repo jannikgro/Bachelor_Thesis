@@ -51,14 +51,6 @@ Die optimale Policy ist dann die folgende deterministische, sogenannte Greedy-Po
 Dieses Verfahren ist mit analogen Formeln ebenfalls auf Grundlage der Aktionswerte möglich.
 Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weiteren Rechnungen, nur die Bestimmung der Aktion mit maximalem Wert.
 
-Bei der Definition dieses Marktes ist die Lösung mittels dynamischer Programmierung sogar noch einfacher, weil die Episodenlänge begrenzt ist und es einen Schrittzähler gibt.
-Dann wird zwischen dem Schrittzähler und dem (restlichen) Zustand unterschieden, und eine Tabelle $V$ erstellt, die mit Zustand und Schrittzähler adressiert wird.
-Die Endzustände werden mit $0$ initialisiert und die anderen Zustände dieser leicht abgewandelten Bellman-Gleichung vom Ende bis zum Anfang einer Episode befüllt:
-\begin{equation}
-	V(s, t) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s', t + 1)\right)}\right)}
-\end{equation}
-Hier muss nicht einmal Konvergenz abgewartet werden, sondern die Tabelle ist nach dem Befüllen mit den exakten Zustandswerten befüllt, und die optimale Policy ist wieder die Greedy-Policy.
-
 Dynamische Programmierung wurde bereits erfolgreich für dynamische Preisgestaltung eingesetzt, hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind. \cite{10.1145/3219819.3219833}
 Erstens müssen die Wahrscheinlichkeitsverteilungen der Belohnungen und Zustandsübergänge bekannt sein.
 Das ist für die Realität nicht möglich und bereitet auch in dem in dieser Arbeit untersuchten Markt Probleme.
@@ -75,18 +67,15 @@ Tatsächlich lässt sich zeigen, dass dieses Verfahren in der Asymptotik eine op
 Doch auch dieses Verfahren kann auf den beschriebenen Markt kaum angewandt werden.
 In jedem Fall müsste die Formulierung mit dem diskreten Aktionsraum gewählt werden.
 Hindernis ist aber auch hier der große Zustands- und Aktionsraum: soll das Monte-Carlo-Verfahren angewandt werden, so ist dafür eine Tabelle der Größe $|\mathcal{S} \times \mathcal{A}|$ erforderlich.
-Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste die Tabelle mindestens\footnote{
-	Diese Zahl ist eine untere Schranke, da für die Anzahl der Produkte in Zirkulation nur $5 m_{lager}=500$ veranschlagt wurde.
-	Wenn mehr Neuprodukte verkauft als Produkte zurückverkauft und weggeworfen werden, so ist hier ein noch größeres Array nötig.
-} $50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$ Einträge haben.
+Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste die Tabelle $50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$ Einträge haben.
 Obwohl dieser Wert bereits jeden verfügbaren Speicher sprengt, ist die Anzahl der unterschiedlichen Preisstufen mit 10 für realistische Verhältnisse noch viel zu niedrig gewählt.
 Tatsächlich liegt der benötigte Speicher in $\mathcal{O}\left(p_{max}^6\right)$, was eine Skalierung selbst bei ansonstem kleineren Zustandsraum unmöglich macht.
-Weil dies sogar nur die Betrachtung des Speichers war -- bis Konvergenz erreicht ist, müsste jeder Zustand (in der Monte-Carlo-Lösung) sehr oft durchlaufen werden -- muss geschlussfolgert werden, dass eine Lösung, die für alle Zustände die Zustandswerte ausrechnen möchte, rechentechnisch nicht machbar ist.
+Weil dies sogar nur die Betrachtung des Speichers war -- bis Konvergenz erreicht ist, müsste jeder Zustand sehr oft durchlaufen werden -- muss geschlussfolgert werden, dass eine Lösung, die für alle Zustände die Zustandswerte ausrechnen möchte, nicht realisierbar ist.
 
 Approximationen sind also unumgänglich.
 Sie beruhen auf der Einsicht, dass der Zustandsraum zwar sehr groß ist, aber viele Zustände sich sehr ähnlich sind.
 Dadurch können Modelle mit deutlich weniger Parametern als Zuständen diese gewünschten Funktionen  mit für praktische Zwecke ausreichender Genauigkeit annähern.
-Alle folgenden Verfahren nutzen sogenannte künstliche neuronale Netze, die am weitesten verbreitete Technologie um komplexe nichtlineare Funktionen zu approximieren. \cite{lapan2020deep}
+Alle folgenden Verfahren nutzen sogenannte künstliche neuronale Netze, die am weitesten verbreitete Technologie, um komplexe nichtlineare Funktionen zu approximieren. \cite{lapan2020deep}
 
 \section{Q-Learning-Verfahren im stetigen Aktionsraum}
 \label{section:qlearning}
@@ -116,18 +105,18 @@ Weiterhin speichern sie zwei Netze: neben dem, das trainiert wird, auch ein soge
 Das verhindert ungewollte Oszillationen und Instabilität. \cite{atari2014}
 Zahlreiche weitere Techniken zur Verbesserung von Deep-Q-Networks sind verbreitet und verbessern das Training erheblich. \cite{qlearningcomparison2017}
 Für die gleich folgenden Verfahren ist insbesondere die Erkenntnis wichtig, dass Q-Learning-Verfahren zur systematischen Überschätzung der Aktionswerte neigen. \cite{qlearningoverestimation}
-Die Erklärung dahinter ist einfach zu verstehen.
-Angenommen ein Zustand hat zwei Aktionen, die beide in einer optimalen Policy den tatsächlichen Zustandswert 0 haben (das ist ein Erwartungswert).
-Nun stehen aber nur zwei unabhängige, standardnormalverteilte Schätzwerte dieser Aktionswerte zur Verfügung.
-Dass das Maximum der beiden Zufallsvariablen kleiner-gleich null ist, hat nun eine Wahrscheinlichkeit von nur $(1/2)^2=1/4$.
-Es lässt sich weiterhin zeigen, dass die Verteilung des Maximums einen Erwartungswert von etwa $0.56$ hat. [Anhang]
-Um diese systematische Verzerrung zu umgehen, werden für Auswahl der Aktion und die Generierung des Schätzwertes unterschiedliche Netze herangezogen.
+% Die Erklärung dahinter ist einfach zu verstehen.
+% Angenommen ein Zustand hat zwei Aktionen, die beide in einer optimalen Policy den tatsächlichen Zustandswert 0 haben (das ist ein Erwartungswert).
+% Nun stehen aber nur zwei unabhängige, standardnormalverteilte Schätzwerte dieser Aktionswerte zur Verfügung.
+% Dass das Maximum der beiden Zufallsvariablen kleiner-gleich null ist, hat nun eine Wahrscheinlichkeit von nur $(1/2)^2=1/4$.
+% Es lässt sich weiterhin zeigen, dass die Verteilung des Maximums einen Erwartungswert von etwa $0.56$ hat. [Anhang]
+% Um diese systematische Verzerrung zu umgehen, werden für Auswahl der Aktion und die Generierung des Schätzwertes unterschiedliche Netze herangezogen.
 
 Die Verallgemeinerung auf stetige Aktionsräume ist bei Deep-Q-Networks nicht ohne einige grundlegende Designänderungen möglich.
 Das dabei entstehende Verfahren heißt Deep Deterministic Policy Gradient (DDPG) und wurde 2014 publiziert. \cite{10.5555/3044805.3044850}
 Ein neuronales Netz mit den Parametern $\psi$ berechnet die Aktionswerteschätzfunktion $Q_\psi: \mathcal{S} \times \mathcal{A}\rightarrow \mathbb{R}$ (jetzt muss die Aktion mit in die Eingabe).
 Dabei ist die Bestimmung des Maximums kaum möglich: für neuronale Netze ist keine analytische Lösung möglich und numerische Verfahren sind viel zu aufwendig für die vielen benötigten Trainingsschritte.
-Ein weiteres neuronales Netz mit den Parametern $\phi$ berechnet explizit die deterministische Policyfunktion $\pi_\phi: \mathcal{S} \rightarrow \mathcal{A}$.
+Die Lösung besteht in einem weiteren neuronalen Netz mit den Parametern $\phi$, das explizit die deterministische Policyfunktion $\pi_\phi: \mathcal{S} \rightarrow \mathcal{A}$ berechnet.
 Das Training des Q-Netzes findet wie beim DQN statt, außer dass für den Zielwert die Policyfunktion verwendet wird.
 Die dazugehörige Verlustfunktion lautet:
 \begin{equation}
@@ -159,7 +148,7 @@ Der entstehende Algorithmus wird als TD3 bezeichnet und hat bei vielen Tests dur
 
 Alle diese Q-Learning-Verfahren sind Off-Policy-Algorithmen.
 Das bedeutet, dass ihr Training auch mit Zustandsübergängen stattfinden kann, die nicht von der aktuellen Policy erzeugt wurden.
-Der Grund dafür ist, dass bei einer perfekten Policy die für \textbf{jeden} Zustandsübergang $(s, a, r, s')$ die Bellman-Gleichung
+Der Grund dafür ist, dass bei einer perfekten Policy für \textbf{jeden} Zustandsübergang $(s, a, r, s')$ die Bellman-Gleichung
 \begin{equation}
 	Q(s, a) = r + \max_{a' \in \mathcal{A}}{Q(s', a')}
 \end{equation}
@@ -210,7 +199,7 @@ Ein Problem bei Actor-Critic-Methoden ist, dass abrupte Änderungen der Policy d
 Die Lösungsidee dagegen ist, beim Lernen die Veränderung der Wahrscheinlichkeiten der Policy gering zu halten.
 Ein wichtiger Beitrag dazu war TRPO, das die Kullback-Leibler-Divergenz zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{trpo2015}
 Es verwendet einige mathematische Tricks, wird aber hier nicht weiter behandelt.
-Stattdessen wird PPO behandelt, was 2018 erschien und ebenfalls den Unterschied zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{ppo2018}
+Stattdessen wird der Nachfolger PPO verwendet, der 2018 erschien und ebenfalls den Unterschied zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{ppo2018}
 Dazu wird der Gradientenanstieg nach dem Sammeln von Erfahrung in kleinere Schritte zerlegt und die alten Parameter $\phi_{old}$ gespeichert.
 Das geschieht, um für eine Aktion $a \in \mathcal{A}$ in einem Zustand $s \in \mathcal{S}$ das Verhältnis aus neuer und alter Wahrscheinlichkeit $r(t, \phi, \phi_{old}) := \pi_\phi(S_t, A_t) / \pi_{\phi_{old}}(S_t, A_t)$ berechnen zu können.
 Damit wird mit dem Hyperparameter $\varepsilon \in [0, 1]$ die Zielfunktion
