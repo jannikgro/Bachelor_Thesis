@@ -205,6 +205,31 @@ Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere 
 Er erreicht die Gewinnzone nur etwa 50\% später als SAC.
 Dabei wird klar, dass A2C in reinem Zeitbedarf den anderen Algorithmen deutlich überlegen ist.
 
+\section{Partielle Beobachtungen}
+Für die Markov-Eigenschaft ist ein sechsdimensionaler Aktionsraum erforderlich.
+Jedoch ist die Beobachtung mancher der verwendeten Größen in der Praxis nicht machbar.
+So wird der Konkurrent sich nicht ins Lager schauen lassen, und die Anzahl der Produkte in Zirkulation ist schwer zu schätzen.
+Deshalb drängt sich die Frage auf, ob die Algorithmen auch ohne diese beiden Informationen funktionieren.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/partial_observation.pdf}
+	\caption{Lernkurven von A2C und PPO bei vollständiger im Vergleich zu partieller Beobachtung; (blau) vollständige Beobachtung, (orange) Lagerstand des Konkurrenten wird nicht bereitgestellt, (grün) Lagerstand des Konkurrenten und Anzahl der Produkte in Zirkulation werden nicht bereitgestellt}
+	\label{grafic:PartialObservation}
+\end{figure}
+
+Die Lernkurven sind in Abbildung \ref{grafic:PartialObservation} dargestellt.
+Das Ergebnis fällt dabei äußerst überraschend aus.
+Entgegen der Erwartung, dass weniger Informationen zu schlechteren Ergebnissen führen müssten, steigt die Leistung der Agenten sogar.
+Während der Agent, dem nur der Lagerstand des Konkurrenten vorenthalten wird, recht ähnliche Ergebnisse wie der mit vollständiger Information erzielt, ist die Performance bei den Versuchen, bei denen zusätzlich die Information über die Anzahl der Produkte in Zirkulation fehlt, etwa 30\% höher.
+
+Zur Erklärung dieses Paradoxons ist zunächst heranzuführen, dass diese Informationen nur eine nachgeordnete Rolle spielen.
+Sie erklären zwar zu einem Teil den künftigen Zug des Konkurrenten und die Anzahl der verkaufswilligen Eigentümer, allerdings sind die Auswirkungen so indirekt, dass sie schwer für die Verbesserung einer Policy zu verwerten sind. \footnote{Die regelbasierten Konkurrenten verwenden diese Information auch nicht}
+
+Weiterhin stellt die höhere Dimension für die Agenten eine Herausforderung dar.
+Mit höherer Dimension des Beobachtungsraumes steigt der Bedarf an Samples, Muster in den Daten sind schwerer zu erkennen.
+Dass die Experimente mit vollständiger Information 50\% mehr Dimensionen erhalten, ist nicht unerheblich.
+
 \section{Training gegen die eigene Policy}
 Die in den Abschnitten \ref{section:main_ddpg}, \ref{section:main_ppo} und \ref{section:main_sac} betrachteten Durchläufe trainierten die RL-Agenten alle gegen den in Abschnitt \ref{section:rulebased} definierten regelbasierten Wettbewerber.
 Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, stellt jedoch für praktische Anwendungen eine Reihe von Problemen auf.
