@@ -4,7 +4,7 @@
     \begin{tabular}{l l l}
         \toprule
         Symbol        & Erklärung                                                                   & Standardwert\\\midrule
-        $n_{ep}$      & Anzahl der Schritte in einer Episode                                        & $50$\\
+        $n_{ep}$      & Anzahl der Schritte in einer Episode                                        & $500$\\
         $p_{max}$     & maximal wählbarer Preis für beide Agenten                                   & $10$\\
         $p_{einkauf}$ & Einkaufs- oder Produktionspreis für Neuprodukte                             & $3$\\
         $p_{lager}$   & Preis pro eingelagertem Gebrauchtprodukt pro Schritt                        & $0.1$\\
@@ -77,3 +77,31 @@
     \caption{Hyperparameter Soft Actor Critic}
     \label{tab:SACHyperparameters}
 \end{table}
+
+\section{Definition der regelbasierten Strategien}
+\label{section:rulebased_definition}
+Der Neupreis wird als
+\begin{equation}
+	\pi\left(p_{2, neu}\right)_{neu} = \max{\left(p_{2, neu} - 1, p_{einkauf} + 1\right)}
+\end{equation}
+gesetzt.
+Beim Gebraucht- und Rückkaufpreis wird je nach Lagerstand entschieden.
+Der Gebrauchtpreis wird in Abhängigkeit des Konkurrenzpreises und des Lagerstandes folgendermaßen gesetzt:
+\begin{equation}
+	\pi\left(p_{2, gebraucht}, n_{lager}\right)_{gebraucht} =
+	\begin{cases}
+		p_{2, gebraucht} + 1 & n_{lager} < m_{lager} / 15\\
+		p_{2, gebraucht} - 1 & n_{lager} < m_{lager} / 8\\
+		p_{2, gebraucht} - 2 & \text{sonst}
+	\end{cases}
+\end{equation}
+Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der Preis gesetzt als:
+\begin{equation}
+	\pi(p_{2, re}, n_{lager})_{re} =
+	\begin{cases}
+		p_{2, re} + 1 & n_{lager} < m_{lager} / 15\\
+		p_{2, re} - 1 & n_{lager} < m_{lager} / 8\\
+		p_{2, re} - 2 & \text{Sonst}
+	\end{cases}
+\end{equation}
+Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rechnung Ergebnisse kleiner als null oder größer als $\p_max$ ermittelt).
