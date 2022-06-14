@@ -269,27 +269,36 @@ Deshalb drängt sich die Frage auf, ob die Algorithmen auch ohne diese beiden In
 
 In Abbildung \ref{grafic:PartialObservation} sind die Lernkurven der drei Algorithmen beim Training gegen die unterbietende, regelbasierte Strategie dargestellt.
 Das Ergebnis fällt dabei äußerst überraschend aus.
-Die Erwartung, dass weniger Informationen zu schlechteren Ergebnissen führen müssten, erfüllt sich bei keinem der Agenten.
-Bei PPO ist die Performance ähnlich, A2C ist ohne diese Informationen besser und SAC sogar deutlich.
-Während der Agent, dem nur der Lagerstand des Konkurrenten vorenthalten wird, recht ähnliche, leicht verbesserte Ergebnisse wie der mit vollständiger Information erzielt, verkürzt sich bei den Versuchen, bei bei denen zusätzlich die Information über die Anzahl der Produkte in Zirkulation fehlt, nicht nur die Zeit bis zum Erreichen der Spitzenperformance auf unter 100 Episoden, sondern es verbessert sich sogar die endgültige Performance.
+Die Erwartung, dass weniger Informationen zu schlechteren Ergebnissen führen müssten, erfüllt sich nicht.
+Bis auf eine leicht verschlechterte Stabilität ist die Performance bei PPO ähnlich.
+Die leicht schlechtere Stabilität ist durch des Fehlens von Informationen leicht erklärt.
+Bei A2C verbessert sich ohne diese Informationen die Performance, und SAC sogar deutlich.
+Während der SAC-Agent, dem nur der Lagerstand des Konkurrenten vorenthalten wird, recht ähnliche, leicht verbesserte Ergebnisse wie der mit vollständiger Information erzielt, ist der, bei bei denen zusätzlich die Information über die Anzahl der Produkte in Zirkulation fehlt, deutlich besser.
+Es senkt sich nicht nur die Zeit bis zum Erreichen der Spitzenperformance auf unter 100 Episoden, sondern es verbessert sich sogar die endgültige Performance.
 Damit reicht die Leistung näher, aber nicht ganz an die von PPO heran.
+Das ist eine wichtige Erkenntnis mit Blick auf die praktische Anwendbarkeit, und dennoch stellt sich die Frage, wie sich die unerwartet gute Leistung mit unvollständiger Information erklären lässt.
 
-Zur Erklärung dieses Paradoxons ist zunächst heranzuführen, dass die ausgelassenen Informationen nur eine nachgeordnete Rolle spielen.
+Zur Erklärung ist zunächst heranzuführen, dass die ausgelassenen Informationen nur eine nachgeordnete Rolle spielen.
 Sie erklären zwar zu einem Teil den künftigen Zug des Konkurrenten und die Anzahl der verkaufswilligen Eigentümer, allerdings sind die Auswirkungen so indirekt, dass sie schwer für die Verbesserung einer Policy zu verwerten sind. \footnote{Die regelbasierten Konkurrenten verwenden diese Information auch nicht}
+Ein höherdimensionaler Beobachtungsraum stellt zudem grundsätzlich für die Agenten eine Herausforderung dar.
+Es steigt dann der Bedarf an Samples, Muster in den Daten sind schwerer zu erkennen.
 
-Weiterhin stellt die höhere Dimension für die Agenten eine Herausforderung dar.
-Mit höherer Dimension des Beobachtungsraumes steigt der Bedarf an Samples, Muster in den Daten sind schwerer zu erkennen.
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{main/sac_in_circulation_dependend_explanation.pdf}
-	\caption{Betrachtung der Agenten mit vollständiger Information: (links) Verlauf des \textit{in-circulation}-Zählers im SAC-Training, (mitte und rechts) Policy in Abhängigkeit von \textit{in-circulation} und Lagerstand des Konkurrenten bei SAC und PPO}
+	\caption{Betrachtung der Agenten mit vollständiger Information: (links) Verlauf des \textit{in-circulation}-Zählers im SAC-Training, (mittig und rechts) Gebrauchtpreis in Abhängigkeit von \textit{in-circulation} und Lagerstand des Konkurrenten bei SAC und PPO; andere Argumente sind dabei fest auf einen Wert gewählt, der typisch bei einem Trainingsdurchlauf ist (eigener Lagerstand: 25, Neupreis Konkurrent: 6, Gebrauchtpreis Konkurrent: 4, Rückkaufpreis Konkurrent: 0)}
 	\label{grafic:InCirculationExplain}
 \end{figure}
-Ein weiterer Erklärungsansatz besteht darin, dass der \textit{in-circulation}-Zähler bei weiterentwickelten Policies ganz anders verteilt ist.
-Wie Abbildung \ref{grafic:InCirculationExplain} zeigt, ist die Anzahl der Produkte in Zirkulation zunächst niedrig und später deutlich höher (besser trainierte Agents kaufen weniger zurück).
-Das bedeutet, dass gerade am Anfang der Experiencebuffer nur mit Zustandsübergänge aus dem Bereich gefüllt wird.
-Diese Samples bleiben im Experiencebuffer, sind aber für das spätere Training nicht mehr hilfreich und könnten den Agenten gewissermaßen >>ablenken<<.
-Entfällt jedoch der \textit{in-circulation}-Eintrag in den alten Samples, so verschwindet auch die Information, die in ihren Auswirkungen sehr ähnlichen Zustände unterscheidet.
-Folgt man diesem Erklärungsansatz, wird auch plausibel, warum dieser starke Effekt nur beim Off-Policy-Algorithmus SAC auftritt, und erheblich weniger bei den On-Policy-Algorithmen A2C und PPO.
-Dennoch ist auch diese Erklärung im Hinblick auf die Spitzenperformance nicht ganz zufriedenstellend.
-Es wäre in jedem Fall möglich, die Parameter, 
+Für das spezielle Phänomen bei SAC drängt sich aber noch ein weiterer Erklärungsansatz auf.
+Zunächst kann aus Abbildung \ref{grafic:InCirculationExplain} (Mitte) gelesen werden, dass der SAC-Agent Abhängigkeiten der beiden Argumente (Zähler der Anzahl in Zirkulation und Lagerstand des Konkurrenten) erlernt.
+Dass sich eine nahezu optimale Policy so verhalten sollte, ist angesichts der geringen Bedeutung der beiden Argumente auszuschließen, was die Policy des deutlich erfolgreicheren PPO-Agenten bestätigt.
+Wie man es erwarten würde, hängt sie kaum von diesen beiden Argumenten ab.
+Die niedrigere Spitzenperformance von SAC lässt sich (mindestens teilweise) durch diese Eigenschaften der Policy erklären.
+Für die von SAC erlernte Policy lässt sich eine Erklärung in der Funktionsweise von Soft Actor Critic finden.
+Sie basiert darauf, dass bei weiterentwickelten Policies im Markt mehr Produkte in Zirkulation sind.
+Das ist in Abbildung \ref{grafic:InCirculationExplain} (links) gezeigt und liegt daran, dass wenig trainierte Policies im Gegensatz zu den weiterentwickelten oft zu viel zurückkaufen (und dabei zu viel Geld ausgeben).
+Das bedeutet, dass gerade am Anfang der Experiencebuffer nur mit Zustandsübergänge mit niedrigen \textit{in-circulation}-Werten gefüllt wird.
+Diese Samples bleiben im Experiencebuffer, sind aber für das spätere Training nicht mehr hilfreich und können die Anomalien in der Policy erklären.
+So liegt eine starke Anomalie in der Policy im Bereich zwischen 50 und 150 Produkten in Zirkulation, genau der Bereich, aus dem die frühen Samples stammen.
+Das Entfallen des \textit{in-circulation}-Eintrages verbessert also die Performance des SAC wohl deshalb, weil dieser dann nicht mehr die Möglichkeit hat, mit missweisenden Samples tatsächlich nicht existente Zusammenhänge zu erlernen.
+Es ist damit als Schwäche von SAC gegenüber dem On-Policy-Verfahren PPO zu verzeichnen, dass es weniger gut in der Lage ist, die geringe Relevanz dieses Attributes selbstständig zu erlernen.
