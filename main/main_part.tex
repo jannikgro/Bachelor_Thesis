@@ -205,31 +205,6 @@ Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere 
 Er erreicht die Gewinnzone nur etwa 50\% später als SAC.
 Dabei wird klar, dass A2C in reinem Zeitbedarf den anderen Algorithmen deutlich überlegen ist.
 
-\section{Partielle Beobachtungen}
-Für die Markov-Eigenschaft ist ein sechsdimensionaler Aktionsraum erforderlich.
-Jedoch ist die Beobachtung mancher der verwendeten Größen in der Praxis nicht machbar.
-So wird der Konkurrent sich nicht ins Lager schauen lassen, und die Anzahl der Produkte in Zirkulation ist schwer zu schätzen.
-Deshalb drängt sich die Frage auf, ob die Algorithmen auch ohne diese beiden Informationen funktionieren.
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\textwidth]{main/partial_observation.pdf}
-	\caption{Lernkurven von A2C und PPO bei vollständiger im Vergleich zu partieller Beobachtung; (blau) vollständige Beobachtung, (orange) Lagerstand des Konkurrenten wird nicht bereitgestellt, (grün) Lagerstand des Konkurrenten und Anzahl der Produkte in Zirkulation werden nicht bereitgestellt}
-	\label{grafic:PartialObservation}
-\end{figure}
-
-Die Lernkurven sind in Abbildung \ref{grafic:PartialObservation} dargestellt.
-Das Ergebnis fällt dabei äußerst überraschend aus.
-Entgegen der Erwartung, dass weniger Informationen zu schlechteren Ergebnissen führen müssten, steigt die Leistung der Agenten sogar.
-Während der Agent, dem nur der Lagerstand des Konkurrenten vorenthalten wird, recht ähnliche Ergebnisse wie der mit vollständiger Information erzielt, ist die Performance bei den Versuchen, bei denen zusätzlich die Information über die Anzahl der Produkte in Zirkulation fehlt, etwa 30\% höher.
-
-Zur Erklärung dieses Paradoxons ist zunächst heranzuführen, dass diese Informationen nur eine nachgeordnete Rolle spielen.
-Sie erklären zwar zu einem Teil den künftigen Zug des Konkurrenten und die Anzahl der verkaufswilligen Eigentümer, allerdings sind die Auswirkungen so indirekt, dass sie schwer für die Verbesserung einer Policy zu verwerten sind. \footnote{Die regelbasierten Konkurrenten verwenden diese Information auch nicht}
-
-Weiterhin stellt die höhere Dimension für die Agenten eine Herausforderung dar.
-Mit höherer Dimension des Beobachtungsraumes steigt der Bedarf an Samples, Muster in den Daten sind schwerer zu erkennen.
-Dass die Experimente mit vollständiger Information 50\% mehr Dimensionen erhalten, ist nicht unerheblich.
-
 \section{Training gegen die eigene Policy}
 Die in den Abschnitten \ref{section:main_ddpg}, \ref{section:main_ppo} und \ref{section:main_sac} betrachteten Durchläufe trainierten die RL-Agenten alle gegen den in Abschnitt \ref{section:rulebased} definierten regelbasierten Wettbewerber.
 Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, stellt jedoch für praktische Anwendungen eine Reihe von Problemen auf.
@@ -278,3 +253,43 @@ Das ist über dem Niveau, das der regelbasierte Wettbewerber gegen sich selbst e
 Auch wenn das nicht explizites Trainingsziel war, übertreffen die Agenten dennoch die regelbasierte Konkurrenz.
 Bemerkenswert an diesen Ergebnissen ist jedoch, dass sie erreicht wurden, ohne den regelbasierten Wettbewerber je vorher gesehen zu haben.
 Die Lernkurven lassen zudem vermuten, dass bei PPO eine weitere Steigerung der Leistung möglich ist.\footnote{Wenn ich hier noch länger gewartet hätte, hätte ich den Draft nicht mehr fertig bekommen}
+
+\section{Partielle Beobachtungen}
+Für die Markov-Eigenschaft ist ein sechsdimensionaler Aktionsraum erforderlich.
+Jedoch ist die Beobachtung mancher der verwendeten Größen in der Praxis nicht machbar.
+So wird der Konkurrent sich nicht ins Lager schauen lassen, und die Anzahl der Produkte in Zirkulation ist schwer zu schätzen.
+Deshalb drängt sich die Frage auf, ob die Algorithmen auch ohne diese beiden Informationen funktionieren.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/partial_observation.pdf}
+	\caption{Lernkurven von A2C, PPO und SAC bei vollständiger im Vergleich zu partieller Beobachtung; (blau) vollständige Beobachtung, (orange) Lagerstand des Konkurrenten wird nicht bereitgestellt, (grün) Lagerstand des Konkurrenten und Anzahl der Produkte in Zirkulation werden nicht bereitgestellt}
+	\label{grafic:PartialObservation}
+\end{figure}
+
+In Abbildung \ref{grafic:PartialObservation} sind die Lernkurven der drei Algorithmen beim Training gegen die unterbietende, regelbasierte Strategie dargestellt.
+Das Ergebnis fällt dabei äußerst überraschend aus.
+Die Erwartung, dass weniger Informationen zu schlechteren Ergebnissen führen müssten, erfüllt sich bei keinem der Agenten.
+Bei PPO ist die Performance ähnlich, A2C ist ohne diese Informationen besser und SAC sogar deutlich.
+Während der Agent, dem nur der Lagerstand des Konkurrenten vorenthalten wird, recht ähnliche, leicht verbesserte Ergebnisse wie der mit vollständiger Information erzielt, verkürzt sich bei den Versuchen, bei bei denen zusätzlich die Information über die Anzahl der Produkte in Zirkulation fehlt, nicht nur die Zeit bis zum Erreichen der Spitzenperformance auf unter 100 Episoden, sondern es verbessert sich sogar die endgültige Performance.
+Damit reicht die Leistung näher, aber nicht ganz an die von PPO heran.
+
+Zur Erklärung dieses Paradoxons ist zunächst heranzuführen, dass die ausgelassenen Informationen nur eine nachgeordnete Rolle spielen.
+Sie erklären zwar zu einem Teil den künftigen Zug des Konkurrenten und die Anzahl der verkaufswilligen Eigentümer, allerdings sind die Auswirkungen so indirekt, dass sie schwer für die Verbesserung einer Policy zu verwerten sind. \footnote{Die regelbasierten Konkurrenten verwenden diese Information auch nicht}
+
+Weiterhin stellt die höhere Dimension für die Agenten eine Herausforderung dar.
+Mit höherer Dimension des Beobachtungsraumes steigt der Bedarf an Samples, Muster in den Daten sind schwerer zu erkennen.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/sac_in_circulation_dependend_explanation.pdf}
+	\caption{Betrachtung der Agenten mit vollständiger Information: (links) Verlauf des \textit{in-circulation}-Zählers im SAC-Training, (mitte und rechts) Policy in Abhängigkeit von \textit{in-circulation} und Lagerstand des Konkurrenten bei SAC und PPO}
+	\label{grafic:InCirculationExplain}
+\end{figure}
+Ein weiterer Erklärungsansatz besteht darin, dass der \textit{in-circulation}-Zähler bei weiterentwickelten Policies ganz anders verteilt ist.
+Wie Abbildung \ref{grafic:InCirculationExplain} zeigt, ist die Anzahl der Produkte in Zirkulation zunächst niedrig und später deutlich höher (besser trainierte Agents kaufen weniger zurück).
+Das bedeutet, dass gerade am Anfang der Experiencebuffer nur mit Zustandsübergänge aus dem Bereich gefüllt wird.
+Diese Samples bleiben im Experiencebuffer, sind aber für das spätere Training nicht mehr hilfreich und könnten den Agenten gewissermaßen >>ablenken<<.
+Entfällt jedoch der \textit{in-circulation}-Eintrag in den alten Samples, so verschwindet auch die Information, die in ihren Auswirkungen sehr ähnlichen Zustände unterscheidet.
+Folgt man diesem Erklärungsansatz, wird auch plausibel, warum dieser starke Effekt nur beim Off-Policy-Algorithmus SAC auftritt, und erheblich weniger bei den On-Policy-Algorithmen A2C und PPO.
+Dennoch ist auch diese Erklärung im Hinblick auf die Spitzenperformance nicht ganz zufriedenstellend.
+Es wäre in jedem Fall möglich, die Parameter, 
