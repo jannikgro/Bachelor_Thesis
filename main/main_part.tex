@@ -22,13 +22,13 @@ Anschließend werden Training gegen die eigene Policy, unvollständige Informati
 \section{DDPG und TD3}
 \label{section:main_ddpg}
 Bei der Diskussion der Q-Learning-Verfahren beschränkt sich diese Analyse direkt auf die Verfahren, die im stetigen Raum angewendet werden: DDPG und TD3.
-Diese Beschränkung wird gemacht, weil in vorherige Analysen Verfahren mit diskretem Aktionsraum weniger erfolgreich waren als solche mit stetigem Aktionsraum.
-Der Hauptgrund, der das Verfahren mit diskretem Aktionsraum ausschließt, ist jedoch, dass Deep-Q-Networks mit diskreten Aktionen jede einelnen Aktionen aus $\mathcal{A_\mathbb{N}}$ mit einem Aktionswert versehen müssten.
+Diese Beschränkung wird gemacht, weil in den diskutierten vorherigen Analysen zu Pricing Verfahren mit diskretem Aktionsraum weniger erfolgreich waren als solche mit stetigem Aktionsraum.
+Der Hauptgrund allerdings, der das Verfahren mit diskretem Aktionsraum für diese Arbeit ausschließt, ist, dass Deep-Q-Networks mit diskreten Aktionen jede einelnen Aktionen aus $\mathcal{A_\mathbb{N}}$ mit einem Aktionswert versehen müssten.
 Das sind bei der Konfiguration mit $p_{max}=10$ bereits 1000 Ausgabeneuronen und das Wachstumsverhalten ist kubisch in der Anzahl der Preisstufen.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{main/DDPG_learning_curve.pdf}
+	\includegraphics[width=\textwidth]{main/ddpg_td3.pdf}
 	\caption{Lernkurven von DDPG und TD3 mit unterschiedlichen Lernraten}
 	\label{graphic:DDPGLearningCurve}
 \end{figure}
@@ -40,7 +40,7 @@ Es wurden Trainingsläufe mit diesen Lernraten sowie kleineren und größeren du
 Die beim Training beobachteten Muster gleichen sich sowohl bei den beiden Algorithmen als auch den unterschiedlichen Parametrisierungen.
 
 Zu Beginn des Trainings ist bei einigen Läufen eine Verbesserung der gemittelten Returns, die primäre Leistungskennziffer, zu beobachten.
-Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen und die Gewinnzone nie erreicht.
+Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen, keiner erwirtschaftet Gewinne.
 
 Betrachtet man die Zusammensetzung der Gewinne -- die Diagramme dazu befinden sich im Anhang -- erkennt man, dass ein Teil der Agenten durch das Setzen hoher Neupreise wenige Kunden mit hoher Rendite gewinnen konnte.
 Die mit dem Neuverkauf erwirtschafteten Gewinne liegen jedoch nie über 100 in der Episode und damit deutlich niedriger als bei anderen Policies.
