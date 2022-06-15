@@ -110,7 +110,17 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 \section{Weitere Diagramme zum Lernerfolg}
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{main/self_play_mixed.pdf}
+	\includegraphics[width=\textwidth]{appendix/self_play_mixed.pdf}
+	\caption{
+        Detaillierter Blick in einen SAC-Trainingsdurchlauf gegen den regelbasierten Konkurrenten bei gemischter Rewardfunktion:
+        Der SAC-Agent nutzt eine Schwäche des Konkurrenten aus und leert dessen Lager so, dass dieser Strafe für nicht bereitgestellte Produkte zahlen muss.
+        Gleichzeitig versucht der regelbasierte Konkurrent, Produkte zurückzukaufen und gibt bei hohen Rückkaufpreisen dafür zu viel Geld aus.
+    }
+	\label{grafic:ExplanationUnnormalSAC}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{appendix/self_play_mixed.pdf}
 	\caption{Lernkurve von A2C, PPO und SAC beim Self-Play bei gemischter Rewardfunktion; die Algorithmen wurden über 2000 Episoden trainiert}
 	\label{grafic:SelfPlayMixedLearningCurve}
 \end{figure}
