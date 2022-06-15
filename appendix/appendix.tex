@@ -156,3 +156,13 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 	\caption{Lernkurve von A2C, PPO und SAC beim Self-Play bei gemischter Rewardfunktion; die Algorithmen wurden über 2000 Episoden trainiert}
 	\label{graphic:SelfPlayMixedLearningCurve}
 \end{figure}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{appendix/ppo_monopoly_vs_doupoly.pdf}
+	\caption{
+		Messungen in PPO-Trainingsdurchläufen auf einem Monopol (oben) und einem Duopol (unten):
+		Dass die gesetzten Neupreise trotz Monopol nicht höher sind, liegt daran, dass die Kaufbereitschaft der Kunden mit steigenden Preisen sinkt.
+		Auf dem gleichen Preisniveau verkauft der PPO-Agent im Monopol doppelt so viele Neuprodukte, die Aktivität auf dem Rebuy-Markt ist ebenfalls etwa doppelt so hoch.
+	}
+	\label{graphic:PPOMonopolyDuopoly}
+\end{figure}

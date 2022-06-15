@@ -332,3 +332,35 @@ Diese Samples bleiben im Experiencebuffer, sind aber für das spätere Training 
 So liegt eine starke Anomalie in der Policy im Bereich zwischen 50 und 150 Produkten in Zirkulation, genau der Bereich, aus dem die frühen Samples stammen.
 Das Entfallen des \textit{in-circulation}-Eintrages verbessert also die Performance des SAC wohl deshalb, weil dieser dann nicht mehr die Möglichkeit hat, mit missweisenden Samples tatsächlich nicht existente Zusammenhänge zu erlernen.
 Es ist damit als Schwäche von SAC gegenüber dem On-Policy-Verfahren PPO zu verzeichnen, dass es weniger gut in der Lage ist, die geringe Relevanz dieses Attributes selbstständig zu erlernen.
+
+\section{Vergleich im Monopol}
+In den vorigen Abschnitten wurden die Algorithmen in einem Recommerce-Duopol mit einem regelbasierten, unterbietenden Konkurrenten getestet.
+Für reale Anwendungen sind aber viele verschiedene Szenarien möglich.
+Es ist daher von Interesse, wie die Algorithmen auf verschiedenen Marktszenarien abschneiden, die in der Praxis auftreten können.
+Ein Szenario, das leichter ist sein dürfte, ist das Monopol.
+Hier ist der RL-Agent der einzige Anbieter, während weiterhin die gleiche Anzahl von Kunden den Markt besucht.
+Die anderen Dynamiken des Marktes sind unverändert.
+Als Rewardfunktion wird der Gewinn des Agenten gewählt -- Vergleiche mit Konkurrenten erübrigen sich im Monopol.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/comparison_monopoly.pdf}
+	\caption{Lernkurven von A2C, PPO und SAC in einem Monopolszenario über 1000 Episoden}
+	\label{graphic:MonopolyComparison}
+\end{figure}
+
+Abbildung \ref{graphic:MonopolyComparison} zeigt die Lernkurven der drei Agenten auf dem Monopolmarkt mit vollständiger Information.
+Dabei stechen sofort die Parallelen zum Duopol-Markt ins Auge:
+\begin{enumerate}
+	\item Die relative Reihenfolge der Agenten ist die gleiche: PPO schneidet am besten ab, dann SAC vor A2C.
+	\item A2C erreicht als erstes die Gewinnzone, dann folgt SAC und zuletzt PPO.
+	\item Das Training von PPO und SAC ist sehr stabil, A2C-Training ist von Abstürzen geprägt.
+\end{enumerate}
+Auch wenn der Monopol-Markt einfacher ist, so benötigt das Training nicht erheblich weniger Samples.
+Vergleicht man den Punkt, an dem die Algorithmen keine deutlich besseren Ergebnisse mehr erreichen, liegt A2C in beiden Setups bei 100 bis 200 Episoden, SAC bei etwa 300 Episoden und PPO bei etwa 600 Episoden.
+
+Im Monopol erzielen diese drei Algorithmen etwa doppelt so hohe Gewinne wie im Duopol.
+Auf der einen Seite ist das plausibel, schließlich müssen sie sich den Markt nicht mehr aufteilen.
+Auf der anderen Seite könnte man aber erwarten, dass die Gewinne sogar höher ausfallen, indem die Monopolsituation ausgenutzt wird, und höhere Preise verlangt werden.
+Dass das nicht geschieht, liegt an der begrenzten Kaufbereitschaft der Kunden, gerade bei höheren Preisen.
+Im Anhang in Abbildung \ref{graphic:PPOMonopolyDuopoly} wird dazu ein PPO-Durchlauf im Monopol mit dem im Duopol mit Blick auf Verkaufszahlen verglichen.
