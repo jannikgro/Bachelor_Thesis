@@ -364,3 +364,56 @@ Auf der einen Seite ist das plausibel, schließlich müssen sie sich den Markt n
 Auf der anderen Seite könnte man aber erwarten, dass die Gewinne sogar höher ausfallen, indem die Monopolsituation ausgenutzt wird, und höhere Preise verlangt werden.
 Dass das nicht geschieht, liegt an der begrenzten Kaufbereitschaft der Kunden, gerade bei höheren Preisen.
 Im Anhang in Abbildung \ref{graphic:PPOMonopolyDuopoly} wird dazu ein PPO-Durchlauf im Monopol mit dem im Duopol mit Blick auf Verkaufszahlen verglichen.
+
+\section{Vergleich im Oligopol}
+Als weiteres Szenario wird das Oligopol untersucht.
+Dabei tritt der RL-Agent gegen die folgenden Agenten an:
+\begin{enumerate}
+	\item eine Verallgemeinerung des bekannten regelbasierten Agenten (unterbietet das Minimum der anderen um eins),
+	\item einen regelbasierten Agenten, der mithilfe der Preise zwar sein Lager reguliert, aber nicht auf die anderen Agenten reagiert,
+	\item einen Agenten, der feste Preise hat (6 als Neupreis, 3 als Gebrauchtpreis und 2 als Rückkaufpreis) und
+	\item einen Agenten, der speziell für das Oligopolszenario erstellt wurde.
+	Als Neupreis unterbietet er den Median der anderen Anbieter, und reguliert sein Lager so, dass es etwa 7 Produkte enthält.
+\end{enumerate}
+Jeder Schritt wird dann in Fünftel zerlegt, die Anbieter setzen ihre Preise reihum.
+In jedem dieser Fünftel kommen vier Kunden zum Marktplatz, insgesamt also weiterhin 20.
+Das sonstige Verhalten des Marktes bleibt unverändert.
+Der Beobachtungsraum ist 18-dimensional (\textit{in-circulation}, eigener Lagerstand und für jeden der vier Konkurrenten drei Preise sowie der Lagerstand).
+Damit handelt es sich um das komplexeste Szenario, das behandelt wurde.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/comparison_oligopoly.pdf}
+	\caption{Lernkurven von A2C, PPO und SAC in einem Oligopolszenario über 1000 Episoden mit normaler Rewardfunktion und vollständiger Beobachtung}
+	\label{graphic:OligopolyComparison}
+\end{figure}
+
+Grafik \ref{graphic:OligopolyComparison} zeigt die Lernkurven auf diesem Oligopolszenario.
+Die RL-Agenten erreichen auch hier Lernerfolg, wobei die Gewinne selbstverständlich niedriger ausfallen, da sich die gleiche Anzahl von Kunden auf deutlich mehr Anbieter verteilt.
+Wie auch in den anderen Experimenten, zeigen PPO und SAC stabile Lernkurven.
+Bei A2C zeigen sich die bekannten Instabilitäten, aber die Spitzenperformance bleibt tatsächlich nur leicht hinter der der anderen Algorithmen zurück.
+Äußerst interessant ist bei diesem Versuch, dass der SAC-Algorithmus besser abschneidet als PPO, der bei den anderen Experimenten in der Spitzenleistung überlegen war.
+Obwohl eine ursächliche Begründung dafür hier nicht geliefert werden kann, so wurde die Leistungsfähigkeit von Soft Actor Critic in hochdimensionalen Benchmarks bereits im Originalpaper hervorgehoben. \cite{haarnoja2018soft}
+Das Experiment wurde ebenfalls mit der gemischten Rewardfunktion durchgeführt.
+Dessen Ergebnisse sind ähnlich, allerdings finden die SAC-Durchläufe in einer deutlich größeren Spanne statt.
+Die Lernkurven dazu sind im Anhang in Abbildung \ref{graphic:OligopolyMixedComparison} abgedruckt.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/oligopoly_vendor_comparison.pdf}
+	\caption{Profite typischer Trainingsdurchläufe von A2C, PPO und SAC im Vergleich zu ihren regelbasierten Konkurrenten}
+	\label{graphic:OligopolyVendorComparison}
+\end{figure}
+
+Abbildung \ref{graphic:OligopolyVendorComparison} zeigt für jeden der drei Algorithmen einen typischen Trainingsdurchlauf.
+Die Ergebnisse sind dabei äußerst zufriedenstellend.
+Jeder der RL-Agenten kann während seines Trainingsdurchlaufes alle seine regelbasierte Konkurrenz deutlich übertreffen.
+Der Agent mit den festen Preisen schneidet erwartungsgemäß am schlechtesten ab, da er weder dazu in der Lage ist, sein Lager zu regulieren, noch auf Preise der Konkurrenten zu reagieren.
+Der Agent, der nur sein Lager reguliert, landet auf dem vorletzten Platz, während die beiden regelbasierten Agenten, die auch auf Gegnerpreise reagieren, passabel abschneiden.
+
+In diesem Oligopolszenario tritt der Effekt, dass ein RL-Agent einen regelbasierten Konkurrenten überholen lässt, nicht auf.
+Weil die RL-Agenten ihre Konkurrenz überholen, besteht hier nicht die Notwendigkeit für die gemischte Rewardfunktion.
+Deshalb werden diese Versuche hier auch nicht weiter betrachtet.
+
+Für echte Märkte mit mehreren Anbietern und höherdimensionalen Beobachtungen ist es eine sehr wichtige Erkenntnis, dass auch dieses kompliziertere Szenario durch die RL-Algorithmen mit einer gewissen Lässigkeit und äußerst zuverlässig gelöst werden kann.
+Das unterstreicht die praktische Anwendbarkeit von RL-Algorithmen auf Marktplätzen.
