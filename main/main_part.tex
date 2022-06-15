@@ -229,22 +229,21 @@ Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.8\textwidth]{main/self_play_detailed.pdf}
-	\caption{
-        Einzelne Self-Play-Trainingsdurchläufe der Algorithmen:
-        (links) Trainingsverlauf im Vergleich zum regelbasierten Agenten;
-        (rechts) Verteilung der Gewinne des RL-Agenten im Vergleich zum regelbasierten an der Stelle mit maximaler Belohnung
-    }
+	\caption{Repräsentative Self-Play Durchläufe; Spaltenweise nach Agenten: (links) A2c, (mittig) PPO, (rechts) SAC; obere Zeile mit normaler Rewardfunktion, untere Zeile mit gemischter Rewardfunktion}
 	\label{grafic:SelfPlayDetails}
 \end{figure}
-Um Vergleichbarkeit herstellen zu können, wurde während des Self-Plays alle 100 Episoden ein Modell gespeichert und jedes dieser Modelle anschließend auf 250 Episoden getestet.
-Damit wurden Verteilungen und Kenngrößen gemessen, um eine akurate Lernkurve erstellen zu können, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleicht.
+Um Vergleichbarkeit herstellen zu können, wurde während des Self-Plays alle 50 Episoden ein Modell gespeichert und jedes dieser Modelle anschließend für 25 Episoden getestet.
+Damit wurden akurate Lernkurven erstellt, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleichen.
 Von allen Algorithmen wurde ein mittlerer Durchlauf ausgewählt und in der Abbildung \ref{grafic:SelfPlayDetails} veranschaulicht.
-Dabei stellt sich heraus, dass die Agenten den Markt erfolgreich erlernt haben.
-Die Maxima dieser mittleren Durchläufe liegen bei 745 (A2C), 545 (PPO) und 630 (SAC).
-Das ist über dem Niveau, das der regelbasierte Wettbewerber gegen sich selbst erreicht, und reicht erwartungsgemäß nicht ganz an die Ergebnisse des Trainings direkt gegen den regelbasierten Agenten heran.
-Auch wenn das nicht explizites Trainingsziel war, übertreffen die Agenten dennoch die regelbasierte Konkurrenz.
-Bemerkenswert an diesen Ergebnissen ist jedoch, dass sie erreicht wurden, ohne den regelbasierten Wettbewerber je vorher gesehen zu haben.
-Die Lernkurven lassen zudem vermuten, dass bei PPO eine weitere Steigerung der Leistung möglich ist.\footnote{Wenn ich hier noch länger gewartet hätte, hätte ich den Draft nicht mehr fertig bekommen}
+Self-Play wurde sowohl mit der normalen Rewardfunktion, als auch mit der gemischten Rewardfunktion aus Abschnitt ? getestet.
+In beiden Fällen haben die Agenten den Markt erfolgreich erlernt und können sich auch in dem Benchmark gegen den regelbasierten Konkurrenten behaupten.
+So liegen die Spitzenwerte aller Agenten im Benchmark bei 8000 oder knapp darunter, allerdings mit starken Schwankungen bei A2C.
+Von den A2C-Agenten erreichten einige kein Niveau von 5000.
+Die Auswirkungen der gemischten Rewardfunktion sind gerade bei A2C und SAC deutlich.
+Dass während des Trainings die Differenz zwischen eigenem und gegnerischen Profit mit als Optimierungskriterium verfolgt wird, führt tatsächlich dazu, dass der durch Self-Play trainierte Agent den regelbasierten Wettbewerber nicht vorbeiziehen lässt (A2C) oder ihn stärker abhängt (SAC).
+Obwohl die Benchmarkergebnisse erwartungsgemäß nicht ganz an die Ergebnisse des Trainings direkt gegen den regelbasierten Agenten heranreichen, so sind sie nahe daran.
+Das ist bemerkenswert, da diese Erfolge erreicht wurden, ohne den regelbasierten Wettbewerber je vorher gesehen zu haben.
+Damit können diese Ergebnisse als erfolgreich gewertet werden und die Fähigkeiten vom Training gegen die eigene Policy in diesem Experiment bestätigt werden.
 
 \section{Partielle Beobachtungen}
 Für die Markov-Eigenschaft ist ein sechsdimensionaler Aktionsraum erforderlich.
