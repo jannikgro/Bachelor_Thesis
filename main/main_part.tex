@@ -197,6 +197,43 @@ Die Geschwindigkeiten von A2C sind denen von PPO sehr ähnlich.
 Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere Samplebedarf bei PPO.
 Es wird allerdings klar, dass A2C in reinem Zeitbedarf den anderen Algorithmen deutlich überlegen ist.
 
+\section{Den Konkurrenten übertreffen -- eine angepasste Rewardfunktion}
+In den bisher untersuchten Lernkurven erreichen die Agenten zwar sehr gute Profite, lassen sich aber vom regelbasierten Konkurrenten übertreffen.
+In Abschnitt \ref{section:main_ppo} wurde bereits erklärt, dass dies nicht als Schwäche der Algorithmen zu deuten ist, sondern darauf auf die Rewardfunktion zurückgeführt werden kann, die nur eigenen Profit bewertet.
+Nun ist die Maximierung des eigenen Profits keine ungeeignete Kenngröße, dennoch werden Unternehmen ungern ihren Konkurrenten in einem symmetrischen Markt mehr Gewinn überlassen als sich selbst.
+Deshalb liegt es nahe, in der Belohnungsfunktion nicht nur die eigenen Profite zu bewerten, sondern auch, wenn der Konkurrent übertroffen wird.
+
+Eine Möglichkeit besteht darin, den Markt als \textit{Zero-Sum-Spiel} zu formulieren, indem die Belohnung genau die Differenz aus eigenem Gewinn und dem des Konkurrenten ist.
+Diese Formulierung legt den klaren Fokus auf das Übertreffen des Konkurrenten und eröffnet weiterhin möglicherweise das Marktszenario für Erkenntnisse aus der Spieltheorie für Zero-Sum-Spiele.
+Allerdings diese Formulierung nicht praxistauglich, weil das Ziel der Profitmaximierung gar nicht bewertet wird.
+So kann es passieren, dass bei einer Optimierung auf Differenz zwar der Konkurrent deutlich übertroffen wird, allerdings bei insgesamt niedrigen Gewinnen.
+
+Deshalb wurde für die folgende Versuchsreihe eine gemischte Rewardfunktion verwendet.
+Sie berechnet einfach die Summe aus Profit und Differenz zum Konkurrenten.
+Für diese Experimente wurden beide Summanden gleich gewichtet, es könnte aber noch ein Hyperparameter eingefügt werden, um die beiden Ziele Profitmaximierung und Übertreffen des Konkurrenten zu balancieren.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{main/lineplot_mixed_rewards.pdf}
+	\caption{Repräsentative Durchläufe der Algorithmen bei gemischter Rewardfunktion}
+	\label{grafic:LineplotMixedRewards}
+\end{figure}
+
+Im Anhang sind die Lernkurven der Algorithmen mit gemischter Rewardfunktion im vergleich zur Standardrewardfunktion abgedruckt.
+Wie erwartet liegen die Gewinne der Agenten niedriger als bei der anderen Rewardfunktion (schließlich sind Gewinne nicht mehr das alleinige Optimierungskriterium), allerdings fällt dieser Unterschied bei den Algorithmen unterschiedlich aus.
+Insbesondere erhöht sich durch den Wechsel der Rewardfunktion die Instabilität bei allen Algorithmen.
+Ob das Ziel, neben guten Gewinnen die Konkurrenz zu überholen, erreicht wird, zeigt Abbildung \ref{grafic:LineplotMixedRewards}.
+Obwohl der A2C-Durchlauf wieder Probleme mit Instabilität zeigt, erreicht er ein durchschnittliches Maximum von 7900, der Konkurrent nur 7200.
+Er überholt also bei der veränderten Rewardfunktion den regelbasierten Konkurrenten, und erhält gleichzeitig gute Gewinne.
+Beim PPO-Durchlauf ist genau das zu sehen, was Ziel der Anpassung der Rewardfunktion war:
+Der PPO-Agent bleibt nach dem ersten Übertreffen des Konkurrenten diesem über das gesamte Training hinweg voraus und erreicht ein Maximum von 8000 im Vergleich zu 6100 des regelbasierten Konkurrenten.
+Der Soft-Actor-Critic-Durchlauf erreicht nach der gemischten Rewardfunktion sogar die besten Ergebnisse, obwohl der Agent selbst in die Verlustzone rutscht.
+Er hat eine Policy gefunden, bei der der regelbasierte Konkurrent ständig Strafen zahlen muss, weil er keine gebrauchten Produkte liefern kann.
+Die Details zu diesem Durchlauf sind interessant und in Abbildung ? im Anhang erläutert.
+Aus Sicht der Algorithmenanalyse ist es ein bemerkenswertes Resultat, dass der SAC-Agent dazu fähig war, eine solche Strategie zu explorieren und zu entwickeln.
+Für die praktische Verwendung ist diese Policy allerdings nicht geeignet.
+Es sollte bei der Wahl der Rewardfunktion der Profit des Agenten höher gewichtet werden.
+
 \section{Training gegen die eigene Policy}
 Die in den Abschnitten \ref{section:main_ddpg}, \ref{section:main_ppo} und \ref{section:main_sac} betrachteten Durchläufe trainierten die RL-Agenten alle gegen den in Abschnitt \ref{section:rulebased} definierten regelbasierten Wettbewerber.
 Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, stellt jedoch für praktische Anwendungen eine Reihe von Problemen auf.
