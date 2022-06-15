@@ -214,6 +214,7 @@ Dadurch, dass der Agent stets gegen sich selbst spielt, wird die Markov-Eigensch
 Die Motivation hinter Self-Play ist, dass der Agent einerseits stets einem ebenbürtigen Gegner gegenübersteht, aber andererseits auch, dass er ständig Strategien gegen die eigene entwickelt, die dann wiederum herausgefordert werden.
 Dadurch soll der Agent gegen eine Vielzahl von Policies gestählert werden.
 Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in der vorangegangenen Analyse als grundsätzlich geeignet für diesen Markt erwiesen haben: A2C, PPO und SAC.
+Dabei wurde die gesamte Versuchsreihe mit der normalen Rewardfunktion und der gemischten Rewardfunktion aus Abschnitt ? durchgeführt.
 
 \begin{figure}[htbp]
 	\centering
@@ -222,21 +223,21 @@ Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in 
 	\label{grafic:SelfPlayLearningCurve}
 \end{figure}
 In der Abbildung \ref{grafic:SelfPlayLearningCurve} sind die Lernkurven der drei Algorithmen beim Training gegen sich selbst abgedruckt.
+Die Lernkurven bei gemischter Rewardfunktion sehen ähnlich aus und sind im Anhang in Abbildung \ref{grafic:SelfPlayMixedLearningCurve} abgedruckt.
 Diese Kurven zeigen zunächst, dass Lernerfolg bei allen dieser drei Agenten erreicht wird.
 Sie sind aber alleine nicht aussagekräftig, ob die Agenten sich tatsächlich gegen die Konkurrenz behaupten können.
 Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen Abschnitten verglichen werden.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\textwidth]{main/self_play_detailed.pdf}
+	\includegraphics[width=\textwidth]{main/self_play_detailed.pdf}
 	\caption{Repräsentative Self-Play Durchläufe; Spaltenweise nach Agenten: (links) A2c, (mittig) PPO, (rechts) SAC; obere Zeile mit normaler Rewardfunktion, untere Zeile mit gemischter Rewardfunktion}
 	\label{grafic:SelfPlayDetails}
 \end{figure}
 Um Vergleichbarkeit herstellen zu können, wurde während des Self-Plays alle 50 Episoden ein Modell gespeichert und jedes dieser Modelle anschließend für 25 Episoden getestet.
 Damit wurden akurate Lernkurven erstellt, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleichen.
-Von allen Algorithmen wurde ein mittlerer Durchlauf ausgewählt und in der Abbildung \ref{grafic:SelfPlayDetails} veranschaulicht.
-Self-Play wurde sowohl mit der normalen Rewardfunktion, als auch mit der gemischten Rewardfunktion aus Abschnitt ? getestet.
-In beiden Fällen haben die Agenten den Markt erfolgreich erlernt und können sich auch in dem Benchmark gegen den regelbasierten Konkurrenten behaupten.
+Für die drei Algorithmen und die zwei Rewardfunktionen wurde ein mittlerer Durchlauf ausgewählt und in der Abbildung \ref{grafic:SelfPlayDetails} veranschaulicht.
+Bei beiden Rewardfunktionen haben die Agenten den Markt erfolgreich erlernt und können sich auch in dem Benchmark gegen den regelbasierten Konkurrenten behaupten.
 So liegen die Spitzenwerte aller Agenten im Benchmark bei 8000 oder knapp darunter, allerdings mit starken Schwankungen bei A2C.
 Von den A2C-Agenten erreichten einige kein Niveau von 5000.
 Die Auswirkungen der gemischten Rewardfunktion sind gerade bei A2C und SAC deutlich.
