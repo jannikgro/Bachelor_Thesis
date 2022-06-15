@@ -79,6 +79,7 @@
     \label{tab:SACHyperparameters}
 \end{table}
 
+\pagebreak
 \section{Definition der regelbasierten Strategien}
 \label{section:rulebased_definition}
 Der Neupreis wird als
@@ -107,10 +108,43 @@ Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der
 \end{equation}
 Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rechnung Ergebnisse kleiner als null oder größer als $p_{max}$ ermittelt).
 
+\pagebreak
 \section{Weitere Diagramme zum Lernerfolg}
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{appendix/self_play_mixed.pdf}
+	\includegraphics[width=\textwidth]{appendix/mixed_rewards_a2c.pdf}
+	\caption{
+        Lernkurve des Advantage-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
+        Man sieht, dass einige Durchläufe mit gemischter Rewardfunktion einen ähnlichen Verlauf nehmen wie die mit Standardrewardfunktion.
+        Andere Läufe machen kaum Gewinn und leiden unter sehr viel Instabilität.
+    }
+	\label{grafic:MixedRewardsA2C}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{appendix/mixed_rewards_ppo.pdf}
+	\caption{
+        Lernkurve des Proximal-Policy-Optimization-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
+        Bei gemischter Rewardfunktion sind die Returns etwas schlechter, wie es angesichts des veränderten Optimierungskriteriums zu erwarten ist.
+        Allerdings verringert sich die sehr hohe Stabilität von PPO beim Training mit gemischter Rewardfunktion etwas.
+        Diese entstehende Instabilität ist aber gering und beeinträchtigt nicht die Ergebnisse.
+    }
+	\label{grafic:MixedRewardsPPO}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{appendix/mixed_rewards_sac.pdf}
+	\caption{
+        Lernkurve des Soft-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
+        Ähnlich wie bei A2C in \ref{grafic:MixedRewardsA2C} gibt es Durchläufe mit gemischter Rewardfunktion, die ähnlich zu den Durchläufen mit Standardrewardfunktion sind.
+        Es gibt aber auch Durchläufe, die nie die Gewinnzone erreichen.
+        Diese Durchläufe erreichen sogar bezüglich der gemischten Rewardfunktion die besten Ergebnisse, weil sie erfolgreich eine Schwäche im SAC-Algorithmus finden. (siehe \ref{grafic:ExplanationUnnormalSAC})
+    }
+	\label{grafic:MixedRewardsSAC}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{appendix/explanation_unnormal_sac.pdf}
 	\caption{
         Detaillierter Blick in einen SAC-Trainingsdurchlauf gegen den regelbasierten Konkurrenten bei gemischter Rewardfunktion:
         Der SAC-Agent nutzt eine Schwäche des Konkurrenten aus und leert dessen Lager so, dass dieser Strafe für nicht bereitgestellte Produkte zahlen muss.
