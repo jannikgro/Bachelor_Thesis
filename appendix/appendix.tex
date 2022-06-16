@@ -110,6 +110,16 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 \section{Weitere Diagramme zum Lernerfolg}
 \begin{figure}[htbp]
 	\centering
+	\includegraphics[width=\textwidth]{appendix/ppo_different_clipping.pdf}
+	\caption{
+		Lernkurven des Proximal-Policy-Optimization-Algorithmus bei unterschiedlichen Werten für $\varepsilon$:
+		Zwischen $0.2$ und $0.3$ ist eine Verbesserung in der Leistung zu sehen.
+		Bei größeren Werten setzt sich die Verbesserung nicht fort und die Trainingsstabilität sinkt.
+	}
+	\label{graphic:PPODifferentClipping}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
 	\includegraphics[width=\textwidth]{appendix/mixed_rewards_a2c.pdf}
 	\caption{
 		Lernkurve des Advantage-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
