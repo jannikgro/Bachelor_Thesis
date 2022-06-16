@@ -1,0 +1,13 @@
+Während Pricing ein altes Problem ist, war die Forschungsaktivität zu Pricing mit intensivem Wettbewerb und gerade auf Online-Marktplätzen bis vor einigen Jahren auf einem geringen Level, wie eine Übersichtsarbeit aus dem Jahre 2022 zeigt. \cite{Gerpott2022}
+Demnach dominierten Monpolszenarien oder Szenarien mit starken, aber einschränkenden Annahmen.
+
+Im Bereich der algorithmen- und datengetriebenen Preisoptimierung lässt sich die Schwierigkeit in zwei separate Herausforderungen unterteilen: Das Schätzen des Kundenverhaltens und das Optimieren des Pricings bei bekanntem oder erlerntem Kundenverhalten.
+Schlosser und Boissier \cite{10.1145/3219819.3219833} lösen diese Probleme einzeln.
+Zunächst werden Regressionsverfahren angewendet, um das Kundenverhalten zu erlernen und anschließend ein approximiertes Dynamic Programming Verfahren vorgestellt, um trotz des >>Fluchs der Dimension<< Preisstrategien optimieren zu können.
+Die mit diesem Verfahren optimierten Preisstrategien konnten erfolgreich auf Amazon Marketplace angewandt werden.
+
+Mit einem sehr ähnlichen Marktmodell haben Kastius und Schlosser \cite{Kastius2022} Reinforcement Learning eingesetzt, um unter Wettbewerbsbedingungen die Preisstrategie zu optimieren.
+Untersucht wurde eine \textit{Linear Economy} im Duopol und Oligopol.
+Als RL-Verfahren wurden Deep-Q-Networks (mit diskretem Aktionsraum) und Soft Actor Critic ausprobiert.
+Dabei schnitt Soft Actor Critic erheblich besser ab, aber die DQNs konnten die Aufgabe auch lösen.
+Es wurde weiterhin festgestellt, dass im Duopol gelegentlich Kartelle gebildet werden, wenn die Kaufbereitschaft der Kunden bei höheren Preisen nicht begrenzt wird.
