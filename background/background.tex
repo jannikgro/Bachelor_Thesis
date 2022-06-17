@@ -233,7 +233,7 @@ Die Verlustfunktion zur Optimierung der Policy schreibt sich mit folgendem Ausdr
 \begin{equation}
 	L_{Q_\theta}(\phi) = \mathbb{E}_{S_t \sim \mathcal{D}} \left[D_{KL}\left(\pi_\phi(\cdot | S_t) | \frac{\exp(Q_\theta(S_t, \cdot))}{Z_\theta(S_t)}\right)\right]
 \end{equation}
-Es wird dabei aus den Aktionswerten eine Wahrscheinlichkeitsverteilung gebaut, indem sie exponentiert und duch einen Normierungsfaktor $Z_\theta(S_t)$ geteilt werden.
+Es wird dabei aus den Aktionswerten eine Wahrscheinlichkeitsverteilung gebaut, indem sie exponenziert und durch einen Normierungsfaktor $Z_\theta(S_t)$ geteilt werden.
 Dieser Normierungsfaktor wird nur mathematisch dafür benötigt, dass das Integral über den gesamten Aktionsraum 1 ergibt.
 Für den Algorithmus wird er aber nicht berechnet, da er nicht von $\theta$ abhängt und deshalb bei der Gradientenberechnung in die Lernrate hineingezogen wird.
 Diese konstruierte Wahrscheinlichkeitsverteilung gewichtet wie erwartet die Aktionen mit hohem Aktionswert höher.

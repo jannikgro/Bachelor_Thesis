@@ -77,23 +77,21 @@ Das Kaufverhalten ist aber keinesfalls deterministisch.
 Es wird stark durch die Preise beeinflusst, aber unterschiedliche Kunden haben unterschiedliche Erwartungen, unterschiedliche Konsumgewohnheiten oder unterschiedliche Einstellungen zu Nachhaltigkeit.
 Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden geshuffelt wird.
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
-Die Berechnungsformel für den Präferenzvektor lautet:
+Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
+Die Präferenz, das Neuprodukt bei Anbieter $i$ zu kaufen, lautet:
 \begin{equation}
-	\sigma_{kunde}(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
-	\begin{pmatrix}
-		1\\
-		\frac{5.5}{p_{1, gebraucht}} - \exp{(p_{1, gebraucht} - 0.5 p_{max})}\\
-		\frac{10}{p_{1, neu}} - \exp{(p_{1, neu} - 0.8 p_{max})}\\
-		\frac{5.5}{p_{2, gebraucht}} - \exp{(p_{2, gebraucht} - 0.5 p_{max})}\\
-		\frac{10}{p_{2, neu}} - \exp{(p_{2, neu} - 0.8 p_{max})}\\
-	\end{pmatrix}
+	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0.8 p_{max})}
 \end{equation}
+Das Kaufen eines Gebrauchtproduktes bei Anbieter $i$ wird auf
+\begin{equation}
+	\sigma_{kunde, gebraucht, i} = \frac{5.5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0.5 p_{max})}
+\end{equation}
+festgelegt.
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung im Vergleich zu Neuprodukten entgegengebracht.
 Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0.5 p_{max}$ bei Gebraucht- und $0.8 p_{max}$ bei Neuware überschreitet.
-Das modelliert die grundsätzliche Zahlungsbereitschaft der Kunden für diese Produkte und verhindert einen Preiszyklus nach oben.
+Das modelliert die grundsätzlich beschränkte Zahlungsbereitschaft der Kunden für diese Produkte und verhindert einen Preiszyklus nach oben.
 Wie gefordert, werden die Produkte der beiden Anbieter als gleichwertig betrachtet.
-Der Wert 1 als Präferenz für das Nichtkaufen ist festgelegt.
 Fallen die Präferenzen der anderen Optionen niedrig aus, so wird durch die Softmax-Funktion eine hohe Wahrscheinlichkeit auf das Nichtkaufen entfallen.
 % Eine [noch zu erstellende] Darstellung im Anhang veranschaulicht das Kundenverhalten an einigen Beispielen.
 
