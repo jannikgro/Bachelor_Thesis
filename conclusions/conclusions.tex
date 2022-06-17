@@ -1,2 +1,34 @@
-I think this is a very helpful work.
-It will surely make the world a better place.
+Obwohl ein Recommerce-Markt zahlreiche Herausforderungen mit sich bringt und starke Konkurrenz stattfindet, konnten sehr effektive Preisstrategien erfolgreich mit Reinforcement-Learning-Verfahren gefunden werden.
+Dabei lieferten die Algorithmen A2C, PPO und SAC sehr gute Spitzenergebnisse, während DDPG und TD3 nicht gut abschnitten.
+Advantage Actor Critic ist den beiden Verfahren PPO und SAC in der Trainingsstabilität deutlich unterlegen, konnte aber sehr gute Policies liefern, wenn die Modellparameter während des Trainings in einem Moment guter Leistung gespeichert wurden.
+Weiterhin übertraf Advantage Actor Critic die anderen Algorithmen bei der Trainingsdauer und überraschenderweise auch bei der Sample Efficiency.
+Im Duopol und Monopol bewies PPO die stärkste Leistungsfähigkeit der Algorithmen.
+Über unterschiedliche Szenarien hinweg schnitt er in der Spitzenleistung am besten ab und lieferte stets stabiles Training.
+Sein Nachteil war in jeder der Analysen die geringere Sample Efficiency.
+Der Soft Actor Critic Algorithmus lieferte ebenfalls äußerst stabile Trainingsläufe, blieb jedoch in seiner Spitzenleistung auf Duopolszenarien hinter PPO zurück.
+In der Sample Efficiency hingegen war SAC PPO stets überlegen.
+Im deutlich höherdimensionalen Oligopol-Markt lieferte SAC die beste Spitzenleistung und war PPO überlegen.
+Weil die Algorithmen nach unterschiedlichen Bewertungskriterien unterschiedlich gut abschnitten, kann kein klarer Sieger gekürt werden.
+
+Die Ergebnisse dieser Arbeit lassen sich Ermutigung lesen, dass Reinforcement Learning auf realen Märkten zur Optimierung des Pricing angewandt werden kann.
+Der verwendete Markt ist kompliziert genug und die Ergebnisse stabil genug, sodass nicht zu erwarten ist, dass das Einfügen weiterer Informationen wie Qualität oder Saison die Algorithmen nicht zum Scheitern bringen.
+Für zentrale Herausforderungen auf realen Marktplätzen konnten in diesen Experimenten gezeigt werden, dass sie keine Probleme bereiten bzw. gelöst werden können.
+So funktionieren die Algorithmen auch bei partieller Sicht auf den Markt.
+Das Problem unbekannter Konkurrenzpolicy kann durch Self-Play gelöst werden.
+Die dabei trainierten Policies konnten ihre Konkurrenz bei guten Ergebnissen übertreffen, ohne sie jemals im Training gesehen zu haben.
+
+Als Herausforderung verbleibt das unbekannte Verhalten von Käufern und Eigentümern.
+Das ist notwendig, weil wegen des weiterhin hohen Samplebedarfes das Training der Agenten auf Simulationsplattformen stattfinden sollte.
+Um die Simulationsplattform auf den realen Markt anzupassen, muss das Verhalten dieser Marktteilnehmer aus Mangel an akkuraten theoretischen Modellen aus Echtweltdaten geschätzt werden.
+Das ist jedoch mit verschiedenen Regressionsverfahren möglich und wurde in vorheriger Forschungsarbeit bereits behandelt.
+
+Eine denkbare Alternative zum Training mit einer Simulationsplattform ist es, für einen Markt die Daten, die mit einer bisherigen Preisstrategie gesammelt wurden, direkt in einen Experiencebuffer zu schreiben.
+Mit einem Off-Policy-Verfahren wie SAC könnte damit bereits eine Policy erlernt werden, die auf dem echten Marktplatz akzeptable Ergebnisse liefert und dann mit niedrigem Samplebedarf weiter angepasst wird.
+Ob ein solches Vorgehen praxistauglich ist, sollte Gegenstand künftiger Forschung sein.
+
+Eine weitere Schwierigkeit, die auf realen Marktplätzen auftreten kann und nicht im Umfang dieser Arbeit war, ist Gedächtnis der Kunden und Eigentümer.
+In diesem Modell kommen Kunden und Eigentümer auf den Marktplatz und haben für ihre Entscheidung nur die Informationen eines einzigen Zeitschrittes.
+Tatsächlich ist aber davon auszugehen, dass zumindest einige Kunden den Preisverlauf beobachten und nicht nur in Abhängigkeit aktueller, sondern auch vergangener oder antizipierter zukünftiger Preise ihre Kaufentscheidung treffen.
+Stünde dem Agenten dann wie im derzeitigen Modell nur der aktuelle Markt zur Verfügung, so fehlte ihm ein großer Teil der eigentlich benötigten Entscheidungsgrundlage.
+Um eine längere Liste vergangener Zustände zu verarbeiten, ohne dass von Menschen relevante Features bei der Entwicklung extrahiert wurden, werden andere Arten von neuronalen Netzen benötigt.
+Wenn diese Informationen eine feste Größe haben, könnte über den Einsatz von CNNs nachgedacht werden, bei variabler Größe fiele die Wahl auf rekurrente Netze oder Transformer-Modelle.

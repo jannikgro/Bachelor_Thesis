@@ -1,7 +1,7 @@
 \section{Ein Überblick zu Recommerce und Preisstrategien}
 Nicht erst seitdem es Online-Marktplätze gibt, ist die Festlegung von Preisen eine zentrale Herausforderung im Geschäftsbetrieb.
 Durch Online-Marktplätze hat allerdings die Intensität des Wettbewerbs erheblich zugenommen, da Konkurrenzangebote leicht einsehbar sind und Preise in hochfrequentem Tempo gesetzt werden können.
-Zudem müssen alle Produkte des meist sehr breiten Angebots auf diese Weise mit in Abhängigkeit der Marktsituation eingepreist werden.
+Zudem müssen alle Produkte des meist sehr breiten Angebots in Abhängigkeit der Marktsituation dynamisch eingepreist werden.
 Diese Gründe motivieren automatische Preisfindung, da menschliche Branchenkenner mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
 
 Eine weitere Komponente kommt im sogenannten Recommerce hinzu.
@@ -10,7 +10,7 @@ Gerade mit Blick auf die ressourcenintensive Modebranche verspricht Recommerce e
 Es eröffnet Eigentümern die Möglichkeit, durch den Rückverkauf ihrer nicht weiter benötigten Produkte Geld einzunehmen, und macht Kaufinteressenten gebrauchte und ggf. aufgewertete Produkte zu niedrigeren Preisen verfügbar.
 Zur Herausforderung, neue Produkte einzupreisen, kommt also noch hinzu, Preise für gebrauchten Produkte und Rückkaufpreise festzulegen.
 Dabei müssen auch Nebenbedingungen wie Lagerkosten beachtet werden, wodurch sich ein durchaus kompliziertes Problem ergibt.
-Abbildung \ref{grafic:MarketOverview} zeigt eine grafische Visualisierung des in dieser Arbeit untersuchten Szenarios.
+Abbildung \ref{graphic:MarketOverview} zeigt eine grafische Visualisierung des in dieser Arbeit untersuchten Szenarios.
 
 \begin{figure}[htbp]
 	\centering
@@ -21,7 +21,7 @@ Abbildung \ref{grafic:MarketOverview} zeigt eine grafische Visualisierung des in
 		Zudem bieten sie Kunden einen Rückkaufpreis für die Rücknahme der gebrauchten Produkte.
 		Auch beim Rückkauf gibt es Konkurrenz: Die Eigentümer haben die Wahl, an wen sie zurückverkaufen oder ob sie dennoch wegwerfen.
 	}
-	\label{grafic:MarketOverview}
+	\label{graphic:MarketOverview}
 \end{figure}
 
 Die Herangehensweisen für das Dynamic Pricing, die heute in der Geschäftswelt genutzt werden, basieren vor allem auf regelbasierten Strategien.
@@ -39,22 +39,24 @@ Zunächst wird das zu untersuchende Marktszenario in Abschnitt \ref{section:mark
 
 \section{Der Markt als Markov-Entscheidungsprozess}
 \label{section:markov}
-Der im vorigen Kapitel intuitiv umrissene Markt wird hier als Markov-Entscheidungsprozess modelliert.
-Dazu wird das Marktgeschehen eines geschäftlich relevanten Zeitraumes, z.B. eines Tages oder eines Monats in $n_{ep}$ gleich lange Zeitabschnitte unterteilt.
-In der Terminologie des Reinforcement Learnings wird ein einzelner Abschnitt als Schritt, die Gesamtheit als Episode bezeichnet.
+Der Recommerce-Markt wird hier als Markov-Entscheidungsprozess modelliert.
+Dazu wird die Zeit in gleich lange Abschnitte diskretisiert.
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
+Daraufhin wird ein Preis gesetzt, der für den Rest des Schrittes gilt.
+In der Übertragung eines echten Marktes könnte ein Schritt zum Beispiel einer Stunde oder einer Minute entsprechen.
+Obwohl die Optimierung für einen \textit{infinit-horizon} stattfinden soll, werden für das Training und die Analyse Episoden betrachtet, die aus $n_{ep}$ Schritten bestehen.
+Dieses $n_{ep}$ wurde in der Standardkonfiguration mit 500 so groß gewählt, dass der Effekt des Startzustandes verschwindet.
+
 Das hier eingeführte Modell simuliert einen Recommerce-Markt mit zwei konkurrierenden Anbietern.
 Der Markt soll fair und symmetrisch sein, was bedeutet, dass beide Anbieter die gleichen Produkte verkaufen, gleiche Beliebtheit haben, abwechselnd und für die gleiche Länge die Preise setzen und die gleichen Kosten haben.
 Damit können die Gewinne der beiden Anbieter direkt verglichen und auf die Güte der Preisstrategien geschlossen werden.
-Zum Markov-Entscheidungsprozess wird dieser Markt, wenn er aus der Sicht eines der beiden Anbieter betrachtet wird.
-Der andere Anbieter ist damit ein Teil der Umgebung.
-Das Verhalten des Konkurrenten kann deterministisch oder stochastisch sein, muss aber für die Markov-Eigenschaft unveränderlich sein.
-So werden im Folgenden die Anbieter mit 1 und 2 bezeichnet, wobei 1 der Anbieter ist, aus dessen Sicht das Marktgeschehen abläuft.
-Alle Definitionen gelten aber auch analog andersherum.
+Zum Markov-Entscheidungsprozess wird dieser Markt, wenn er aus der Sicht eines der beiden Anbieter betrachtet wird, während der andere Anbieter ein Teil der Umgebung ist.
+Das Verhalten des Konkurrenten kann deterministisch oder stochastisch sein.
+Soll die Markov-Eigenschaft erfüllt werden, darf es sich aber während des Trainings und der Analyse nicht ändern.
 
-Das Marktmodell hat zahlreiche Parameter und an vielen Stellen könnte man Werte durchaus anders festlegen.
-Für den Vergleich von Reinforcement-Learning-Algorithmen ist allerdings ein vergleichbares Setup das Entscheidende.
-Daher wurden die Parameter auf Standardwerte festgelegt, die im Anhang in Tabelle \ref{tab:default_parameters} aufgeführt sind.
+Bei der folgenden Notation werden die Anbieter mit 1 und 2 indiziert.
+Dabei ist 1 der Anbieter, aus dessen Sicht das Marktgeschehen abläuft.
+Die in dieser Arbeit verwendeten Standardwerte für die Marktparameter sind im Anhang in Tabelle \ref{tab:default_parameters} aufgeführt.
 
 Jede Preisstrategie muss in Abhängigkeit des Zustandes drei Preise setzen:
 \begin{enumerate}
@@ -67,7 +69,7 @@ Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0, p_{max}]^3$ 
 Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0, 1, \ldots, p_{max}\}^3$ definieren.
 Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen wie im Abschnitt \ref{section:dp}.
 Zudem unterscheiden sich die Reinforcement-Learning-Verfahren für diskrete und stetige Aktionsräume.
-Die Preise des Konkurrenten werden als $p_{2, gebraucht}$, $p_{2, neu}$ und $p_{2, re}$ geschrieben.
+Die Preise des Konkurrenten werden analog als $p_{2, gebraucht}$, $p_{2, neu}$ und $p_{2, re}$ geschrieben.
 
 In jedem Schritt besuchen $k \in 2\mathbb{N}$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
 Entweder kaufen sie kein Produkt, das gebrauchte oder neue beim ersten Anbieter oder das gebrauchte oder neue beim Konkurrenten.
@@ -75,25 +77,23 @@ Das Kaufverhalten ist aber keinesfalls deterministisch.
 Es wird stark durch die Preise beeinflusst, aber unterschiedliche Kunden haben unterschiedliche Erwartungen, unterschiedliche Konsumgewohnheiten oder unterschiedliche Einstellungen zu Nachhaltigkeit.
 Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden geshuffelt wird.
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
-Die Berechnungsformel für den Präferenzvektor lautet:
+Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
+Die Präferenz, das Neuprodukt bei Anbieter $i$ zu kaufen, lautet:
 \begin{equation}
-	\sigma_{kunde}(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu}) =
-	\begin{pmatrix}
-		1\\
-		\frac{5.5}{p_{1, gebraucht}} - \exp{(p_{1, gebraucht} - 0.5 p_{max})}\\
-		\frac{10}{p_{1, neu}} - \exp{(p_{1, neu} - 0.8 p_{max})}\\
-		\frac{5.5}{p_{2, gebraucht}} - \exp{(p_{2, gebraucht} - 0.5 p_{max})}\\
-		\frac{10}{p_{2, neu}} - \exp{(p_{2, neu} - 0.8 p_{max})}\\
-	\end{pmatrix}
+	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0.8 p_{max})}
 \end{equation}
+Das Kaufen eines Gebrauchtproduktes bei Anbieter $i$ wird auf
+\begin{equation}
+	\sigma_{kunde, gebraucht, i} = \frac{5.5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0.5 p_{max})}
+\end{equation}
+festgelegt.
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung im Vergleich zu Neuprodukten entgegengebracht.
 Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0.5 p_{max}$ bei Gebraucht- und $0.8 p_{max}$ bei Neuware überschreitet.
-Das modelliert die grundsätzliche Zahlungsbereitschaft der Kunden für diese Produkte und verhindert einen Preiszyklus nach oben.
+Das modelliert die grundsätzlich beschränkte Zahlungsbereitschaft der Kunden für diese Produkte und verhindert einen Preiszyklus nach oben.
 Wie gefordert, werden die Produkte der beiden Anbieter als gleichwertig betrachtet.
-Der Wert 1 als Präferenz für das Nichtkaufen ist festgelegt.
 Fallen die Präferenzen der anderen Optionen niedrig aus, so wird durch die Softmax-Funktion eine hohe Wahrscheinlichkeit auf das Nichtkaufen entfallen.
-Eine [noch zu erstellende] Darstellung im Anhang veranschaulicht das Kundenverhalten an einigen Beispielen.
+% Eine [noch zu erstellende] Darstellung im Anhang veranschaulicht das Kundenverhalten an einigen Beispielen.
 
 Für jeden der beiden Anbieter enthält das Marktmodell einen Zähler für die Anzahl der im Lager befindlichen Gebrauchtprodukte, $n_{lager}$.
 Das Lager hat ein Fassungsvermögen von $m_{lager}$ Produkten.
@@ -107,31 +107,26 @@ Das wiederum treibt die Anbieter dazu, ihr Lager möglichst klein zu halten und 
 
 Weiterhin verwaltet der Markt einen Zähler für die Anzahl der Produkte, die sich in Zirkulation befinden.
 Er wird als $n_{zirk}$ bezeichnet und uniform zufällig zwischen $0$ und $5 m_{lager}$ initialisiert.
-Wird ein Neuprodukt gekauft, so wird dieser Zähler um eins erhöht.
-Der Kauf von bereits gebrauchten Produkten führt nicht zu einer Erhöhung.
-Dieses Modell sieht also nur den einmaligen Weiterverkauf von Produkten vor.
+Der Verkauf eines Neuproduktes erhöht diesen Zähler um eins.
+Im Gegensatz dazu werden bereits gebrauchte Produkte nicht noch einmal weiterverkauft, weshalb ihr Verkauf den Zähler nicht erhöht.
 
 Je mehr Kunden im Besitz eines Produkts sind, desto mehr dieser Eigentümer erwägen, ihr Produkt nicht länger besitzen zu wollen.
-Sie stehen in der Zirkularwirtschaft vor einer Entscheidung aus vier Möglichkeiten.
+In der Kreislaufwirtschaft stehen sie dann vor vier Optionen:
 Sie können ihr Produkt weiter behalten, es wegwerfen oder an einen der beiden Anbieter zurückverkaufen.
 Die Möglichkeit des Rückkaufs ist nicht auf den Anbieter beschränkt, der ihnen das Produkt ursprünglich verkauft hat, sondern es findet Wettbewerb um den Rückkauf statt.
 Insgesamt stellen sich in jedem Schritt $c \cdot n_{zirk}$ Eigentümer dieser Entscheidung, wobei $c$ ein Parameter ist, für den $0 < c \leq 1$ gilt.
 Nach dem gleichen Verfahren wie bei der Kaufentscheidung der Kunden wird ihr Verhalten mit einer diskreten Wahrscheinlichkeitsverteilung modelliert, aus der dann für jeden der $c \cdot n_{zirk}$ Eigentümer geshuffelt wird.
-Die Berechnung der Präferenzen der Eigentümer geschieht auf Grundlage der Preise der Anbieter mittels dieser Formel:
+Die Präferenz für das Halten eines Produktes wird auf $1$ normiert.
+Die Wegwurfpräferenz
 \begin{equation}
-	\sigma_{eigentuemer}(p_{1, gebraucht}, p_{1, neu}, p_{2, gebraucht}, p_{2, neu})=
-	\begin{pmatrix}
-		1\\
-		\min \left(20, \frac{2}{p_{1, gebraucht}},  \frac{2}{p_{2, gebraucht}}\right)\\
-		2 \exp{\left(\frac{p_{1, re} - \min{(p_{1, gebraucht}, p_{1, neu})}}{\min{(p_{1, gebraucht}, p_{1, neu})}}\right)}\\
-		2 \exp{\left(\frac{p_{2, re} - \min{(p_{2, gebraucht}, p_{2, neu})}}{\min{(p_{2, gebraucht}, p_{2, neu})}}\right)}\\
-	\end{pmatrix}
+	\sigma_{eigentuemer, wegwurf} = \min_{i}{\left(\min{(p_{i, neu}, p_{i, gebraucht})}\right)} - \max_{i}{p_{i, re}}.
 \end{equation}
-Sie legt die Präferenz für das Halten eines Produktes auf $1$ fest.
-Die Präferenz für das Wegwerfen wird höher, wenn der Gebrauchtpreis niedriger ist.
-Die Motivation dazu ist, dass bei einem geringen Kaufpreis der Kunde das Produkt weniger wertschätzt und daher eher geneigt ist, es wegzuwerfen.
-Die Präferenzen für das Zurückverkaufen an die jeweiligen Anbieter werden deutlich höher, wenn der prozentuale Unterschied zwischen dem Rückkaufpreis nah am Verkaufspreis ist.
-Gedanke dahinter: Die Kunden möchten ihrem Anbieter keine große Rendite zugestehen.
+motiviert sich daher, dass die Eigentümer ihr Produkt wenig wertschätzen, wenn die Differenz zwischen dem Kaufpreis und dem Rückkaufpreis hoch ist.
+Die Präferenz für das Zurückverkaufen an die einzelnen Anbieter ist direkt ihr Rückkaufpreis, also
+\begin{equation}
+	\sigma_{eigentuemer, rueckkauf, i} = p_{i, re}
+\end{equation}
+Anbieter, die mehr bieten, sind also beliebter.
 Die Zähldichte der Wahrscheinlichkeitsverteilung ergibt sich dann wieder als Softmax dieser Präferenzen.
 
 Auf einem Online-Marktplatz reagieren die Anbieter gegenseitig auf Preisveränderungen.
@@ -153,7 +148,6 @@ Damit muss für Gewinn auf dem Bereich der Neuware auf jeden Fall $p_{1, neu} > 
 Nun kann der Zustandsraum des Markov-Entscheidungsprozess $\mathcal{S}$ definiert werden.
 Er ist siebendimensional und enthält Folgendes:
 \begin{enumerate}
-	\item die Nummer des aktuellen Schrittes in der Episode,
 	\item die Anzahl der gerade zirkulierenden Elemente,
 	\item die Anzahl der Elemente im eigenen Lager,
 	\item den Preis des gebrauchten Produkts des Konkurrenten ($p_{2, gebraucht}$),
@@ -164,19 +158,12 @@ Er ist siebendimensional und enthält Folgendes:
 Diese Werte beeinflussen das Verhalten der Kunden und des Konkurrenten.
 Sie müssen gegeben sein, damit die sogenannte Markoveigenschaft erfüllt ist.
 Diese besagt, dass die Wahrscheinlichkeiten der Zustandsübergänge und der Belohnungen nur vom aktuellen Zustand und der gewählten Aktion abhängen und damit insbesondere stochastisch unabhängig von den zuvor besuchten Zuständen und Aktionen sind.
+Der Schrittzähler ist wegen der \textit{ininite-horizon}-Optimierung nicht Teil des Zustandes.
 
 Dass die für den Zustandsraum ausgewählten Dimensionen das künftige Verhalten des Systems beeinflussen, ist durch die Definition des Marktverhaltens klar.
 So werden Gebraucht- und Neupreis des Konkurrenten noch für die erste Hälfte dieses Schrittes direkt für das Kundenverhalten verwendet.
 Der Rückkaufpreis beeinflusst das Verhalten der Eigentümer, deren Anzahl wiederum durch die Anzahl der Elemente in Zirkulation gegeben ist.
 Der eigene Lagerstand erklärt durch Lagerkosten und -strafen einen Teil des eigenen Gewinnes, genau wie der Lagerstand des Konkurrenten einen Teil seines Verhaltens erklärt.
-
-Der Schrittzähler als Teil des Zustands verdient noch einmal eine kurze Diskussion.
-In zahlreichen Literaturbeispielen wird er nicht benötigt, hier ist er aber wegen der festen Episodenlänge ein Teil der Beobachtung.
-Er wirkt sich nicht auf die Dynamik des Marktes aus, wohl aber auf den Umgang der Agenten mit ihm.
-So kann es nämlich einen Unterschied machen, ob man eine ansonsten identische Beobachtung am Anfang oder am Ende einer Episode macht.
-Ein Beispiel dafür ist eine Situation mit einem relativ vollen Lager.
-Am Anfang kann es sinnvoll sein, einen Teil der Elemente aus dem Lager zu einem niedrigen Preis abzuverkaufen, um langfristig Lagerkosten zu sparen, auch wenn das kurzfristig zu Verlusten führt.
-Am Ende ist jedoch kein Raum mehr für langfristige Planung, und es werden hohe Verkaufspreise für kurzfristige Gewinne gesetzt.
 
 Obwohl die Anzahl der zirkulierenden Elemente und der Lagerstand des Konkurrenten für die Markov-Eigenschaft notwendig sind, bereitet die Messung dieser beiden Werte Probleme.
 Der Konkurrent lässt sich vermutlich nicht ins Lager schauen und die Anzahl der Elemente in Zirkulation kann allenfalls geschätzt werden.
@@ -207,31 +194,7 @@ Für den hier definierten Markt lassen sich einige Überlegungen anstellen:
 	Umgekehrt wird ein höherer Rückkaufpreis und ein höherer Gebrauchtpreis gesetzt, falls das Lager gefüllt werden soll.
 	\item Der Rückkaufpreis sollte stets so niedrig sein, wie es auf dem Markt realisiert werden kann.
 \end{itemize}
-Diese Überlegungen führen zur regelbasierten Strategie $\pi$ mit dem Neupreis:
-\begin{equation}
-	\pi\left(p_{2, neu}\right)_{neu} = \max{\left(p_{2, neu} - 1, p_{einkauf} + 1\right)}
-\end{equation}
-Beim Gebraucht- und Rückkaufpreis wird je nach Lagerstand entschieden.
-Der Gebrauchtpreis wird in Abhängigkeit des Konkurrenzpreises und des Lagerstandes folgendermaßen gesetzt:
-\begin{equation}
-	\pi\left(p_{2, gebraucht}, n_{lager}\right)_{gebraucht} =
-	\begin{cases}
-		p_{2, gebraucht} + 2 & n_{lager} < m_{lager} / 15\\
-		p_{2, gebraucht} + 1 & n_{lager} < m_{lager} / 10\\
-		p_{2, gebraucht} - 1 & n_{lager} < m_{lager} / 8\\
-		p_{2, gebraucht} - 2 & \text{sonst}
-	\end{cases}
-\end{equation}
-Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der Preis gesetzt als:
-\begin{equation}
-	\pi(p_{2, re}, n_{lager})_{re} =
-	\begin{cases}
-		p_{2, re} + 1 & n_{lager} < m_{lager} / 15\\
-		p_{2, re} & n_{lager} < m_{lager} / 10\\
-		p_{2, re} - 1 & n_{lager} < m_{lager} / 8\\
-		p_{2, re} - 2 & \text{Sonst}
-	\end{cases}
-\end{equation}
-Diese regelbasierte Strategie erreicht in Tests vernünftige Ergebnisse und stellt wegen ihrer kompetitiven Unterbietung durchaus für RL-Agenten eine Herausforderung dar.
+Im Anhang in Abschnitt \ref{section:rulebased_definition} ist eine regelbasierte Strategie definiert, die diesen Ideen folgt.
+Sie erreicht in Tests vernünftige Ergebnisse und stellt wegen ihrer kompetitiven Unterbietung durchaus für RL-Agenten eine Herausforderung dar.
 Selbstverständlich ist allerdings anzumerken, dass durch weiteres Tuning bessere Strategien gefunden werden können.
 Das erfordert allerdings Aufwand und eine umfangreiche Kenntnis des Marktes.
