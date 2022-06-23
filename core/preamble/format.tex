@@ -112,7 +112,7 @@
 \setlength{\mybodywidth}{140 mm}
 
 \newlength{\mybodyheight}
-\setlength{\mybodyheight}{198 mm}
+\setlength{\mybodyheight}{230 mm}
 
 \newlength{\myoutermargin}
 \ifprintVersion
@@ -126,7 +126,7 @@
 \fi
 
 \newlength{\mytopmargin}
-\setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3}
+\setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3 + 10}
 \ifprintVersion
     \ifprofessionalPrint
         \setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3 + \extraborderlength}
@@ -157,7 +157,7 @@
 \newcommand{\goldenratio}{1.618}
 
 \newlength{\myheadsep} % Distance from the header to the body.
-\setlength{\myheadsep}{\mytopmargin / \real{\goldenratio} / \real{\goldenratio} - 1 ex}
+\setlength{\myheadsep}{\mytopmargin / \real{\goldenratio} / \real{\goldenratio} - 1 ex + 5}
 \ifprintVersion
     \ifprofessionalPrint
         \setlength{\myheadsep}{(\mytopmargin - \extraborderlength) / \real{\goldenratio} / \real{\goldenratio} - 1 ex}
