@@ -16,6 +16,13 @@ Dabei wird nicht nur eine Produktlinie, sondern sehr viele betrachtet.
 Zwischen dem Verkauf unterschiedlicher Produktlinien gibt es komplexe Abhängigkeiten, die in klassischen Pricingansätzen nicht beachtet wurden, aber mit Reinforcement Learning mit einbezogen werden können.
 Als Technologie wird Q-Learning mit Eligibility Traces verwendet.
 
+Weiterhin haben Krasheninnikova et al. Reinforcement Learning für die Optimierung von Versicherungsprämien eingesetzt.
+Es wird zwar ein domänenspezifisches Modell gewählt, das aber ebenfalls eine aktuelle Marktsituation als Modell und Preise als Aktionen verwendet.
+Dabei werden zwei Rewardfunktionen vorgeschlagen, wobei die eine nur den Gewinn bewertet, und die andere zusätzlich auch Kundenbindung.
+Das genutzte RL-Verfahren heißt VQQL.
+Es diskretisiert erst Zustands- und Aktionsraum, und wendet anschließtend Tabular-Q-Learning an.
+Bei dieser Forschungsarbeit wurde mit einer großenn spanischen Versicherungsgesellschaft zusammengearbeitet und deren Echtweltdaten verwendet.
+
 Mit einem sehr ähnlichen Marktmodell wie bei Schlosser und Boissier haben Kastius und Schlosser \cite{Kastius2022} Reinforcement Learning eingesetzt, um unter Wettbewerbsbedingungen die Preisstrategie zu optimieren.
 Untersucht wurde eine \textit{Linear Economy} im Duopol und Oligopol.
 Als RL-Verfahren wurden neben dem etablierten Deep-Q-Networks (mit diskretem Aktionsraum) das neue und beliebte Soft-Actor-Critic-Verfahren ausprobiert.
