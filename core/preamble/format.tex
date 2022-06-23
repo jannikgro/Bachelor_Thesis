@@ -117,9 +117,9 @@
 \newlength{\myoutermargin}
 \ifprintVersion
     \ifprofessionalPrint
-        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.5} + \extraborderlength}
+        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.66666} + \extraborderlength}
     \else
-        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.5} - \mybindingcorrection}
+        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.66666} - \mybindingcorrection}
     \fi
 \else
     \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.5}}
