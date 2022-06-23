@@ -126,7 +126,7 @@
 \fi
 
 \newlength{\mytopmargin}
-\setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3 + 10}
+\setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3 + 10 mm}
 \ifprintVersion
     \ifprofessionalPrint
         \setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3 + \extraborderlength}
@@ -157,7 +157,7 @@
 \newcommand{\goldenratio}{1.618}
 
 \newlength{\myheadsep} % Distance from the header to the body.
-\setlength{\myheadsep}{\mytopmargin / \real{\goldenratio} / \real{\goldenratio} - 1 ex + 5}
+\setlength{\myheadsep}{\mytopmargin / \real{\goldenratio} / \real{\goldenratio} - 1 ex + 5mm}
 \ifprintVersion
     \ifprofessionalPrint
         \setlength{\myheadsep}{(\mytopmargin - \extraborderlength) / \real{\goldenratio} / \real{\goldenratio} - 1 ex}
