@@ -109,24 +109,24 @@
 % The text area uses aesthetically pleasing measurements in the same ratio as the page.
 % These dimensions are always used, as the text area should be the same in the printed and digital version of the thesis.
 \newlength{\mybodywidth}
-\setlength{\mybodywidth}{140 mm}
+\setlength{\mybodywidth}{150 mm}
 
 \newlength{\mybodyheight}
-\setlength{\mybodyheight}{198 mm}
+\setlength{\mybodyheight}{230 mm}
 
 \newlength{\myoutermargin}
 \ifprintVersion
     \ifprofessionalPrint
-        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.5} + \extraborderlength}
+        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.66666} + \extraborderlength}
     \else
-        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.5} - \mybindingcorrection}
+        \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.66666} - \mybindingcorrection}
     \fi
 \else
-    \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.5}}
+    \setlength{\myoutermargin}{(\mypaperwidth - \mybodywidth) / \real{1.66666}}
 \fi
 
 \newlength{\mytopmargin}
-\setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3}
+\setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3 + 10 mm}
 \ifprintVersion
     \ifprofessionalPrint
         \setlength{\mytopmargin}{(\mypaperheight - \mybodyheight) / 3 + \extraborderlength}
@@ -157,7 +157,7 @@
 \newcommand{\goldenratio}{1.618}
 
 \newlength{\myheadsep} % Distance from the header to the body.
-\setlength{\myheadsep}{\mytopmargin / \real{\goldenratio} / \real{\goldenratio} - 1 ex}
+\setlength{\myheadsep}{\mytopmargin / \real{\goldenratio} / \real{\goldenratio} - 1 ex + 5mm}
 \ifprintVersion
     \ifprofessionalPrint
         \setlength{\myheadsep}{(\mytopmargin - \extraborderlength) / \real{\goldenratio} / \real{\goldenratio} - 1 ex}

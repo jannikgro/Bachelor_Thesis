@@ -8,19 +8,37 @@ Die mit diesem Verfahren optimierten Preisstrategien konnten erfolgreich auf Ama
 
 Reinforcement Learning für dynamisches Pricing wurde in den letzten Jahren für spezielle Märkte angewandt, etwa den Energiemarkt bei Byung-Gook Kim et al. \cite{Kim2016DynamicPA}
 Dort bestand die Aufgabe darin, mittels dynamischer Preise die Nachfrage von Energieverbrauchern gegenüber den Produzenten zu regulieren.
-Es wurden Q-Learning-Verfahren angewandt und spezielle Anpassungen verglichen.
+Es wurden tabellenbasierte Q-Learning-Verfahren angewandt und spezielle Anpassungen verglichen.
 Dabei wurde auch ein Multi-Agent-Setup vorgestellt, das erheblich bessere Ergebnisse als reines Q-Learning lieferte.
 
 Rana und Oliveira \cite{RANA2015426} verwenden Reinforcement Learning, um Preisstrategien für einen Markt zu optimieren, bei dem verderbliche Ware innerhalb eines endlichen Horizonts verkauft werden muss.
 Dabei wird nicht nur eine Produktlinie, sondern sehr viele betrachtet.
 Zwischen dem Verkauf unterschiedlicher Produktlinien gibt es komplexe Abhängigkeiten, die in klassischen Pricingansätzen nicht beachtet wurden, aber mit Reinforcement Learning mit einbezogen werden können.
-Als Technologie wird Q-Learning mit Eligibility Traces verwendet.
+Als Technologie wird Tabular-Q-Learning mit Eligibility Traces verwendet.
 
-Mit einem sehr ähnlichen Marktmodell wie bei Schlosser und Boissier haben Kastius und Schlosser \cite{Kastius2022} Reinforcement Learning eingesetzt, um unter Wettbewerbsbedingungen die Preisstrategie zu optimieren.
+Weiterhin haben Krasheninnikova et al. Reinforcement Learning für die Optimierung von Versicherungsprämien eingesetzt.
+Es wird zwar ein domänenspezifisches Modell gewählt, das aber ebenfalls eine aktuelle Marktsituation als Modell und Preise als Aktionen verwendet.
+Dabei werden zwei Rewardfunktionen vorgeschlagen, wobei die eine nur den Gewinn bewertet, und die andere zusätzlich auch Kundenbindung.
+Das genutzte RL-Verfahren heißt VQQL.
+Es diskretisiert erst Zustands- und Aktionsraum, und wendet anschließtend Tabular-Q-Learning an.
+Bei dieser Forschungsarbeit wurde mit einer großenn spanischen Versicherungsgesellschaft zusammengearbeitet und deren Echtweltdaten verwendet.
+
+Ebenfalls mit Tabular-Q-Learning arbeiteten Cong et al. bei ihrer Arbeit zur Optimierung von Cloudpreisen. \cite{9086147}
+In ihrem Anwendungsfall geht es darum, dass ein Cloudprovider Hardware beschaffen muss.
+Damit muss er Kunden Clouddienstleistungen anbieten, dabei so viel Geld wie möglich erzielen, aber auch die Kundenzufriedenheit aufrechterhalten.
+In der Auswertung ihrer Experimente haben sie knapp 20\% mehr Profit erzielen können als die state-of-the-art regelbasierten Systeme.
+
+Mit einem sehr ähnlichen Marktmodell wie bei Schlosser und Boissier haben Kastius und Schlosser Reinforcement Learning eingesetzt, um unter Wettbewerbsbedingungen die Preisstrategie zu optimieren. \cite{Kastius2022}
 Untersucht wurde eine \textit{Linear Economy} im Duopol und Oligopol.
-Als RL-Verfahren wurden neben dem etablierten Deep-Q-Networks (mit diskretem Aktionsraum) das neue und beliebte Soft-Actor-Critic-Verfahren ausprobiert.
+Im Gegensatz zu den vorher gelisteten Arbeiten wurde hier allerdings Deep-Reinforcement-Learning eingesetzt, wie es auch in dieser Arbeit gemacht wurde.
+Als RL-Verfahren wurden Deep-Q-Learning (mit diskretem Aktionsraum) das neue und beliebte Soft-Actor-Critic-Verfahren ausprobiert.
 Dabei schnitt Soft Actor Critic erheblich besser ab, aber die DQNs konnten die Aufgabe auch bewältigen.
 Es wurde weiterhin festgestellt, dass im Duopol gelegentlich Kartelle gebildet werden, wenn die Kaufbereitschaft der Kunden bei höheren Preisen nicht begrenzt wird.
+
+Auch für den Anwendungsfall der intelligenten Energieversorgung, der mit tabellenbasierten Methoden bereits bei Byung-Gook Kim et al. behandelt wurde, gibt es Ansätze mit Deep Reinforcement Learning.
+So haben Mocanu et al. Deep-Q-Learning und ein Deep-Policy-Gradient-Verfahren (REINFORCE) auf dieses Problem angewandt.
+Die Resultate der Deep-Learning-basierten Verfahren wurden mit denen von Tabular Q-Learning verglichen.
+Dabei wurden die Vorteile der Deep-Learning-Verfahren, insbesondere Skalierbarkeit bei großem Aktionsraum, hervorgehoben.
 
 Während es bisher kaum detaillierte Analysen der aktuelleren RL-Verfahren im Bereich des Dynamic Pricing gibt, so wurden die Algorithmen PPO und SAC auf anderen interessanten Problemstellungen verglichen.
 Larsen et al. verglichen PPO, DDPG, TD3 und SAC in der Stable-Baselines-Implementierung bei autonomer Schifffahrt.
@@ -28,6 +46,12 @@ Aufgabe ist, mit einem Schiff Routen zwischen Häfen zu fahren, ohne dabei mit H
 Zur Analyse wurden verschiedene Situationen getestet, bei denen die Algorithmen jeweils unterschiedlich gut abschnitten.
 Nur Proximal Policy Optimization konnte jede Umgebung besser lösen als alle anderen Algorithmen und hat damit im Vergleich mit Abstand am besten abgeschnitten.
 
-Im Bereich der unternehmensnahen Software haben Alves et al \cite{10.1007/978-3-030-87897-9_21} die Algorithmen A2C, DDPG, TD3, PPO und SAC auf einem Problem verglichen, bei dem es darum geht, Lagerstände entlang einer Lieferkette zu optimieren.
+Im Bereich der unternehmensnahen Software haben Alves et al. die Algorithmen A2C, DDPG, TD3, PPO und SAC auf einem Problem verglichen, bei dem es darum geht, Lagerstände entlang einer Lieferkette zu optimieren. \cite{10.1007/978-3-030-87897-9_21}
 Diese Lieferkette ist von Unsicherheiten  bei Bedarf- und Vorlaufzeiten geprägt.
 Im Ergebnis übertrafen SAC und PPO die anderen Algorithmen, während sie selbst ähnlich gut abschnitten.
+
+Zu dem konkreten Szenario, Pricing in Recommerce-Märkten mit RL-Algorithmen zu optimieren, gibt es nach dem besten Wissen noch keine wissenschaftlichen Publikationen.
+Allerdings wird künstlicher Intelligenz und maschinellem Lernen eine hohe Bedeutung auf dem Weg zu einer nachhaltigeren Wirtschaft beigemessen.
+So stellen Jose et al. künstliche Intelligenz in einer Konzeptstudie als >>Enabler<< für eine Kreislaufwirtschaft dar. \cite{Jose2020}
+Sie stellen die Kreislaufwirtschaft in den Kontext der großen globalen und politischen Herausforderungen, Ressourcen- und Energienutzung zur Bekämpfung der globalen Klimaerwärmung zu optimieren.
+Diese Kreislaufwirtschaft werde an den entscheidenden Stellen durch KI-Technologie betrieben werden.

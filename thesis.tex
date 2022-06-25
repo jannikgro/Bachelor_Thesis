@@ -109,13 +109,13 @@
 
     % \part{The Beginning of It All}
 
-    \chapter{Hintergrund}
-    \input{background/background}
-
     \chapter{Related Work}
     \input{related_work/related_work}
 
-    \chapter{Hauptteil}
+    \chapter{Hintergrund}
+    \input{background/background}
+
+    \chapter{Vergleich der Algorithmen}
     \input{main/main_part}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -132,7 +132,7 @@
     \chapter{Schlussfolgerungen \& Ausblick}
     \input{conclusions/conclusions}
 
-    \chapter{Appendix}
+    \addchap{Appendix}
     \input{appendix/appendix}
 
     % Following are the files and commands for the bibliography and the author’s publications.
@@ -142,6 +142,9 @@
     \printbibheading
     \addcontentsline{toc}{chapter}{Bibliography}
     \printbibliography[heading = none]
+
+    \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+    \listoffigures
 
     \addchap{Declaration of Authorship}
     \input{core/declaration_of_authorship/declaration_of_authorship}
