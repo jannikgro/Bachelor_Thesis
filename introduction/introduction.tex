@@ -195,6 +195,9 @@ Für den hier definierten Markt lassen sich einige Überlegungen anstellen:
 	\item Der Rückkaufpreis sollte stets so niedrig sein, wie es auf dem Markt realisiert werden kann.
 \end{itemize}
 Im Anhang in Abschnitt \ref{section:rulebased_definition} ist eine regelbasierte Strategie definiert, die diesen Ideen folgt.
-Sie erreicht in Tests vernünftige Ergebnisse und stellt wegen ihrer kompetitiven Unterbietung durchaus für RL-Agenten eine Herausforderung dar.
-Selbstverständlich ist allerdings anzumerken, dass durch weiteres Tuning bessere Strategien gefunden werden können.
+Sie erreicht in Tests gegen sich selbst Ergebnisse von 1200 bis 1400.
+Es gelingt ihr, Gewinn zu erwirtschaften und das Lager bei etwa 10 Produkten zu halten.
+Diese Ergebnisse fallen niedriger aus als die der RL-Agenten in der Analyse, und auch niedriger als die Ergebnisse dieser regelbasierten Strategie.
+Das liegt am permanenten Unterbietungsverhalten der regelbasierten Strategie, womit sie beim Spiel gegen sich selbst unverzüglich die Preisuntergrenze und damit eine schlechte Rendite erreicht.
+Selbstverständlich können durch weiteres Tuning bessere Strategien gefunden werden.
 Das erfordert allerdings Aufwand und eine umfangreiche Kenntnis des Marktes.
