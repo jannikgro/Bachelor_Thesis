@@ -120,6 +120,19 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 \end{figure}
 \begin{figure}[htbp]
 	\centering
+	\includegraphics[width=\textwidth]{appendix/sac_temperature.pdf}
+	\caption{
+		Lernkurven des Soft-Actor-Critic-Algorithmus bei unterschiedlichem Entropiekoeffizient (sechs fest gewählt und zwei automatisch angepasst):
+        Hohe Werte sind eine Regularisierung und führen dazu, dass die Policy >>zufälliger<< ist.
+        Die Exploration und Stabilität nehmen zu, allerdings leidet die Spitzenperformance.
+        Das liegt daran, dass die Policy weniger genau gelernt wird, und die Aktionsauswahl stärker streut.
+        Bei dem Durchlauf mit $\varepsilon=0.2$ ist die Performance deutlich niedriger, was vermutlich an zu geringer Exploration liegt.
+        Der Durchlauf mit $\varepsilon=1$ hat sogar geringfügig bessere Ergebnisse geliefert als die mit automatischer Ermittlung des Entropiekoeffizienten.
+	}
+	\label{graphic:SACTemperature}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
 	\includegraphics[width=\textwidth]{appendix/mixed_rewards_a2c.pdf}
 	\caption{
 		Lernkurve des Advantage-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
