@@ -243,6 +243,7 @@ Für die praktische Verwendung ist diese Policy allerdings nicht geeignet.
 Der Profit des Agenten sollte beim Design der Rewardfunktion höher gewichtet werden.
 
 \section{Training gegen die eigene Policy}
+\label{section:self_play}
 Die in den Abschnitten \ref{section:main_ddpg}, \ref{section:main_ppo} und \ref{section:main_sac} betrachteten Durchläufe trainierten die RL-Agenten alle gegen den in Abschnitt \ref{section:rulebased} definierten regelbasierten Wettbewerber.
 Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, stellt jedoch für praktische Anwendungen eine Reihe von Problemen auf.
 Erstens muss dafür die Policy des Konkurrenten bekannt sein.
@@ -292,6 +293,7 @@ Damit können diese Ergebnisse als erfolgreich gewertet werden.
 Die Fähigkeiten vom Training gegen die eigene Policy werden in diesem Setup bestätigt.
 
 \section{Partielle Beobachtungen}
+\label{section:partial_markov}
 Für die Markov-Eigenschaft ist ein sechsdimensionaler Aktionsraum erforderlich.
 Jedoch ist die Beobachtung mancher der verwendeten Größen in der Praxis nicht machbar.
 So wird der Konkurrent sich nicht ins Lager schauen lassen, und die Anzahl der Produkte in Zirkulation ist schwer zu schätzen.
