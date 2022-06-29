@@ -3,29 +3,34 @@ Der Vergleich der RL-Algorithmen findet auf dem in \ref{section:markov} definier
 Dieser Markt wird auf der Testplattform simuliert, die im Rahmen des Bachelorprojektes entwickelt wurde.
 Mit den Agenten wird über die Gym-Schnittstelle kommuniziert. \cite{brockman2016openai}
 Für die zu vergleichenden Algorithmen werden die Implementierungen der Bibliothek \textit{Stable Baselines} verwendet. \cite{stable-baselines}
-Stable Baselines ist eine weit verbreitete eine Open-Source RL-Bibliothek, die in Python geschrieben ist.
+Stable Baselines ist eine weit verbreitete Open-Source RL-Bibliothek, die in Python geschrieben ist.
 Sie baut auf PyTorch auf, einem der beliebtesten Deep-Learning-Frameworks, das in der Forschung weite Verbreitung findet. \cite{NEURIPS2019_9015}
 Die in Stable Baselines implementierten Algorithmen entsprechen in den meisten Fällen unmittelbar den vorgeschlagenen Algorithmen der Originalpaper und zeichnen sich durch eine hohe Lesbarkeit des Codes aus. \footnote{Die SAC-Implementierung verwendet nicht den Reparameterization Trick}
 Alle Hyperparameter sind konfigurierbar.
 
+In dieser Untersuchung werden nur Algorithmen verglichen, die mit stetigem Aktionsraum arbeiten.
+Der Hauptgrund dafür ist, dass die neuronalen Netze für eine diskrete Formulierung für jede einzelne Aktion ein Ausgabeneuron benötigen.
+So müssen Deep-Q-Networks mit diskreten Aktionen für jede einelne Aktionen aus $\mathcal{A_\mathbb{N}}$ mit einen Aktionswert schätzen.
+A2C und PPO in der diskreten Variante verwenden ebenfalls für jede Aktion ein Ausgabeneuron, um deren Wahrscheinlichkeit anzugeben.
+Das sind bei der Konfiguration mit $p_{max}=10$ bereits 1000 Ausgabeneuronen und das Wachstumsverhalten ist kubisch in der Anzahl der Preisstufen.
+Außerdem haben die Aktionen in einer diskreten Formulierung im Gegensatz zu der gewählten stetigen keinerlei Ordnung.
+Sie spiegeln auch nicht wieder, dass die Preise reelle Vektoren sind, deren (euklidische, Manhattan-, \dots) Abstände eine sinnvolle Bedeutung haben.
+Das dürfte das Problem für die Agenten unnötig schwieriger machen.
+So haben etwa Kastius und Schlosser festgestellt, dass Soft Actor Critic bei ihren Pricing-Benchmarks besser abgeschnitten hat als Deep-Q-Learning. \cite{Kastius2022}
+
 Weil kaum theoretische Erkenntnisse über die Ermittlung optimaler Hyperparameter vorliegen und diese stets problemspezifisch sind, wäre eine erschöpfende Optimierung der Hyperparameter nur mit erheblichem experimentellem Aufwand möglich.
 Das ist nicht im Umfang dieser Arbeit.
 In dieser Untersuchung der Algorithmen wird deshalb von den Hyperparametern der Originalpaper ausgegangen.
-Diese sind auch im Abschnitt \ref{section:hyperparameter} zu finden.
+Diese sind im Anhang in Abschnitt \ref{section:hyperparameter} zu finden.
 Dennoch wurden an einigen Stellen bessere Hyperparameter gefunden und Aussagen über die Algorithmen über mehrere Hyperparameterkombinationen abgesichert.
 
-Alle Verfahren werden mit neuronalen Netzen durchgeführt, die zwei versteckte Schichten mit je 64 Neuronen haben.
-%Das Verhalten der Algorithmen für unterschiedliche Netzgrößen ist aber sehr ähnlich, wie die Experimente mit unterschiedlichen Netzgrößen im Bereich [noch zu erstellen] des Anhangs zeigen.
+Die Netze aller Algorithmen haben stets zwei Schichten und die gleiche Architektur für Actor und Critic.
+Bei A2C und PPO haben die Netze in beiden Schichten 64 Neuronen, bei DDPG und TD3 in der ersten Schicht 400, in der zweiten Schicht 300 Neuronen und bei SAC in beiden Schichten 256 Neuronen.
 Zunächst werden alle Algorithmen im Duopol gegen den regelbasierten, unterbietenden Wettbewerber aus Abschnitt \ref{section:rulebased_definition} trainiert und evaluiert.
 Anschließend werden Training gegen die eigene Policy, unvollständige Informationen, angepasste Rewardfunktion und Monopol- und Oligopolszenarien untersucht.
 
 \section{DDPG und TD3}
 \label{section:main_ddpg}
-Bei der Diskussion der Q-Learning-Verfahren beschränkt sich diese Analyse direkt auf die Verfahren, die im stetigen Raum angewendet werden: DDPG und TD3.
-Diese Beschränkung wird gemacht, weil in den diskutierten vorherigen Analysen zu Pricing Verfahren mit diskretem Aktionsraum weniger erfolgreich waren als solche mit stetigem Aktionsraum.
-Der Hauptgrund allerdings, der das Verfahren mit diskretem Aktionsraum für diese Arbeit ausschließt, ist, dass Deep-Q-Networks mit diskreten Aktionen jede einelnen Aktionen aus $\mathcal{A_\mathbb{N}}$ mit einem Aktionswert versehen müssten.
-Das sind bei der Konfiguration mit $p_{max}=10$ bereits 1000 Ausgabeneuronen und das Wachstumsverhalten ist kubisch in der Anzahl der Preisstufen.
-
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{main/ddpg_td3.pdf}
@@ -38,16 +43,16 @@ Für jeden der beiden Algorithmen wurden acht Trainingsläufe durchgeführt, die
 Der Standardwert liegt für beide Algorithmen bei $10^{-3}$.
 Es wurden Trainingsläufe mit diesen Lernraten sowie kleineren und größeren durchgeführt.
 Die beim Training beobachteten Muster gleichen sich sowohl bei den beiden Algorithmen als auch den unterschiedlichen Parametrisierungen.
-
 Zu Beginn des Trainings ist bei einigen Läufen eine Verbesserung der gemittelten Returns, die primäre Leistungskennziffer, zu beobachten.
-Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen, keiner erwirtschaftet Gewinne.
+Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen.
+In keinem der Durchläufe konnten Gewinne erwirtschaftet werden.
 
 Die schlechten Ergebnisse kommen deshalb zustande, weil über das gesamte Training hinweg nicht lernen, die Preise vernünftig zu setzen.
 Bei vielen Durchläufen bleiben die Neupreise ohne Anpassung auf die aktuelle Situation beim Maximum 10 hängen, oft sogar auch die Gebrauchtpreise.
-Die Tatsache, dass die Agenten lange auf einer Stelle bleibt und auch die gleichen verbesserungswürdigen Aktionen immer wieder ausführt, könnte auf unzureichende Exploration schließen lassen.
-Allerdings konnte auch eine verrauschte Aktionswahl zur besseren Exploration keine Verbesserung der Leistung erreichen.
+Die Tatsache, dass die Agenten lange auf einer Stelle bleiben und auch die gleichen verbesserungswürdigen Aktionen immer wieder ausführen, könnte auf unzureichende Exploration schließen lassen.
+Allerdings konnte auch eine verrauschte Aktionswahl zur besseren Exploration keine Verbesserung der Leistung bewirken.
 
-Weiterhin sieht man in den Trainingsdurchläufen, dass sich die Leistung oft ruckartig verändern.
+Weiterhin sieht man in den Trainingsdurchläufen, dass sich die Leistung oft ruckartig verändert.
 Der dabei in den Lernkurven zu erkennende lineare Auf- oder Abstieg ist der Durchschnittsbildung über die letzten hundert Episoden geschuldet.
 Tatsächlich findet die Änderung sprunghaft statt.
 
@@ -76,7 +81,7 @@ Der Bereich zwischen maximalem und minimalem Episodenreturns dieser vier Agenten
 Die Linie stellt ihren Durchschnitt dar.
 In dieser Grafik wird der Verlustbereich ausgeblendet, um einen genaueren Vergleich im oberen Leistungsbereich zu ermöglichen.
 Bei diesem Diagramm fällt ein sprunghafter Anstieg bei 100 Episoden auf.
-Das liegt an dem laufenden Durchschnitt, bei dem nach 100 Episoden die sehr schlechten Ergebnisse direkt am Anfang aus der Mittlung herausfallen.
+Das liegt an dem laufenden Durchschnitt, bei dem nach 100 Episoden die sehr schlechten Ergebnisse direkt am Anfang aus der Mittelung herausfallen.
 Dieser Effekt tritt auch bei anderen dieser Lernkurven auf und liegt nur am Diagrammtyp.
 
 Aus den Grafiken geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
@@ -84,7 +89,7 @@ Sie erreichen alle mit Ergebnissen über 6000 pro Episode gute Ergebnisse.
 Auf Grundlage dieser Grafik kann man feststellen, dass die Parametrisierung mit $\varepsilon=0.3$ bessere Performance einbringt als die Standardparametrisierung.
 Um die Spitzenperformance vergleichen zu können, sind die Lernkurven jedoch nur bedingt geeignet.
 
-Für konkrete Aussagen über die Spitzenperformance wurde bei jedem Trainingsdurchlauf alle 100 Episoden das nach dem rolling Average beste Modell aus den vorigen 100 Episoden gespeichert.
+Für konkrete Aussagen über die Spitzenperformance wurde bei jedem Trainingsdurchlauf alle 100 Episoden das nach dem Rolling Average beste Modell aus den vorigen 100 Episoden gespeichert.
 Nach dem Training wurden diese Modelle auf je 25 unabhängigen Episoden getestet, um eine genauere Schätzung ihrer Performance zu erhalten.
 Die Spitzenwerte der drei A2C-Trainingsdurchläufe lagen bei 8160, 8520, 7150 und 8510.
 Bei den PPO-Durchläufen mit $\varepsilon=0.2$ waren die Spitzenwerte 7380, 7780, 8330 und 8120.
@@ -151,7 +156,7 @@ Er wird dann zwar immer noch unterboten, allerdings nur um den Wert eins.
 Dabei nimmt er in Kauf, dass mehr Kunden wegen des niedrigen Preises beim Konkurrenten kaufen und dieser bei steigenden Preisen auch an jedem Kunden noch mehr verdient.
 Mit den Kunden, die der RL-Agent aber noch bekommt, kann er seine Gewinne im Vergleich zum niedrigpreisigen Markt dennoch steigern.
 Der Effekt besteht also darin, dass der RL-Agent in Reaktion auf den ihn immer unterbietenden Konkurrenten diesem einen überproportionalen Gewinnanstieg erlaubt, um selbst mehr Gewinne machen zu können.
-Dass sich dieser Effekt so wiederfindet, ist der Tatsache geschuldet, dass das einzige Optimierungskriterium für die Agenten der eigene Gewinn ist.
+Die Existenz dieses Effekts ist der Tatsache geschuldet, dass das einzige Optimierungskriterium für die Agenten der eigene Gewinn ist.
 Eine Rewardformulierung, die ein Übertreffen des Konkurrenten mit einbezieht, wird in Abschnitt \ref{section:mixed_reward_function} behandelt.
 
 \section{Soft Actor Critic}
