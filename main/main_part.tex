@@ -58,7 +58,7 @@ Deshalb werden in den folgenden Abschnitten DDPG und TD3 nicht weiter betrachtet
 \section{On-Policy-Learning -- A2C und PPO}
 \label{section:main_ppo}
 Die beiden On-Policy-Verfahren A2C und PPO gibt es für diskrete wie für stetige Aktionsräume.
-Wegen der großen Zahl der Aktionen werden auch hier jedoch nur die stetige Variante trainiert.
+Wegen der großen Zahl der Aktionen wird auch hier jedoch nur die stetige Variante ausprobiert.
 
 \begin{figure}[htbp]
 	\centering
@@ -75,6 +75,9 @@ Die Lernkurven verwenden wieder die laufenden Durchschnitte der Episodenreturns.
 Der Bereich zwischen maximalem und minimalem Episodenreturns dieser vier Agenten ist eingefärbt.
 Die Linie stellt ihren Durchschnitt dar.
 In dieser Grafik wird der Verlustbereich ausgeblendet, um einen genaueren Vergleich im oberen Leistungsbereich zu ermöglichen.
+Bei diesem Diagramm fällt ein sprunghafter Anstieg bei 100 Episoden auf.
+Das liegt an dem laufenden Durchschnitt, bei dem nach 100 Episoden die sehr schlechten Ergebnisse direkt am Anfang aus der Mittlung herausfallen.
+Dieser Effekt tritt auch bei anderen dieser Lernkurven auf und liegt nur am Diagrammtyp.
 
 Aus den Grafiken geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
 Sie erreichen alle mit Ergebnissen über 6000 pro Episode gute Ergebnisse.
@@ -156,33 +159,31 @@ Eine Rewardformulierung, die ein Übertreffen des Konkurrenten mit einbezieht, w
 Das in Abschnitt \ref{section:sac} erläuternte Soft-Actor-Critic-Verfahren ist in erster Linie für stetige Aktionsräume entwickelt worden und wird hier auch in der stetigen Variante genutzt.
 Bei den hier gezeigten Ergebnissen wurde der Entropiekoeffizient $\alpha$ automatisch trainiert.
 Er hat sich bei allen Trainingsdurchläufen bei etwa $1.5$ eingependelt.
-Die Grafik ? im Anhang zeigt, dass unterschiedliche manuell eingestellte Entropiekoeffizienten ähnliche Trainingsergebnisse erreichen, wobei sich die Vermutung bestätigt, dass sehr niedrige Entropiekoeffizienten zu wenig Exploration bezwecken und Läufe mit deutlich höheren Entropiekoeffizienten bei schlechterer Leistung verharren.
+Die Grafik \ref{graphic:SACTemperature} im Anhang zeigt, dass unterschiedliche manuell eingestellte Entropiekoeffizienten ähnliche Trainingsergebnisse erreichen, wobei sich die Vermutung bestätigt, dass sehr niedrige Entropiekoeffizienten zu wenig Exploration bezwecken und Läufe mit deutlich höheren Entropiekoeffizienten wegen starker Regularisierung schlechtere Spitzenperformance erreichen.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{main/a2c_vs_sac.pdf}
-	\caption{Lernkurve von Soft Actor Critic über 600 Episoden, A2C als Vergleich angegeben}
+	\includegraphics[width=\textwidth]{main/ppo_vs_sac.pdf}
+	\caption{Lernkurve von Soft Actor Critic im direkten Vergleich mit PPO}
 	\label{graphic:SACLearningCurve}
 \end{figure}
 
-Grafik \ref{graphic:SACLearningCurve} zeigt die Lernkurve von vier Soft-Actor-Critic-Agenten bei einem Trainingsdurchlauf mit 600 Episoden (300000 Schritte).
-Zum Vergleich sind vier Trainingsdurchläufe mit A2C angegeben, die den aus Abschnitt \ref{section:main_ppo} bekannten Verlauf aufweisen.
-Bei diesem Diagramm fällt ein sprunghafter Anstieg bei 100 Episoden auf.
-Das liegt an dem laufenden Durchschnitt, bei dem nach 100 Episoden die sehr schlechten Ergebnisse direkt am Anfang aus der Mittlung herausfallen.
-Dieser Effekt tritt auch bei anderen dieser Lernkurven auf und liegt nur am Diagrammtyp.
+Grafik \ref{graphic:SACLearningCurve} zeigt die Lernkurve von vier Soft-Actor-Critic-Agenten bei einem Trainingsdurchlauf mit 2000 Episoden, genau so viel wie beim obigen Vergleich.
+Zum Vergleich sind vier Trainingsdurchläufe mit PPO angegeben, die den aus Abschnitt \ref{section:main_ppo} bekannten Verlauf aufweisen.
+Im Anhang in Abbildung \ref{graphic:SACvsA2CLearningCurve} ist die Lernkurve von SAC im direkten Vergleich mit A2C abgedruckt.
 
 Soft-Actor-Critic wurde als Off-Policy-Algorithmus neben dem Erreichen von wettbewerbsfähigen Ergebnissen für zwei Hauptziele entwickelt:
 Erstens soll es eine sehr hohe Sample Efficiency haben, was bedeutet, dass es beim Training deutlich weniger Schritten benötigt.
 Zweitens soll SAC eine sehr hohe Trainingsstabilität haben.
 Die Lernkurve bestätigt, dass Soft-Actor-Critic diese zwei Hauptziele erreicht.
 Profitabel arbeitet der Agent nach etwa 70 Episoden, was nur leicht hinter A2C liegt und erheblich besser als PPO ist.
-Spitzenperformance wird ähnlich wie bei A2C nach 250 bis 300 Episoden erreicht.
+Ab etwa 250 bis 300 Episoden ist noch Verbesserung festzustellen, aber deutlich langsamer.
 Der weitere Trainingsverlauf ist sehr stabil.
-Alle vier Agenten bewegen sich für den Rest des Trainings in einem sehr schmalen Bereich, wobei der Durchschnittsreturn der Agenten bei etwa 7500 konstant bleibt.
-Eine Verbesserung der Leistung findet nach etwa 350 Episoden nicht mehr statt.
-Der Durchschnitt der acht SAC-Agenten liegt zwar dauerhaft über dem Durchschnitt der A2C-Agenten, aber gute A2C-Durchläufe erreichen bessere Spitzenperformance als die SAC-Agenten.
-Die Spitzenergebnisse dieser vier SAC-Durchläufe liegen bei 7550, 7730, 7620 und 7800.
-Damit bleiben sie ebenfalls signifikant hinter denen der PPO-Agenten zurück, die zuverlässig über 8000 als Return erzielen.
+Alle vier Agenten bewegen sich für den Rest des Trainings in einem sehr schmalen Bereich, wobei der Durchschnittsreturn knapp 8000 erreicht.
+Ob weiteres Training zusätzliche Verbesserungen bezwecken können, lässt sich ohne weiteres Training nicht sicher sagen, allerdings ändern sich die während des Trainings gemessenen Kenngrößen wie Aktionsauswahl und Loss im späteren Verlauf kaum noch.
+Der Durchschnitt der vier SAC-Agenten liegt zwar dauerhaft über dem Durchschnitt der A2C-Agenten, aber gute A2C-Durchläufe erreichen bessere Spitzenperformance als die SAC-Agenten.
+Die Spitzenergebnisse dieser vier SAC-Durchläufe liegen bei 8120, 7890, 8120 und 8160.
+Damit bleiben sie ebenfalls hinter denen der PPO-Agenten zurück, die meist über 8300 als Return erzielen.
 
 \begin{figure}[htbp]
 	\centering
@@ -203,6 +204,8 @@ Das Sammeln der Beispiele aus dem Markt nimmt bei PPO etwa 25\% der Trainingszei
 Die Geschwindigkeit des Trainings ist bei A2C und PPO sehr ähnlich.
 Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere Samplebedarf bei PPO.
 Insbesondere wird deutlich, dass A2C in reinem Zeitbedarf den anderen Algorithmen erheblich überlegen ist.
+
+Weil insbesondere das SAC-Training so zeitaufwändig ist (in diesem Experiment etwa 7 Stunden) und der Lernfortschritt im späteren Verlauf so gering ist, wird bei einigen der folgenden Versuche mit SAC die Anzahl der Trainingsschritte reduziert.
 
 \section{Den Konkurrenten übertreffen -- eine angepasste Rewardfunktion}
 \label{section:mixed_reward_function}
@@ -243,6 +246,7 @@ Für die praktische Verwendung ist diese Policy allerdings nicht geeignet.
 Der Profit des Agenten sollte beim Design der Rewardfunktion höher gewichtet werden.
 
 \section{Training gegen die eigene Policy}
+\label{section:self_play}
 Die in den Abschnitten \ref{section:main_ddpg}, \ref{section:main_ppo} und \ref{section:main_sac} betrachteten Durchläufe trainierten die RL-Agenten alle gegen den in Abschnitt \ref{section:rulebased} definierten regelbasierten Wettbewerber.
 Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, stellt jedoch für praktische Anwendungen eine Reihe von Problemen auf.
 Erstens muss dafür die Policy des Konkurrenten bekannt sein.
@@ -292,6 +296,7 @@ Damit können diese Ergebnisse als erfolgreich gewertet werden.
 Die Fähigkeiten vom Training gegen die eigene Policy werden in diesem Setup bestätigt.
 
 \section{Partielle Beobachtungen}
+\label{section:partial_markov}
 Für die Markov-Eigenschaft ist ein sechsdimensionaler Aktionsraum erforderlich.
 Jedoch ist die Beobachtung mancher der verwendeten Größen in der Praxis nicht machbar.
 So wird der Konkurrent sich nicht ins Lager schauen lassen, und die Anzahl der Produkte in Zirkulation ist schwer zu schätzen.
@@ -401,6 +406,7 @@ Die RL-Agenten erreichen auch hier Lernerfolg, wobei die Gewinne selbstverständ
 Wie auch in den anderen Experimenten, zeigen PPO und SAC stabile Lernkurven.
 Bei A2C zeigen sich die bekannten Instabilitäten, aber die Spitzenperformance bleibt tatsächlich nur leicht hinter der der anderen Algorithmen zurück.
 Äußerst interessant ist bei diesem Versuch, dass der SAC-Algorithmus besser abschneidet als PPO, der bei den anderen Experimenten in der Spitzenleistung überlegen war.
+Weil wegen des hohen Trainingsaufwandes nur 1000 Episoden trainiert wurden und die PPO-Kurven am Ende noch einen leichten Anstieg zeigen, kann zwar nicht ausgeschlossen werden, dass PPO zu einem späteren Zeitpunkt aufholt, aber dennoch scheint SAC hier überlegen zu sein.
 Obwohl eine ursächliche Begründung dafür hier nicht geliefert werden kann, so wurde die Leistungsfähigkeit von Soft Actor Critic in hochdimensionalen Benchmarks bereits im Originalpaper hervorgehoben. \cite{haarnoja2018soft}
 Das Experiment wurde ebenfalls mit der gemischten Rewardfunktion durchgeführt.
 Dessen Ergebnisse sind ähnlich, allerdings finden die SAC-Durchläufe in einer deutlich größeren Spanne statt.
