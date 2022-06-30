@@ -110,6 +110,18 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 \section{Weitere Diagramme zum Lernerfolg}
 \begin{figure}[htbp]
 	\centering
+	\includegraphics[width=\textwidth]{appendix/ppo_different_networks.pdf}
+	\caption{
+		Lernkurven des Proximal-Policy-Optimization-Algorithmus bei unterschiedlicher Anzahl von Knoten pro versteckter Schicht, aber insgesamt zwei Schichten:
+        Trotz des Unterschiedes in den Netzgrößen und damit sehr großen Unterschieden in der Anzahl der Parameter schneiden die Netze sehr ähnlich ab.
+        Sowohl Lerngeschwindigkeit als auch Spitzenperformance unterscheiden sich kaum.
+        Auffällig ist, dass der Trainingsdurchlauf mit dem großen Netz einen Absturz aufweist, der ansonsten bei PPO nicht auftritt.
+        Der Durchlauf mit 32 Neuronen pro Schicht erreicht die schlechteste Spitzenperformance.
+	}
+	\label{graphic:PPODifferentNetworks}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
 	\includegraphics[width=\textwidth]{appendix/ppo_different_clipping.pdf}
 	\caption{
 		Lernkurven des Proximal-Policy-Optimization-Algorithmus bei unterschiedlichen Werten für $\varepsilon$:
