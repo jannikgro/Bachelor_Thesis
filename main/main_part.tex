@@ -26,6 +26,7 @@ Dennoch wurden an einigen Stellen bessere Hyperparameter gefunden und Aussagen �
 
 Die Netze aller Algorithmen haben stets zwei Schichten und die gleiche Architektur für Actor und Critic.
 Bei A2C und PPO haben die Netze in beiden Schichten 64 Neuronen, bei DDPG und TD3 in der ersten Schicht 400, in der zweiten Schicht 300 Neuronen und bei SAC in beiden Schichten 256 Neuronen.
+Diese Netzarchitekturen unterscheiden sich zwar, allerdings handelt es sich dabei um die Netzarchitekturen, die in den Originalpapern vorgeschlagen wurden.
 Zunächst werden alle Algorithmen im Duopol gegen den regelbasierten, unterbietenden Wettbewerber aus Abschnitt \ref{section:rulebased_definition} trainiert und evaluiert.
 Anschließend werden Training gegen die eigene Policy, unvollständige Informationen, angepasste Rewardfunktion und Monopol- und Oligopolszenarien untersucht.
 
