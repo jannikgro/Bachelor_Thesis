@@ -1,5 +1,5 @@
-\section{Hyperparameter}
-\label{section:hyperparameter}
+\addsec{Hyperparameter}
+\label{addsec:hyperparameter}
 \begin{table}[htb]
 	\centering
 	\begin{tabular}{p{0.2\textwidth} p{0.4\textwidth} p{0.2\textwidth}}
@@ -19,7 +19,7 @@
 
 \begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.6\textwidth} p{0.2\textwidth}}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $10^{-3}$\\
@@ -35,7 +35,7 @@
 
 \begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.6\textwidth} p{0.2\textwidth}}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $7\cdot 10^{-4}$\\
@@ -48,7 +48,7 @@
 
 \begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.6\textwidth} p{0.2\textwidth}}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $3 \cdot 10^{-4}$\\
@@ -64,7 +64,7 @@
 
 \begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.6\textwidth} p{0.2\textwidth}}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $3 \cdot 10^{-4}$\\
@@ -79,8 +79,8 @@
 	\label{tab:SACHyperparameters}
 \end{table}
 
-\section{Definition der regelbasierten Strategien}
-\label{section:rulebased_definition}
+\addsec{Definition der regelbasierten Strategien}
+\label{addsec:rulebased_definition}
 Der Neupreis wird als
 \begin{equation}
 	\pi\left(p_{2, neu}\right)_{neu} = \max{\left(p_{2, neu} - 1, p_{einkauf} + 1\right)}
@@ -107,7 +107,7 @@ Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der
 \end{equation}
 Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rechnung Ergebnisse kleiner als null oder größer als $p_{max}$ ermittelt).
 \clearpage
-\section{Weitere Diagramme zum Lernerfolg}
+\addsec{Weitere Diagramme zum Lernerfolg}
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/ppo_different_networks.pdf}
