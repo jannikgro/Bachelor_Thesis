@@ -207,6 +207,18 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 \end{figure}
 \begin{figure}[htb]
 	\centering
+	\includegraphics[width=\textwidth]{appendix/comparison_oligopoly_big_network.pdf}
+	\caption{
+		Lernkurven von PPO und SAC in einem Oligopolszenario über 1000 Episoden, wobei PPO mit der gleichen Netzwerkarchitektur wie SAC trainiert:
+		Dabei erreichen die vier PPO-Agenten in ihren Leistungsspitzen Werte von 2800, 2900, 3010 und -1750.
+		Die SAC-Agenten erreichen Werte zwischen 2950 und 3070.
+		Damit ist der beste PPO-Durchlauf nicht mehr schlechter als die SAC-Durchläufe, allerdings sind die PPO-Durchläufe mit dem größeren Netz erheblich instabiler.
+	}
+	\label{graphic:OligopolyMixedComparisonBigNetwork}
+\end{figure}
+\end{figure}
+\begin{figure}[htb]
+	\centering
 	\includegraphics[width=\textwidth]{appendix/comparison_oligopoly_mixed.pdf}
 	\caption{Lernkurven von A2C, PPO und SAC in einem Oligopolszenario über 1000 Episoden mit gemischter Rewardfunktion und vollständiger Beobachtung}
 	\label{graphic:OligopolyMixedComparison}

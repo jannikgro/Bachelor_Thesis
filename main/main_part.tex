@@ -18,6 +18,9 @@ Sie spiegeln auch nicht wieder, dass die Preise reelle Vektoren sind, deren (euk
 Das dürfte das Problem für die Agenten unnötig schwieriger machen.
 So haben etwa Kastius und Schlosser festgestellt, dass Soft Actor Critic bei ihren Pricing-Benchmarks besser abgeschnitten hat als Deep-Q-Learning. \cite{Kastius2022}
 
+Die Algorithmen mit stochastischer Policy (A2C, PPO und SAC) verwenden Normalverteilungen als Wahrscheinlichkeitsverteilung der Policy, für die dann Mittelwert und Standardabweichung geschätzt werden.
+Die einzelnen Verteilungen für Gebrauchtpreis, Neupreis und Rückkaufpreis sind stochastisch unabhängig und damit insbesondere auch die Kovarianzen null.
+
 Weil kaum theoretische Erkenntnisse über die Ermittlung optimaler Hyperparameter vorliegen und diese stets problemspezifisch sind, wäre eine erschöpfende Optimierung der Hyperparameter nur mit erheblichem experimentellem Aufwand möglich.
 Das ist nicht im Umfang dieser Arbeit.
 In dieser Untersuchung der Algorithmen wird deshalb von den Hyperparametern der Originalpaper ausgegangen.
@@ -211,7 +214,8 @@ Zunächst sinken die Neupreise, steigen dann leicht an und enden bei 6,4 und 5,4
 Warum PPO in diesem Markt etwas besser abschneidet, ist eine äußerst interessante Frage, deren Beantwortung man sich aber auf Grundlage dieser Experimente nur annähern kann.
 Eine plausible Erklärung wird in Abschnitt \ref{section:partial_markov} auf Grundlage der dortigen Beobachtungen geliefert.
 Kurz ausgedrückt wird dort festgestellt, dass SAC in der Policy Zusammenhänge lernt, die nicht gelernt werden sollten.
-
+Eine andere mögliche Erklärung, dass die Policy der SAC-Agenten wegen der Entropieregularisierung eine größere Standardabweichung hat und deshalb weniger genau als die von PPO ist, lässt sich durch die Daten aus dem Training nicht bestätigen.
+Bei beiden Trainingsalgorithmen haben die Policies zum Ende des Trainings Standardabweichungen von etwa 0,5, wobei SAC keine größeren Standardabweichungen hat.
 
 Für die Frage >>Wie lange dauert das Training?<< gibt es zwei mögliche Kenngrößen.
 Einmal kann die Anzahl der benötigten Samples bewertet werden, die Sample Efficiency, oder es kann die tatsächliche Zeit auf der Uhr harangezogen werden.
@@ -424,8 +428,15 @@ Wie auch in den anderen Experimenten, zeigen PPO und SAC stabile Lernkurven.
 Bei A2C zeigen sich die bekannten Instabilitäten, aber die Spitzenperformance bleibt tatsächlich nur leicht hinter der der anderen Algorithmen zurück.
 Äußerst interessant ist bei diesem Versuch, dass der SAC-Algorithmus besser abschneidet als PPO, der bei den anderen Experimenten in der Spitzenleistung überlegen war.
 Weil wegen des hohen Trainingsaufwandes nur 1000 Episoden trainiert wurden und die PPO-Kurven am Ende noch einen leichten Anstieg zeigen, kann zwar nicht ausgeschlossen werden, dass PPO zu einem späteren Zeitpunkt aufholt, aber dennoch scheint SAC hier überlegen zu sein.
-Obwohl eine ursächliche Begründung dafür hier nicht geliefert werden kann, so wurde die Leistungsfähigkeit von Soft Actor Critic in hochdimensionalen Benchmarks bereits im Originalpaper hervorgehoben. \cite{haarnoja2018soft}
-Das Experiment wurde ebenfalls mit der gemischten Rewardfunktion durchgeführt.
+
+Der mutmaßliche Grund hierfür ist das größere neuronale Netz, mit dem SAC arbeitet.
+Mit 256 Neuronen in den beiden versteckten Schichten lassen sich kompliziertere Funktionen erlernen als mit nur 64 Neuronen in den versteckten Schichten.
+Gerade bei der hier erforderlichen deutlich hochdimensionaleren Policyfunktion ist die Notwendigkeit für eine komplizierte Funktion gegeben.
+Um diese Vermutung nachzuprüfen, wurde ein zusätzliches Experiment durchgeführt, bei dem PPO Netze mit 256 Neuronen in den versteckten Schichten trainiert.
+Die Lernkurven sind im Anhang in Abbildung \ref{graphic:OligopolyMixedComparisonBigNetwork} abgedruckt.
+Dabei zeigt sich, dass gute PPO-Durchläufe schließlich die gleiche Performance erreichen wie bei SAC, aber die Trainingsstabilität erheblich niedriger ist.
+
+Der Algorithmenvergleich auf dem Oligopol wurde ebenfalls mit der gemischten Rewardfunktion durchgeführt.
 Dessen Ergebnisse sind ähnlich, allerdings finden die SAC-Durchläufe in einer deutlich größeren Spanne statt.
 Die Lernkurven dazu sind im Anhang in Abbildung \ref{graphic:OligopolyMixedComparison} abgedruckt.
 
