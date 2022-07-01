@@ -21,7 +21,7 @@ So haben etwa Kastius und Schlosser festgestellt, dass Soft Actor Critic bei ihr
 Weil kaum theoretische Erkenntnisse über die Ermittlung optimaler Hyperparameter vorliegen und diese stets problemspezifisch sind, wäre eine erschöpfende Optimierung der Hyperparameter nur mit erheblichem experimentellem Aufwand möglich.
 Das ist nicht im Umfang dieser Arbeit.
 In dieser Untersuchung der Algorithmen wird deshalb von den Hyperparametern der Originalpaper ausgegangen.
-Diese sind im Anhang in Abschnitt \ref{section:hyperparameter} zu finden.
+Diese sind im Anhang in den Tabellen \ref{tab:DDPGHyperparameters}, \ref{tab:A2CHyperparameter}, \ref{tab:PPOHyperparameters} und \ref{tab:SACHyperparameters} zu finden.
 Dennoch wurden an einigen Stellen bessere Hyperparameter gefunden und Aussagen über die Algorithmen über mehrere Hyperparameterkombinationen abgesichert.
 
 Die Netze aller Algorithmen haben stets zwei Schichten und die gleiche Architektur für Actor und Critic.
@@ -37,7 +37,7 @@ Weil die Returns der einzelnen Episoden stärkeren Schwankungen unterworfen sind
 Dass sich das Modell während dieser 100 Episoden ändert und damit veraltete Daten für die Mittelung herangezogen werden, muss bei der Verwendung der Lernkurven stets bedacht werden.
 Deshalb werden die Modelle dort, wo genaue Leistung für den Vergleich benötigt wird, dediziert analysiert.
 
-Alle Algorithmen werden zunächst im Duopol gegen den regelbasierten, unterbietenden Wettbewerber aus Abschnitt \ref{section:rulebased_definition} trainiert und evaluiert.
+Alle Algorithmen werden zunächst im Duopol gegen den regelbasierten, unterbietenden Wettbewerber trainiert und evaluiert.
 Anschließend werden Training gegen die eigene Policy, unvollständige Informationen, angepasste Rewardfunktion und Monopol- und Oligopolszenarien untersucht.
 
 \section{DDPG und TD3}
