@@ -42,7 +42,7 @@ Anschließend werden Training gegen die eigene Policy, unvollständige Informati
 
 \section{DDPG und TD3}
 \label{section:main_ddpg}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/ddpg_td3.pdf}
 	\caption{Lernkurven von DDPG und TD3 mit unterschiedlichen Lernraten}
@@ -73,7 +73,7 @@ Deshalb werden in den folgenden Abschnitten DDPG und TD3 nicht weiter betrachtet
 
 \section{On-Policy-Learning -- A2C und PPO}
 \label{section:main_ppo}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/a2c_vs_ppo.pdf}
 	\caption{Lernkurven von A2C und PPO auf dem Duopol mit unterbietendem Wettbewerber}
@@ -107,7 +107,7 @@ Sichert man jedoch die Parameter der A2C-Agenten in dem Moment, wenn sie gerade 
 
 Die Advantage-Actor-Critic-Agenten erreichen das hohe Leistungsniveau dabei nach deutlich weniger Episoden als die PPO-Agenten.
 Ihr Durchschnitt überschreitet die Schwelle zum Gewinn nach etwa 70 Episoden (3500 Schritten).
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/a2c_detailed_analysis.pdf}
 	\caption{
@@ -130,7 +130,7 @@ Zwischen den vier Trainingsdurchläufen der PPO-Agenten gibt es nur geringe Unte
 Die Leistungsentwicklung liegt in einem schmalen Band und Abstürze finden nicht statt.
 Allerdings benötigt PPO in der Standardkonfiguration knapp 250 Episoden und in der Version mit $0.3$ als $\varepsilon$ ungefähr 180 Episoden, um die Gewinnzone zu erreichen.
 Auch danach ist das Training langsam.
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/ppo_detailed_analysis.pdf}
 	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0.2$) analog zu Abbildung \ref{graphic:A2CInstability}}
@@ -173,7 +173,7 @@ Bei den hier gezeigten Ergebnissen wurde der Entropiekoeffizient $\alpha$ automa
 Er hat sich bei allen Trainingsdurchläufen bei etwa $1.5$ eingependelt.
 Die Grafik \ref{graphic:SACTemperature} im Anhang zeigt, dass unterschiedliche manuell eingestellte Entropiekoeffizienten ähnliche Trainingsergebnisse erreichen, wobei sich die Vermutung bestätigt, dass sehr niedrige Entropiekoeffizienten zu wenig Exploration bezwecken und Läufe mit deutlich höheren Entropiekoeffizienten wegen starker Regularisierung schlechtere Spitzenperformance erreichen.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/ppo_vs_sac.pdf}
 	\caption{Lernkurve von Soft Actor Critic im direkten Vergleich mit PPO}
@@ -197,7 +197,7 @@ Der Durchschnitt der vier SAC-Agenten liegt zwar dauerhaft über dem Durchschnit
 Die Spitzenergebnisse dieser vier SAC-Durchläufe liegen bei 8120, 7890, 8120 und 8160.
 Damit bleiben sie ebenfalls hinter denen der PPO-Agenten zurück, die meist über 8300 als Return erzielen.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/sac_detailed_analysis.pdf}
 	\caption{Detaillierte Betrachtung eines SAC-Trainingsdurchlaufes}
@@ -240,7 +240,7 @@ Deshalb wurde für die folgende Versuchsreihe eine gemischte Rewardfunktion verw
 Sie berechnet einfach die Summe aus Profit und Differenz zum Konkurrenten.
 Für diese Experimente wurden beide Summanden gleich gewichtet, es könnte aber noch ein Hyperparameter eingefügt werden, um die beiden Ziele Profitmaximierung und Übertreffen des Konkurrenten zu balancieren.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/lineplot_mixed_rewards.pdf}
 	\caption{Repräsentative Durchläufe der Algorithmen bei gemischter Rewardfunktion}
@@ -281,7 +281,7 @@ Dadurch soll der Agent gegen eine Vielzahl von Policies gestählert werden.
 Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in der vorangegangenen Analyse als grundsätzlich geeignet für diesen Markt erwiesen haben: A2C, PPO und SAC.
 Dabei wurde die gesamte Versuchsreihe mit der normalen Rewardfunktion und der gemischten Rewardfunktion aus Abschnitt \ref{section:mixed_reward_function} durchgeführt.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/self_play.pdf}
 	\caption{Lernkurve von A2C, PPO und SAC beim Self-Play; die Algorithmen wurden über 2000 Episoden trainiert}
@@ -293,7 +293,7 @@ Diese Kurven zeigen zunächst, dass Lernerfolg bei allen dieser drei Agenten err
 Sie alleine können allerdings nicht aussagen, ob die Agenten sich tatsächlich gegen die Konkurrenz behaupten können.
 Deshalb dürfen auch die Returns dieser Lernkurven nicht mit den aus den vorigen Abschnitten verglichen werden.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/self_play_detailed.pdf}
 	\caption{Repräsentative Self-Play Durchläufe; Spaltenweise nach Agenten: (links) A2c, (mittig) PPO, (rechts) SAC; obere Zeile mit normaler Rewardfunktion, untere Zeile mit gemischter Rewardfunktion}
@@ -319,7 +319,7 @@ Jedoch ist die Beobachtung mancher der verwendeten Größen in der Praxis nicht 
 So wird der Konkurrent sich nicht ins Lager schauen lassen, und die Anzahl der Produkte in Zirkulation ist schwer zu schätzen.
 Deshalb drängt sich die Frage auf, ob die Algorithmen auch ohne diese beiden Informationen funktionieren.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/partial_observation.pdf}
 	\caption{Lernkurven von A2C, PPO und SAC bei vollständiger im Vergleich zu partieller Beobachtung; (blau) vollständige Beobachtung, (orange) Lagerstand des Konkurrenten wird nicht bereitgestellt, (grün) Lagerstand des Konkurrenten und Anzahl der Produkte in Zirkulation werden nicht bereitgestellt}
@@ -342,7 +342,7 @@ Sie erklären zwar zu einem Teil den künftigen Zug des Konkurrenten und die Anz
 Ein höherdimensionaler Beobachtungsraum stellt zudem grundsätzlich für die Agenten eine Herausforderung dar.
 Es steigt dann der Bedarf an Samples, Muster in den Daten sind schwerer zu erkennen.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/sac_in_circulation_dependend_explanation.pdf}
 	\caption{Betrachtung der Agenten mit vollständiger Information: (links) Verlauf des \textit{in-circulation}-Zählers im SAC-Training, (mittig und rechts) Gebrauchtpreis in Abhängigkeit von \textit{in-circulation} und Lagerstand des Konkurrenten bei SAC und PPO; andere Argumente sind dabei fest auf einen Wert gewählt, der typisch bei einem Trainingsdurchlauf ist (eigener Lagerstand: 25, Neupreis Konkurrent: 6, Gebrauchtpreis Konkurrent: 4, Rückkaufpreis Konkurrent: 0)}
@@ -372,7 +372,7 @@ Hier ist der RL-Agent der einzige Anbieter, während weiterhin die gleiche Anzah
 Die anderen Dynamiken des Marktes sind unverändert.
 Als Rewardfunktion wird der Gewinn des Agenten gewählt -- Vergleiche mit Konkurrenten erübrigen sich im Monopol.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/comparison_monopoly.pdf}
 	\caption{Lernkurven von A2C, PPO und SAC in einem Monopolszenario über 1000 Episoden}
@@ -411,7 +411,7 @@ Das sonstige Verhalten des Marktes bleibt unverändert.
 Der Beobachtungsraum ist 18-dimensional (\textit{in-circulation}, eigener Lagerstand und für jeden der vier Konkurrenten drei Preise sowie der Lagerstand).
 Damit handelt es sich um das komplexeste Szenario, das behandelt wurde.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/comparison_oligopoly.pdf}
 	\caption{Lernkurven von A2C, PPO und SAC in einem Oligopolszenario über 1000 Episoden mit normaler Rewardfunktion und vollständiger Beobachtung}
@@ -429,7 +429,7 @@ Das Experiment wurde ebenfalls mit der gemischten Rewardfunktion durchgeführt.
 Dessen Ergebnisse sind ähnlich, allerdings finden die SAC-Durchläufe in einer deutlich größeren Spanne statt.
 Die Lernkurven dazu sind im Anhang in Abbildung \ref{graphic:OligopolyMixedComparison} abgedruckt.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/oligopoly_vendor_comparison.pdf}
 	\caption{Profite typischer Trainingsdurchläufe von A2C, PPO und SAC im Vergleich zu ihren regelbasierten Konkurrenten}
