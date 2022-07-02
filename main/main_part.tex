@@ -278,7 +278,7 @@ Der Profit des Agenten sollte beim Design der Rewardfunktion höher gewichtet we
 \section{Training gegen die eigene Policy}
 \label{section:self_play}
 In den Durchläufen aus den Abschnitten \ref{section:main_ddpg}, \ref{section:main_ppo} und \ref{section:main_sac} trainierten die RL-Agenten alle gegen den unterbietenden, regelbasierten Wettbewerber.
-Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, stellt jedoch für praktische Anwendungen eine Reihe von Problemen auf.
+Das erfüllt die theoretischen Anforderungen eines Markov-Entscheidungsprozesses, wirft jedoch für praktische Anwendungen eine Reihe von Problemen auf.
 Erstens muss dafür die Policy des Konkurrenten bekannt sein.
 Weil jedoch davon ausgegangen werden kann, dass der Konkurrent seine Preisstrategie nicht verraten wird, müsste sie unter Inkaufnahme von Ungenauigkeiten aus historischen Daten geschätzt werden.
 Zweitens ist die mittels RL trainierte Strategie nur gegen diese bestimmte regelbasierte Strategie gerichtet.
@@ -322,8 +322,8 @@ Für die drei Algorithmen und die zwei Rewardfunktionen wurde ein mittlerer Durc
 Bei beiden Rewardfunktionen haben die Agenten den Markt erfolgreich erlernt und können sich auch in dem Benchmark gegen den regelbasierten Konkurrenten behaupten.
 So liegen die Spitzenwerte aller Agenten im Benchmark bei 8000 oder knapp darunter, allerdings mit starken Schwankungen bei A2C.
 Von den A2C-Agenten erreichen einige kein Niveau von 5000.
-Die Auswirkungen der gemischten Rewardfunktion sind gerade bei A2C und SAC deutlich.
-Dass während des Trainings die Differenz zwischen eigenem und gegnerischen Profit mit als Optimierungskriterium verfolgt wird, führt tatsächlich dazu, dass der durch Self-Play trainierte Agent auch im Vergleich mit dem regelbasierten Konkurrenten sich zumindest nicht übertreffen lässt (A2C), den Konkurrenten im Gegensatz zur normalen Rewardfunktion dauerhaft abhängt (PPO) oder den Abstand zum Konkurrenten dauerhaft vergrößert.
+Die Auswirkungen der gemischten Rewardfunktion sind bei den Trainingsdurchläufen zu erkennen.
+Dass während des Trainings die Differenz zwischen eigenem und gegnerischen Profit mit als Optimierungskriterium verfolgt wird, führt tatsächlich dazu, dass der durch Self-Play trainierte Agent auch im Vergleich mit dem regelbasierten Konkurrenten sich zumindest nicht übertreffen lässt (A2C), den Konkurrenten im Gegensatz zur normalen Rewardfunktion dauerhaft abhängt (PPO) oder den Abstand zum Konkurrenten vergrößert (SAC).
 
 Obwohl die Benchmarkergebnisse erwartungsgemäß nicht ganz an die Ergebnisse des Trainings direkt gegen den regelbasierten Agenten heranreichen, so sind sie nahe daran.
 Das ist bemerkenswert, da diese Erfolge im Benchmark erreicht wurden, ohne den regelbasierten Wettbewerber je vorher gesehen zu haben.
@@ -357,7 +357,7 @@ Damit reicht die Leistung näher, aber nicht ganz an die von PPO heran.
 Das ist eine wichtige Erkenntnis mit Blick auf die praktische Anwendbarkeit, und dennoch stellt sich die Frage, wie sich die unerwartet gute Leistung mit unvollständiger Information erklären lässt.
 
 Zur Erklärung ist zunächst heranzuführen, dass die ausgelassenen Informationen nur eine nachgeordnete Rolle spielen.
-Sie erklären zwar zu einem Teil den künftigen Zug des Konkurrenten und die Anzahl der verkaufswilligen Eigentümer, allerdings sind die Auswirkungen so indirekt, dass sie schwer für die Verbesserung einer Policy zu verwerten sind. \footnote{Die regelbasierten Konkurrenten verwenden diese Information auch nicht.}
+Sie erklären zwar zu einem Teil die künftige Aktion des Konkurrenten und die Anzahl der verkaufswilligen Eigentümer, allerdings sind die Auswirkungen so indirekt, dass sie schwer für die Verbesserung einer Policy zu verwerten sind. \footnote{Die regelbasierten Konkurrenten verwenden diese Information auch nicht.}
 Ein höherdimensionaler Beobachtungsraum stellt zudem grundsätzlich für Machine-Learning-Verfahren eine Herausforderung dar.
 Es steigt dann der Bedarf an Samples, Muster in den Daten sind schwerer zu erkennen.
 
@@ -367,13 +367,14 @@ Es steigt dann der Bedarf an Samples, Muster in den Daten sind schwerer zu erken
 	\caption{Betrachtung der Agenten mit vollständiger Information: (links) Verlauf des \textit{in-circulation}-Zählers im SAC-Training, (mittig und rechts) Gebrauchtpreis in Abhängigkeit von \textit{in-circulation} und Lagerstand des Konkurrenten bei SAC und PPO; andere Argumente sind dabei fest auf einen Wert gewählt, der typisch bei einem Trainingsdurchlauf ist (eigener Lagerstand: 25, Neupreis Konkurrent: 6, Gebrauchtpreis Konkurrent: 4, Rückkaufpreis Konkurrent: 0)}
 	\label{graphic:InCirculationExplain}
 \end{figure}
-Für das spezielle Phänomen bei SAC genügt die höhere Dimension allerdings nicht.
+Für die Erklärung des speziellen Phänomens bei SAC genügt die höhere Dimension allerdings nicht.
 Ein weiterer Erklärungsansatz drängt sich auf.
 Zunächst kann aus Abbildung \ref{graphic:InCirculationExplain} (Mitte) gelesen werden, dass ein SAC-Agent starke Abhängigkeiten von den beiden Argumenten (Zähler der Anzahl in Zirkulation und Lagerstand des Konkurrenten) erlernt.
 So unterscheidet sich der Mittelwert der SAC-Policy für Gebrauchtpreise bei ähnlichen Situationen zwischen 2 und 10, ein Sprung durch den gesamten Aktionsraum.
 Dass sich eine nahezu optimale Policy so verhalten sollte, ist angesichts der geringen Bedeutung der beiden Argumente auszuschließen, was die Policy des deutlich erfolgreicheren PPO-Agenten bestätigt.
 Wie man es erwarten würde, hängt sie kaum von diesen beiden Argumenten ab.
 Die niedrigere Spitzenperformance von SAC lässt sich vermutlich durch derartige Schwächen der Policy erklären.
+
 Für die von SAC erlernte Policy lässt sich eine Erklärung in der Funktionsweise von Soft Actor Critic finden.
 Sie basiert darauf, dass bei weiterentwickelten Policies im Markt mehr Produkte in Zirkulation sind.
 Das ist in Abbildung \ref{graphic:InCirculationExplain} (links) gezeigt und liegt daran, dass wenig trainierte Policies im Gegensatz zu den weiterentwickelten oft zu viel zurückkaufen (und dabei zu viel Geld ausgeben).
@@ -385,7 +386,7 @@ Es ist damit als Schwäche von SAC gegenüber dem On-Policy-Verfahren PPO zu ver
 
 \section{Vergleich im Monopol}
 In den vorigen Abschnitten wurden die Algorithmen in einem Recommerce-Duopol mit einem regelbasierten, unterbietenden Konkurrenten getestet.
-Für reale Anwendungen sind aber viele verschiedene Szenarien möglich.
+Für reale Anwendungen sind aber viele verschiedene Szenarien zu meistern.
 Es ist daher von Interesse, wie die Algorithmen auf verschiedenen Marktszenarien abschneiden, die in der Praxis auftreten können.
 Ein Szenario, das leichter ist sein dürfte, ist das Monopol.
 Hier ist der RL-Agent der einzige Anbieter, während weiterhin die gleiche Anzahl von Kunden den Markt besucht.
@@ -412,8 +413,8 @@ Vergleicht man den Punkt, an dem die Algorithmen keine deutlich besseren Ergebni
 Im Monopol erzielen diese drei Algorithmen etwa doppelt so hohe Gewinne wie im Duopol.
 Auf der einen Seite ist das plausibel, schließlich müssen sie sich den Markt nicht mehr aufteilen.
 Auf der anderen Seite könnte man aber erwarten, dass die Gewinne sogar höher ausfallen, indem die Monopolsituation durch Verlangen höherer Preise ausgenutzt wird.
-Dass das nicht geschieht, liegt an der begrenzten Kaufbereitschaft der Kunden, gerade bei höheren Preisen.
-Im Anhang in Abbildung \ref{graphic:PPOMonopolyDuopoly} wird dazu ein PPO-Durchlauf im Monopol mit dem im Duopol mit Blick auf Verkaufszahlen verglichen.
+Dass dies nicht geschieht, liegt an der begrenzten Kaufbereitschaft der Kunden, gerade bei höheren Preisen.
+Im Anhang in Abbildung \ref{graphic:PPOMonopolyDuopoly} wird dazu ein PPO-Durchlauf im Monopol mit einem im Duopol mit Blick auf Verkaufszahlen verglichen.
 
 \section{Vergleich im Oligopol}
 Als weiteres Szenario wird das Oligopol untersucht.
@@ -429,7 +430,7 @@ Jeder Schritt wird dann in Fünftel zerlegt, die Anbieter setzen ihre Preise rei
 In jedem dieser Fünftel kommen vier Kunden zum Marktplatz, insgesamt also weiterhin 20.
 Das sonstige Verhalten des Marktes bleibt unverändert.
 Der Beobachtungsraum ist 18-dimensional (\textit{in-circulation}, eigener Lagerstand und für jeden der vier Konkurrenten drei Preise sowie der Lagerstand).
-Damit handelt es sich um das komplexeste Szenario, das behandelt wurde.
+Damit handelt es sich um das komplexeste Szenario, das untersucht wurde.
 
 \begin{figure}[htb]
 	\centering
@@ -443,7 +444,7 @@ Die RL-Agenten erreichen auch hier Lernerfolg, wobei die Gewinne selbstverständ
 Wie auch in den anderen Experimenten, zeigen PPO und SAC stabile Lernkurven.
 Bei A2C zeigen sich die bekannten Instabilitäten, aber die Spitzenperformance bleibt tatsächlich nur leicht hinter der der anderen Algorithmen zurück.
 Äußerst interessant ist bei diesem Versuch, dass der SAC-Algorithmus besser abschneidet als PPO, der bei den anderen Experimenten in der Spitzenleistung überlegen war.
-Weil wegen des hohen Trainingsaufwandes nur 1000 Episoden trainiert wurden und die PPO-Kurven am Ende noch einen leichten Anstieg zeigen, kann zwar nicht ausgeschlossen werden, dass PPO zu einem späteren Zeitpunkt aufholt, aber dennoch scheint SAC hier überlegen zu sein.
+Weil wegen des hohen Trainingsaufwandes nur 1000 Episoden trainiert wurden und die PPO-Kurven am Ende noch einen leichten Anstieg zeigen, kann zwar nicht ausgeschlossen werden, dass PPO zu einem späteren Zeitpunkt aufholt, aber dennoch lässt sich auf Grundlage dieser Lernkurve SAC als überlegen einordnen.
 
 Der mutmaßliche Grund hierfür ist das größere neuronale Netz, mit dem SAC arbeitet.
 Mit 256 Neuronen in den beiden versteckten Schichten lassen sich kompliziertere Funktionen erlernen als mit nur 64 Neuronen in den versteckten Schichten.
@@ -453,7 +454,7 @@ Die Lernkurven sind im Anhang in Abbildung \ref{graphic:OligopolyMixedComparison
 Dabei zeigt sich, dass gute PPO-Durchläufe schließlich die gleiche Performance erreichen wie bei SAC, aber die Trainingsstabilität erheblich niedriger ist.
 
 Der Algorithmenvergleich auf dem Oligopol wurde ebenfalls mit der gemischten Rewardfunktion durchgeführt.
-Dessen Ergebnisse sind ähnlich, allerdings finden die SAC-Durchläufe in einer deutlich größeren Spanne statt.
+Dessen Ergebnisse sind ähnlich, allerdings streuen die SAC-Durchläufe dort deutlich stärker.
 Die Lernkurven dazu sind im Anhang in Abbildung \ref{graphic:OligopolyMixedComparison} abgedruckt.
 
 \begin{figure}[htb]
@@ -472,6 +473,3 @@ Der Agent, der nur sein Lager reguliert, landet auf dem vorletzten Platz, währe
 In diesem Oligopolszenario tritt der Effekt, dass ein RL-Agent einen regelbasierten Konkurrenten überholen lässt, nicht auf.
 Weil die RL-Agenten ihre Konkurrenz hier stets überholen, besteht nicht die Notwendigkeit für die gemischte Rewardfunktion.
 Deshalb werden diese Versuche auch nicht detailliert betrachtet.
-
-Für echte Märkte mit mehreren Anbietern und höherdimensionalen Beobachtungen ist es eine sehr wichtige Erkenntnis, dass auch dieses kompliziertere Szenario durch die RL-Algorithmen mit einer gewissen Lässigkeit und äußerst zuverlässig gelöst werden kann.
-Das unterstreicht die praktische Anwendbarkeit von RL-Algorithmen auf Marktplätzen.
