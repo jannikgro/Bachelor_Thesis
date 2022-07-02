@@ -1,9 +1,11 @@
-\textbf{deprecated}
-Trading second-hand items on internet marketplaces is a rising business.
-Both in terms of business opportunities and sustainability, it will become more important in the future.
-But trading these items on internet marketplaces is challenging because of real-time competition and fierce price wars.
-To optimize the pricing strategies using reinforcement learning, a simulation for re-commerce markets is introduced.
-After an appropriate definition of dynamic pricing as markov decision process, three widespread algorithms are applied to this task:
-Advantage Actor Critic, Deep Deterministic Policy Gradient and Soft Actor Critic.
-This thesis aims to analyze and compare these algorithms in terms of performance, stability, and data efficiency.
-It was found that the latest Soft Actor Critic Algorithm yields the best performance, while the classic Advantage Actor Critic provides the highest training stability.
+Trading second-hand items on online marketplaces is a rising business.
+Thereby, pricing is a major challenge.
+E-commerce is highly dynamic, the product range is large, and fast reactions to competitors are required.
+Thus, automation of pricing strategies is a necessary step for traders.
+This thesis is about dynamic pricing with Reinforcement Learning (RL), a machine learning technology.
+Today, thanks to intensive research in the past years, many different RL-algorithms exist.
+This thesis compares five different algorithms in monopoly, duopoly, and oligopoly markets against competitive rule-based strategies.
+It is found that A2C, PPO, and SAC can succeed and outperform competitors, while DDPG and TD3 lack the necessary performance.
+Later, several problems that arise in real-world applications are tackled and solved.
+It is shown that missing some information about the competitor does not break the algorithms.
+The problem of not knowing the opposite's strategy can be succesfully solved with self-play.
