@@ -10,7 +10,7 @@ Weiterhin können Policies stochastisch sein.
 Die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, \infty)$.
 Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$.
 Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
-Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen von einem Schritt $t$ 
+Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen
 \begin{equation}
 	G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \cdot R_t
 \end{equation}
@@ -63,7 +63,7 @@ In jedem Fall müsste die Formulierung mit dem diskreten Aktionsraum gewählt we
 Hindernis ist aber auch hier der große Zustands- und Aktionsraum: soll das Monte-Carlo-Verfahren angewandt werden, so ist dafür eine Tabelle der Größe $|\mathcal{S} \times \mathcal{A}|$ erforderlich.
 Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste die Tabelle $50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$ Einträge haben.
 Obwohl dieser Wert bereits jeden verfügbaren Speicher sprengt, ist die Anzahl der unterschiedlichen Preisstufen mit 10 für realistische Verhältnisse recht niedrig angesetzt.
-Tatsächlich liegt der benötigte Speicher in $\mathcal{O}\left(p_{max}^6\right)$, was eine Skalierung selbst bei ansonstem kleineren Zustandsraum unmöglich macht.
+Tatsächlich liegt der benötigte Speicher in $\mathcal{O}\left(p_{max}^6\right)$, was eine Skalierung unmöglich macht.
 Weil dies sogar nur die Betrachtung des Speichers war -- bis Konvergenz erreicht ist, müsste jeder Zustand sehr oft durchlaufen werden -- muss geschlussfolgert werden, dass eine Lösung, die für alle Zustände die Zustandswerte ausrechnen möchte, nicht realisierbar ist.
 
 Approximationen sind also unumgänglich.

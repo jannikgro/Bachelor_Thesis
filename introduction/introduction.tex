@@ -44,7 +44,7 @@ Dazu wird die Zeit in gleich lange Abschnitte diskretisiert.
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
 Daraufhin setzt der Agent seine Preise, die für den Rest des Schrittes gelten.
 In der Übertragung eines echten Marktes könnte ein Schritt zum Beispiel einer Stunde oder einer Minute entsprechen.
-Obwohl die Optimierung für einen \textit{infinit-horizon} stattfinden soll, werden für das Training und die Analyse Episoden betrachtet, die aus $n_{ep}$ Schritten bestehen.
+Obwohl die Optimierung für einen \textit{infinite horizon} stattfinden soll, werden für das Training und die Analyse Episoden betrachtet, die aus $n_{ep}$ Schritten bestehen.
 Dieses $n_{ep}$ wurde in der Standardkonfiguration mit 500 so groß gewählt, dass der Effekt des Startzustandes verschwindet.
 
 Das hier eingeführte Modell simuliert einen Recommerce-Markt mit zwei konkurrierenden Anbietern.
@@ -121,7 +121,7 @@ Die Wegwurfpräferenz
 \begin{equation}
 	\sigma_{eigentuemer, wegwurf} = \min_{i}{\left(\min{(p_{i, neu}, p_{i, gebraucht})}\right)} - \max_{i}{p_{i, re}}.
 \end{equation}
-motiviert sich daher, dass die Eigentümer ihr Produkt wenig wertschätzen, wenn die Differenz zwischen dem niedrigstem Kaufpreis und dem höchsten Rückkaufpreis hoch ist.
+motiviert sich daher, dass die Eigentümer ihr Produkt wenig wertschätzen, wenn die Differenz zwischen dem niedrigsten Kaufpreis und dem höchsten Rückkaufpreis hoch ist.
 Die Präferenz für das Zurückverkaufen an die einzelnen Anbieter ist direkt ihr Rückkaufpreis, also
 \begin{equation}
 	\sigma_{eigentuemer, rueckkauf, i} = p_{i, re}
