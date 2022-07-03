@@ -199,6 +199,8 @@ Die Lernkurve bestätigt, dass Soft-Actor-Critic diese zwei Hauptziele erreicht.
 Profitabel arbeitet der Agent nach etwa 70 Episoden, was nur leicht hinter A2C liegt und erheblich besser als PPO ist.
 Ab etwa 250 bis 300 Episoden sind die Agenten nah an ihrer Spitzenperformance.
 Das restliche Training bringt nur noch kleine Leistungszugewinne.
+Die hohe Sample-Efficiency liegt daran, dass SAC die gesammelte Erfahrung im Experiencebuffer speichert und sehr oft zum Training nutzt.
+Dadurch werden viel weniger Samples als bei PPO benötigt, das alte Erfahrung nicht mehr verwenden kann, sobald sich die Policy geändert hat.
 Alle vier Agenten bewegen sich für den Rest des Trainings in einem schmalen Bereich, wobei der Durchschnittsreturn knapp 8000 erreicht.
 Ob weiteres Training zusätzliche Verbesserungen bezwecken können, lässt sich nicht sicher sagen.
 Allerdings ändern sich die gemessenen Kenngrößen wie Aktionsauswahl und Loss im späteren Verlauf des Trainings kaum noch.
