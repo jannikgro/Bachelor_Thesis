@@ -5,7 +5,7 @@ Mit den Agenten wird über die Gym-Schnittstelle \cite{brockman2016openai} kommu
 Für die zu vergleichenden Algorithmen werden die Implementierungen der Bibliothek \textit{Stable Baselines} \cite{stable-baselines} verwendet.
 Stable Baselines ist eine weit verbreitete Open-Source RL-Bibliothek, die in Python geschrieben ist.
 Sie baut auf PyTorch \cite{NEURIPS2019_9015} auf, einem der beliebtesten Deep-Learning-Frameworks, das in der Forschung weite Verbreitung findet.
-Die in Stable Baselines implementierten Algorithmen entsprechen in den meisten Fällen unmittelbar den vorgeschlagenen Algorithmen der Originalpaper und zeichnen sich durch eine hohe Lesbarkeit des Codes aus. \footnote{Die SAC-Implementierung verwendet nicht den im Originalpaper vorgeschlagenen Reparameterization Trick.}
+Die in Stable Baselines implementierten Algorithmen entsprechen in den meisten Fällen unmittelbar den vorgeschlagenen Algorithmen der Originalpaper und zeichnen sich durch eine hohe Lesbarkeit des Codes aus. \footnote{Die SAC-Implementierung verwendet nicht den im Originalpaper vorgeschlagenen Reparameterization Trick und schätzt nur Aktionswerte, keine Zustandswerte.}
 Alle Hyperparameter sind konfigurierbar.
 
 In dieser Untersuchung werden nur Algorithmen verglichen, die mit stetigem Aktionsraum arbeiten.
