@@ -1,18 +1,16 @@
 \section{MDPs lösen: Zustands- und Aktionswerte}
 \label{section:mdp_fundamentals}
-Bei der Einführung der Notation wird sich an das Lehrbuch von Richard Sutton und Andrew Barto gehalten. \cite{Sutton1998}
+Bei der Einführung der Notation wird sich an das Lehrbuch \cite{Sutton1998} gehalten.
 Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, p)$ (kurz MDP).
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
 Weiterhin ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $a \in \mathcal{A}$ die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung $r \in \mathbb{R}$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
 Zentraler Begriff beim Lösen eines MDPs die sogenannte Policyfunktion.
 Sie kann deterministisch sein und als $\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
-Weiterhin können Policies stochastisch sein, die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, \infty)$.
-Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$.\footnote{
-	In der Literatur wird oft eine verallgemeinernde Notation verwendet, die auch mit unendlich langen Episoden kompatibel ist.
-	Weil aber die Episodenlänge in \ref{section:markov} auf $n_{ep}$ festgelegt wurde, wird das hier direkt verwendet.
-}
+Weiterhin können Policies stochastisch sein.
+Die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, \infty)$.
+Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$.
 Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
-Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen von einem Schritt $t$ aus als 
+Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen von einem Schritt $t$ 
 \begin{equation}
 	G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \cdot R_t
 \end{equation}
@@ -33,7 +31,7 @@ definiert, also die erwartete (diskontierte) Summe an Belohnungen nach dem Besuc
 Zustands- und Aktionswerte sind zentrale Begriffe im Reinforcement Learning, die in vielen Algorithmen verwendet werden.
 Das Ziel, den Return $G_0$ zu maximieren, lässt sich auch äquivalent als Maximierung von $V(S_0)$ formulieren.
 
-\section{Exakte Lösungen für das Dynamic Pricing}
+\section{Exakte Lösungen mittels Dynamic Programming}
 \label{section:dp}
 Ein klassisches Verfahren für das Lösen von Markov-Entscheidungsprozessen ist die dynamische Programmierung.
 Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Übergangs- und Belohnungswahrscheinlichkeiten $p$ bekannt sind.
@@ -43,25 +41,21 @@ Dann werden rundenweise für alle Zustände $s\in\mathcal{S}$ ihre Einträge in 
 	V^*(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
 \end{equation}
 als Berechnungsvorschrift aktualisiert.
-Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy. \cite{Sutton1998}
-Die optimale Policy ist dann die folgende deterministische, sogenannte Greedy-Policy:
-\begin{equation}
-	\pi: s \mapsto \argmax_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
-\end{equation}
-Dieses Verfahren ist mit analogen Formeln ebenfalls auf Grundlage der Aktionswerte möglich.
-Dann wird mehr Speicher benötigt, aber die Aktionsauswahl benötigt keine weiteren Rechnungen, nur die Bestimmung der Aktion mit maximalem Wert.
+Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy.
+Bei \cite{Sutton1998} ist das Verfahren als Wertiteration zu finden und ist in analoger Weise auch mit Aktionswerten möglich.
+Die optimale Policy ist dann die deterministische, sogenannte Greedy-Policy.
+Sie wählt in jedem Zustand das arg max der Aktionen.
 
-Dynamische Programmierung wurde bereits erfolgreich für dynamische Preisgestaltung eingesetzt, hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind. \cite{10.1145/3219819.3219833}
+Dynamische Programmierung hat allerdings starke Forderungen, die in der Praxis schwer erfüllbar sind.
 Erstens müssen die Wahrscheinlichkeitsverteilungen der Belohnungen und Zustandsübergänge bekannt sein.
-Das ist für die Realität nicht möglich und bereitet auch in dem in dieser Arbeit untersuchten Markt Probleme.
-So könnte man zwar die explizite Definition des Marktes zur Verfügung haben, allerdings sind die Wahrscheinlichkeiten nirgends explizit aufgeschrieben, sondern die Übergangswahrscheinlichkeiten werden durch die Simulation induziert.
-Sie explizit zu bekommen, ist möglich, erfordert aber eine umfangreiche mathematische Analyse.
+Die sind aber unter anderem bei dem in dieser Arbeit untersuchten Markt nicht explizit vorhanden.
+Eine umfangreiche mathematische Analyse wäre erforderlich.
 
 Dieses Problem lässt sich allerdings noch im Rahmen abgewandelter DP-Verfahren lösen.
-Grundidee dieser Monte-Carlo-Verfahren ist es, eine Tabelle für die Schätzung der Aktionswerte zu speichern und damit eine Greedy-Policy zu erstellen.
+Grundidee dieser sogenannten Monte-Carlo-Verfahren ist es, eine Tabelle für die Schätzung der Aktionswerte zu speichern und damit eine Greedy-Policy zu erstellen.
 Es werden nach und nach Episoden generiert und mit den empirischen Daten die Schätzung der Aktionswerte verbessert.
-In jedem Schritt wird dabei mit einer Wahrscheinlichkeit von $1-\varepsilon$ dieser Greedy-Policy gefolgt, allerdings mit einer Wahrscheinlichkeit von $\varepsilon$ eine zufällige Aktion ausgewählt.
-Tatsächlich lässt sich zeigen, dass dieses Verfahren in der Asymptotik eine optimale Policy liefert, wenn $\varepsilon$ gegen null konvergiert, aber stets größer als null ist. \cite{Sutton1998}
+In jedem Schritt wird dabei mit einer Wahrscheinlichkeit von $1-\varepsilon$ dieser Greedy-Policy gefolgt, und für die Exploration mit einer Wahrscheinlichkeit von $\varepsilon$ eine zufällige Aktion ausgewählt.
+Weiteres dazu kann in \cite{Sutton1998} nachgelesen werden.
 
 \section{Approximation als Ausweg bei zu großem Zustands- und Aktionsraum}
 Doch auch dieses Verfahren kann auf den beschriebenen Markt kaum angewandt werden.
