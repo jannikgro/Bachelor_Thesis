@@ -12,7 +12,7 @@ Zur Herausforderung, neue Produkte einzupreisen, kommt also noch hinzu, Preise f
 Dabei müssen auch Nebenbedingungen wie Lagerkosten beachtet werden, wodurch sich ein durchaus kompliziertes Problem ergibt.
 Abbildung \ref{graphic:MarketOverview} zeigt eine grafische Visualisierung des in dieser Arbeit untersuchten Szenarios.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{introduction/MarketOverview_042.pdf}
 	\caption{
@@ -44,7 +44,7 @@ Dazu wird die Zeit in gleich lange Abschnitte diskretisiert.
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
 Daraufhin setzt der Agent seine Preise, die für den Rest des Schrittes gelten.
 In der Übertragung eines echten Marktes könnte ein Schritt zum Beispiel einer Stunde oder einer Minute entsprechen.
-Obwohl die Optimierung für einen \textit{infinit-horizon} stattfinden soll, werden für das Training und die Analyse Episoden betrachtet, die aus $n_{ep}$ Schritten bestehen.
+Obwohl die Optimierung für einen \textit{infinite horizon} stattfinden soll, werden für das Training und die Analyse Episoden betrachtet, die aus $n_{ep}$ Schritten bestehen.
 Dieses $n_{ep}$ wurde in der Standardkonfiguration mit 500 so groß gewählt, dass der Effekt des Startzustandes verschwindet.
 
 Das hier eingeführte Modell simuliert einen Recommerce-Markt mit zwei konkurrierenden Anbietern.
@@ -82,16 +82,16 @@ Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden
 Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
 Die Präferenz, das Neuprodukt bei Anbieter $i$ zu kaufen, lautet
 \begin{equation}
-	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0.8 p_{max})}.
+	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0,8 p_{max})}.
 \end{equation}
 Das Kaufen eines Gebrauchtproduktes bei Anbieter $i$ wird auf
 \begin{equation}
-	\sigma_{kunde, gebraucht, i} = \frac{5.5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0.5 p_{max})}
+	\sigma_{kunde, gebraucht, i} = \frac{5,5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0,5 p_{max})}
 \end{equation}
 festgelegt.
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung im Vergleich zu Neuprodukten entgegengebracht.
-Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0.5 p_{max}$ bei Gebraucht- und $0.8 p_{max}$ bei Neuware überschreitet.
+Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0,5 p_{max}$ bei Gebraucht- und $0,8 p_{max}$ bei Neuware überschreitet.
 Das modelliert die grundsätzlich beschränkte Zahlungsbereitschaft der Kunden für diese Produkte und verhindert einen Preiszyklus nach oben.
 Wie gefordert, werden die Produkte aller Anbieter als gleichwertig betrachtet.
 Fallen die Präferenzen für die Kaufoptionen niedrig aus, so wird durch die Softmax-Funktion eine hohe Wahrscheinlichkeit auf das Nichtkaufen entfallen.
@@ -121,7 +121,7 @@ Die Wegwurfpräferenz
 \begin{equation}
 	\sigma_{eigentuemer, wegwurf} = \min_{i}{\left(\min{(p_{i, neu}, p_{i, gebraucht})}\right)} - \max_{i}{p_{i, re}}.
 \end{equation}
-motiviert sich daher, dass die Eigentümer ihr Produkt wenig wertschätzen, wenn die Differenz zwischen dem niedrigstem Kaufpreis und dem höchsten Rückkaufpreis hoch ist.
+motiviert sich daher, dass die Eigentümer ihr Produkt wenig wertschätzen, wenn die Differenz zwischen dem niedrigsten Kaufpreis und dem höchsten Rückkaufpreis hoch ist.
 Die Präferenz für das Zurückverkaufen an die einzelnen Anbieter ist direkt ihr Rückkaufpreis, also
 \begin{equation}
 	\sigma_{eigentuemer, rueckkauf, i} = p_{i, re}
@@ -184,7 +184,7 @@ Für den hier definierten Markt lassen sich einige Überlegungen anstellen:
 	Umgekehrt wird ein höherer Rückkaufpreis und ein höherer Gebrauchtpreis gesetzt, falls das Lager gefüllt werden soll.
 	\item Der Rückkaufpreis sollte stets so niedrig wie möglich gehalten werden.
 \end{itemize}
-Im Anhang in Abschnitt \ref{section:rulebased_definition} ist eine regelbasierte Strategie definiert, die diesen Ideen folgt.
+Im Anhang ist eine regelbasierte Strategie definiert, die diesen Ideen folgt.
 Sie erreicht in Tests gegen sich selbst Ergebnisse von 1200 bis 1400 auf einer Episode mit 500 Schritten.
 Es gelingt ihr, Gewinn zu erwirtschaften und das Lager bei etwa 10 Produkten zu halten.
 Diese Ergebnisse fallen niedriger aus als die der RL-Agenten in der Analyse, und auch niedriger als die Ergebnisse dieser regelbasierten Strategie.

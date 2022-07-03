@@ -1,93 +1,92 @@
-\section{Hyperparameter}
-\label{section:hyperparameter}
-\begin{table}[t]
+\addsec{Hyperparameter}
+\begin{table}[htb]
 	\centering
-	\begin{tabular}{l p{0.5\textwidth} l}
+	\begin{tabular}{p{0.2\textwidth} p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Symbol        & Erklärung                                                                   & Standardwert\\\midrule
 		$n_{ep}$      & Anzahl der Schritte in einer Episode                                        & $500$\\
-		$p_{max}$     & maximal wählbarer Preis für beide Agenten                                   & $10$\\
+		$p_{max}$     & maximal wählbarer Preis für alle drei Kanäle                                & $10$\\
 		$p_{einkauf}$ & Einkaufs- oder Produktionspreis für Neuprodukte                             & $3$\\
-		$p_{lager}$   & Preis pro eingelagertem Gebrauchtprodukt pro Schritt                        & $0.1$\\
+		$p_{lager}$   & Preis pro eingelagertem Gebrauchtprodukt pro Schritt                        & $0,1$\\
 		$k$           & Kundenzahl, die pro Schritt den Markt besucht                               & $20$\\
 		$m_{lager}$   & maximale Anzahl von Gebrauchtprodukten, die im Lager gehalten werden können & $100$\\
-		$c$           & Anteil der Eigentümer, die pro Schritt einen Rückverkauf erwägen            & $0.05$\\\bottomrule
+		$c$           & Anteil der Eigentümer, die pro Schritt einen Rückverkauf erwägen            & $0,05$\\\bottomrule
 	\end{tabular}
 	\caption{Marktparameters mit kurzer Erklärung und für diese Experimente verwendete Standardwerte}
 	\label{tab:default_parameters}
 \end{table}
 
-\begin{table}[t]
+\begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.5\textwidth} l}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $10^{-3}$\\
 		Größe des Experiencebuffers                   & $10^6$\\
 		Episoden bis zum Beginn des Lernens           & $100$\\
 		Größe eines Minibatches                       & $100$\\
-		Koeffizient für die Polyak-Mittelung ($\tau$) & $0.005$\\
-		Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+		Koeffizient für die Polyak-Mittelung ($\tau$) & $0,005$\\
+		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
 	\end{tabular}
 	\caption{Hyperparameter für DDPG und TD3}
 	\label{tab:DDPGHyperparameters}
 \end{table}
 
-\begin{table}[t]
+\begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.5\textwidth} l}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $7\cdot 10^{-4}$\\
 		Anzahl der Schritte pro Update                & $5$\\
-		Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
 	\end{tabular}
 	\caption{Hyperparameter für Advantage Actor Critic}
 	\label{tab:A2CHyperparameter}
 \end{table}
 
-\begin{table}[t]
+\begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.5\textwidth} l}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $3 \cdot 10^{-4}$\\
 		Anzahl der Schritte pro Update                & $2048$\\
 		Größe eines Minibatches                       & $64$\\\
 		Anzahl der Epochen pro Update                 & $10$\\
-		\textit{clip\_range} ($\varepsilon$)          & $0.2$\\
-		Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+		\textit{clip\_range} ($\varepsilon$)          & $0,2$\\
+		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
 	\end{tabular}
-	\caption{Hyperparameter Proximal Policy Optimization}
+	\caption{Hyperparameter für Proximal Policy Optimization}
 	\label{tab:PPOHyperparameters}
 \end{table}
 
-\begin{table}[t]
+\begin{table}[htb]
 	\centering
-	\begin{tabular}{p{0.5\textwidth} l}
+	\begin{tabular}{p{0.4\textwidth} p{0.2\textwidth}}
 		\toprule
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $3 \cdot 10^{-4}$\\
 		Größe des Experiencebuffers                   & $10^6$\\
 		Episoden bis zum Beginn des Lernens           & $100$\\
-		Größe eines Minibatches                       & $256$\\\
+		Größe eines Minibatches                       & $256$\\
 		Entropiekoeffizient ($\alpha$)                & automatisch\\
-		Koeffizient für die Polyak-Mittelung ($\tau$) & $0.005$\\
-		Diskontierungsfaktor ($\gamma$)               & $0.99$\\\bottomrule
+		Koeffizient für die Polyak-Mittelung ($\tau$) & $0,005$\\
+		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
 	\end{tabular}
-	\caption{Hyperparameter Soft Actor Critic}
+	\caption{Hyperparameter für Soft Actor Critic}
 	\label{tab:SACHyperparameters}
 \end{table}
 
-\section{Definition der regelbasierten Strategien}
-\label{section:rulebased_definition}
-Der Neupreis wird als
+\addsec{Definition der unterbietenden, regelbasierten Strategie}
+Die Notation beschreibt die Sicht von Anbieter 1 aus, wobei Anbieter 2 der Konkurrent ist.
+Da die beiden Positionen symmetrisch sind, ist das keine Beschränkung der Allgemeinheit.
+Die regelbasierte Strategie $\pi$ setzt ihren Neupreis als
 \begin{equation}
-	\pi\left(p_{2, neu}\right)_{neu} = \max{\left(p_{2, neu} - 1, p_{einkauf} + 1\right)}
+	\pi\left(p_{2, neu}\right)_{neu} = \max{\left(p_{2, neu} - 1, p_{einkauf} + 1\right)}.
 \end{equation}
-gesetzt.
 Beim Gebraucht- und Rückkaufpreis wird je nach Lagerstand entschieden.
-Der Gebrauchtpreis wird in Abhängigkeit des Konkurrenzpreises und des Lagerstandes folgendermaßen gesetzt:
+Der Gebrauchtpreis wird in Abhängigkeit des Konkurrenzpreises und des Lagerstandes als
 \begin{equation}
 	\pi\left(p_{2, gebraucht}, n_{lager}\right)_{gebraucht} =
 	\begin{cases}
@@ -96,7 +95,8 @@ Der Gebrauchtpreis wird in Abhängigkeit des Konkurrenzpreises und des Lagerstan
 		p_{2, gebraucht} - 2 & \text{sonst}
 	\end{cases}
 \end{equation}
-Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der Preis gesetzt als:
+gesetzt.
+Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der Preis
 \begin{equation}
 	\pi(p_{2, re}, n_{lager})_{re} =
 	\begin{cases}
@@ -105,26 +105,39 @@ Beim Rückkaufpreis werden die gleichen Fallunterscheidungen unternommen und der
 		p_{2, re} - 2 & \text{Sonst}
 	\end{cases}
 \end{equation}
+gewählt.
 Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rechnung Ergebnisse kleiner als null oder größer als $p_{max}$ ermittelt).
-
-\section{Weitere Diagramme zum Lernerfolg}
-\begin{figure}[htbp]
+\clearpage
+\addsec{Weitere Diagramme zum Lernerfolg}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{appendix/ppo_different_networks.pdf}
+	\caption{
+		Lernkurven des Proximal-Policy-Optimization-Algorithmus bei unterschiedlicher Anzahl von Knoten pro versteckter Schicht, aber insgesamt zwei Schichten:
+        Trotz des Unterschiedes in den Netzgrößen und damit sehr großen Unterschieden in der Anzahl der Parameter schneiden die Netze sehr ähnlich ab.
+        Sowohl Lerngeschwindigkeit als auch Spitzenperformance unterscheiden sich kaum.
+        Auffällig ist allerdings, dass der Trainingsdurchlauf mit dem großen Netz einen Absturz aufweist, der ansonsten bei PPO nicht auftritt.
+        Der Durchlauf mit 32 Neuronen pro Schicht erreicht die schlechteste Spitzenperformance.
+	}
+	\label{graphic:PPODifferentNetworks}
+\end{figure}
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/ppo_different_clipping.pdf}
 	\caption{
 		Lernkurven des Proximal-Policy-Optimization-Algorithmus bei unterschiedlichen Werten für $\varepsilon$:
-		Zwischen $0.2$ und $0.3$ ist eine Verbesserung in der Leistung zu sehen.
+		Zwischen $0,2$ und $0,3$ ist eine Verbesserung in der Leistung zu sehen.
 		Bei größeren Werten setzt sich die Verbesserung nicht fort und die Trainingsstabilität sinkt.
 	}
 	\label{graphic:PPODifferentClipping}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/a2c_vs_sac.pdf}
-	\caption{Lernkurve von Soft Actor Critic über 600 Episoden mit A2C als Vergleich}
+	\caption{Lernkurven von vier SAC-Durchläufen über 600 Episoden mit A2C als Vergleich}
 	\label{graphic:SACvsA2CLearningCurve}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/sac_temperature.pdf}
 	\caption{
@@ -132,60 +145,60 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
         Hohe Werte sind eine Regularisierung und führen dazu, dass die Policy >>zufälliger<< ist.
         Die Exploration und Stabilität nehmen zu, allerdings leidet die Spitzenperformance.
         Das liegt daran, dass die Policy weniger genau gelernt wird, und die Aktionsauswahl stärker streut.
-        Bei dem Durchlauf mit $\varepsilon=0.2$ ist die Performance deutlich niedriger, was vermutlich an zu geringer Exploration liegt.
+        Bei dem Durchlauf mit $\varepsilon=0,2$ ist die Performance deutlich niedriger, was vermutlich an zu geringer Exploration liegt.
         Der Durchlauf mit $\varepsilon=1$ hat sogar geringfügig bessere Ergebnisse geliefert als die mit automatischer Ermittlung des Entropiekoeffizienten.
 	}
 	\label{graphic:SACTemperature}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/mixed_rewards_a2c.pdf}
 	\caption{
-		Lernkurve des Advantage-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
+		Lernkurven des Advantage-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orange) im Vergleich zur Standardfunktion (blau):
 		Man sieht, dass einige Durchläufe mit gemischter Rewardfunktion einen ähnlichen Verlauf nehmen wie die mit Standardrewardfunktion.
-		Andere Läufe machen kaum Gewinn und leiden unter sehr viel Instabilität.
+		Andere Läufe machen kaum Gewinn und leiden unter starker Instabilität.
 	}
 	\label{graphic:MixedRewardsA2C}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/mixed_rewards_ppo.pdf}
 	\caption{
-		Lernkurve des Proximal-Policy-Optimization-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
+		Lernkurve des Proximal-Policy-Optimization-Algorithmus bei gemischter Rewardfunktion (orange) im Vergleich zur Standardfunktion (blau):
 		Bei gemischter Rewardfunktion sind die Returns etwas schlechter, wie es angesichts des veränderten Optimierungskriteriums zu erwarten ist.
-		Allerdings verringert sich die sehr hohe Stabilität von PPO beim Training mit gemischter Rewardfunktion etwas.
+		Weiterhin verringert sich die sehr hohe Stabilität von PPO beim Training mit gemischter Rewardfunktion etwas.
 		Diese entstehende Instabilität ist aber gering und beeinträchtigt nicht die Ergebnisse.
 	}
 	\label{graphic:MixedRewardsPPO}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/mixed_rewards_sac.pdf}
 	\caption{
-		Lernkurve des Soft-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orage) im Vergleich zur Standardfunktion (blau):
+		Lernkurve des Soft-Actor-Critic-Algorithmus bei gemischter Rewardfunktion (orange) im Vergleich zur Standardfunktion (blau):
 		Ähnlich wie bei A2C in \ref{graphic:MixedRewardsA2C} gibt es Durchläufe mit gemischter Rewardfunktion, die ähnlich zu den Durchläufen mit Standardrewardfunktion sind.
 		Es gibt aber auch Durchläufe, die nie die Gewinnzone erreichen.
-		Diese Durchläufe erreichen sogar bezüglich der gemischten Rewardfunktion die besten Ergebnisse, weil sie erfolgreich eine Schwäche im SAC-Algorithmus finden. (siehe \ref{graphic:ExplanationUnnormalSAC})
+		Diese Durchläufe erreichen sogar bezüglich der gemischten Rewardfunktion die besten Ergebnisse, weil sie erfolgreich eine Schwäche beim regelbasierten Konkurrenten finden. (siehe \ref{graphic:ExplanationUnnormalSAC})
 	}
 	\label{graphic:MixedRewardsSAC}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/explanation_unnormal_sac.pdf}
 	\caption{
 		Detaillierter Blick in einen SAC-Trainingsdurchlauf gegen den regelbasierten Konkurrenten bei gemischter Rewardfunktion:
-		Der SAC-Agent nutzt eine Schwäche des Konkurrenten aus und leert dessen Lager so, dass dieser Strafe für nicht bereitgestellte Produkte zahlen muss.
+		Der SAC-Agent (Vendor 0) nutzt eine Schwäche des Konkurrenten (Vendor 1) aus und leert dessen Lager so, dass dieser Strafe für nicht bereitgestellte Produkte zahlen muss.
 		Gleichzeitig versucht der regelbasierte Konkurrent, Produkte zurückzukaufen und gibt bei hohen Rückkaufpreisen dafür zu viel Geld aus.
 	}
 	\label{graphic:ExplanationUnnormalSAC}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/self_play_mixed.pdf}
-	\caption{Lernkurve von A2C, PPO und SAC beim Self-Play bei gemischter Rewardfunktion; die Algorithmen wurden über 2000 Episoden trainiert}
+	\caption{Lernkurven von vier A2C-, PPO- und SAC-Durchläufen beim Self-Play bei gemischter Rewardfunktion; die Algorithmen wurden über 2000 Episoden trainiert}
 	\label{graphic:SelfPlayMixedLearningCurve}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/ppo_monopoly_vs_doupoly.pdf}
 	\caption{
@@ -195,9 +208,20 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 	}
 	\label{graphic:PPOMonopolyDuopoly}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{appendix/comparison_oligopoly_big_network.pdf}
+	\caption{
+		Lernkurven von vier PPO- und SAC-Durchläufen in einem Oligopolszenario über 1000 Episoden, wobei PPO mit der gleichen Netzwerkarchitektur wie SAC trainiert:
+		Dabei erreichen die PPO-Agenten in ihren Leistungsspitzen Werte von 2800, 2900, 3010 und -1750.
+		Die SAC-Agenten erreichen Werte zwischen 2950 und 3070.
+		Damit ist der beste PPO-Durchlauf nicht mehr schlechter als die SAC-Durchläufe, allerdings sind die PPO-Durchläufe mit dem größeren Netz erheblich instabiler.
+	}
+	\label{graphic:OligopolyMixedComparisonBigNetwork}
+\end{figure}
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{appendix/comparison_oligopoly_mixed.pdf}
-	\caption{Lernkurven von A2C, PPO und SAC in einem Oligopolszenario über 1000 Episoden mit gemischter Rewardfunktion und vollständiger Beobachtung}
+	\caption{Lernkurven von vier A2C-, PPO- und SAC-Agenten in einem Oligopolszenario über 1000 Episoden mit gemischter Rewardfunktion und vollständiger Beobachtung}
 	\label{graphic:OligopolyMixedComparison}
 \end{figure}

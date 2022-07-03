@@ -22,6 +22,7 @@
 %    useprefix,              % Prints name prefixes, such as ›von‹. The default is false. This means that prefixes are not considered to be part of the last name.
 ]
 {biblatex} % Used in order to format the bibliography.
+\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
 
 % The following command changes the space between the list of authors and the citation mark into a non-breaking space.
 \renewcommand\namelabeldelim{\addnbspace}
