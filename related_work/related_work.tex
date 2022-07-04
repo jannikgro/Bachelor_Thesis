@@ -1,4 +1,4 @@
-Während Pricing ein altes Problem ist, war die Forschungsaktivität zu Pricing mit intensivem Wettbewerb und gerade auf Online-Marktplätzen bis vor einigen Jahren auf einem geringen Level, wie die Übersichtsarbeit \cite{Gerpott2022} aus dem Jahre 2022 zeigt.
+Während Pricing ein altes Problem ist, war die Forschungsaktivität zu Pricing mit intensivem Wettbewerb und gerade auf Online-Marktplätzen bis vor einigen Jahren auf einem geringen Niveau, wie die Übersichtsarbeit \cite{Gerpott2022} aus dem Jahre 2022 zeigt.
 Demnach dominierten Monpolszenarien oder Szenarien mit starken, einschränkenden Annahmen.
 
 Im Bereich der algorithmen- und datengetriebenen Preisoptimierung lässt sich die Schwierigkeit in zwei separate Herausforderungen unterteilen: Das Schätzen des Kundenverhaltens und das Optimieren des Pricings bei bekanntem oder erlerntem Kundenverhalten.
@@ -12,13 +12,13 @@ Es wurden tabellenbasierte Q-Learning-Verfahren angewandt und spezielle Anpassun
 Dabei wurde auch ein Multi-Agent-Setup vorgestellt, das erheblich bessere Ergebnisse als reines Q-Learning lieferte.
 
 In \cite{RANA2015426} wurde RL verwendet, um Preisstrategien für einen Markt zu optimieren, bei dem verderbliche Ware innerhalb eines endlichen Horizonts verkauft werden muss.
-Dabei wird nicht nur eine Produktlinie, sondern sehr viele betrachtet.
+Dabei wurde nicht nur eine Produktlinie, sondern sehr viele betrachtet.
 Zwischen dem Verkauf unterschiedlicher Produktlinien gibt es komplexe Abhängigkeiten, die in klassischen Pricingansätzen nicht beachtet wurden, aber mit RL mit einbezogen werden können.
-Als Technologie wird Tabular-Q-Learning mit Eligibility Traces verwendet.
+Als Technologie wurde Tabular-Q-Learning mit Eligibility Traces verwendet.
 
 Weiterhin wurde bei \cite{KRASHENINNIKOVA20198} RL für die Optimierung von Versicherungsprämien eingesetzt.
-Es wird zwar ein domänenspezifisches Modell gewählt, das aber ebenfalls eine aktuelle Marktsituation als Modell und Preise als Aktionen verwendet.
-Dabei werden zwei Rewardfunktionen vorgeschlagen, wobei die eine nur den Gewinn bewertet, und die andere zusätzlich auch Kundenbindung.
+Es wurde zwar ein domänenspezifisches Modell gewählt, das aber ebenfalls eine aktuelle Marktsituation als Modell und Preise als Aktionen verwendet.
+Dabei wurden zwei Rewardfunktionen vorgeschlagen, wobei die eine nur den Gewinn bewertet, und die andere zusätzlich auch Kundenbindung.
 Das genutzte RL-Verfahren heißt VQQL.
 Es diskretisiert erst Zustands- und Aktionsraum, und wendet anschließend Tabular-Q-Learning an.
 Bei dieser Forschungsarbeit wurde mit einer großen spanischen Versicherungsgesellschaft zusammengearbeitet und deren Echtweltdaten verwendet.
@@ -32,7 +32,7 @@ Mit einem sehr ähnlichen Marktmodell wie bei \cite{10.1145/3219819.3219833} wur
 Untersucht wurde eine \textit{Linear Economy} im Duopol und Oligopol.
 Im Gegensatz zu den vorher gelisteten Arbeiten wurde hier allerdings Deep-Reinforcement-Learning eingesetzt, wie es ebenfalls Gegenstand dieser Arbeit ist.
 Als RL-Verfahren wurden Deep-Q-Learning (mit diskretem Aktionsraum) und das neue, beliebte Soft-Actor-Critic-Verfahren ausprobiert.
-Dabei schnitt Soft Actor Critic erheblich besser ab, aber die DQNs konnten die Aufgabe auch bewältigen.
+Dabei schnitt Soft Actor Critic erheblich besser ab, aber die DQNs konnten die Aufgabe ebenfalls bewältigen.
 Es wurde weiterhin festgestellt, dass im Duopol gelegentlich automatisch Kartelle gebildet werden, wenn die Kaufbereitschaft der Kunden bei höheren Preisen nicht begrenzt wird.
 
 Auch für den Anwendungsfall der intelligenten Energieversorgung, der mit tabellenbasierten Methoden bereits bei \cite{Kim2016DynamicPA} behandelt wurde, gibt es Ansätze mit Deep-Reinforcement-Learning.
