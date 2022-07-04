@@ -12,9 +12,10 @@ Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$
 Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
 Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen
 \begin{equation}
-	G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \cdot R_t
+	G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \cdot R_i
 \end{equation}
 als Return (von Schritt $t$ aus) bezeichnet.
+In einer infinite-horizon-Formulierung muss für eine endliche Summe notwendigerweise $\gamma < 1$ gewählt werden.
 Ziel ist, den Return der ganzen Episode, also $G_0$ zu maximieren.
 
 Für einen Zustand $s \in \mathcal{S}$ unter einer Policy $\pi$ gibt die Funktion
@@ -107,7 +108,7 @@ Q-Learning-Verfahren sind Off-Policy-Algorithmen.
 Das bedeutet, dass ihr Training auch mit Zustandsübergängen stattfinden kann, die nicht von der aktuellen Policy erzeugt wurden.
 Der Grund dafür ist, dass bei einer perfekten Policy für \textbf{jeden} Zustandsübergang $(s, a, r, s')$ die Bellman-Gleichung
 \begin{equation}
-	Q(s, a) = r + \max_{a' \in \mathcal{A}}{Q(s', a')}
+	Q(s, a) = \sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + \max_{a' \in \mathcal{A}}{Q(s', a')}\right)}
 \end{equation}
 erfüllt ist.
 Das ist zwar bei Approximationslösungen nicht erreichbar, die Minimierung des Erwartungswert über die quadrierten Differenzen zeigt aber die Entfernung von diesem Ziel.
@@ -204,7 +205,7 @@ Das bedeutet, dass eine Policy $\pi$ gefunden werden soll, die möglichst zufäl
 Mit dem Parameter $\alpha$ wird die Balance aus Entropie und Belohnungen eingestellt.
 Die Formulierung dieses >>soften<< Returns lautet:
 \begin{equation}
-	G_{soft,t} := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \left(R_t + \alpha \mathcal{H}(\pi(\cdot | S_t))\right)
+	G_{soft,t} := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \left(R_i + \alpha \mathcal{H}(\pi(\cdot | S_t))\right)
 \end{equation}
 Das Training der Aktionswertefunktion findet genau wie bei TD3 statt.
 Die Verlustfunktion zur Optimierung der Policy schreibt sich mit folgendem Ausdruck:

@@ -16,10 +16,13 @@ Abbildung \ref{graphic:MarketOverview} zeigt eine grafische Visualisierung des i
 	\centering
 	\includegraphics[width=\textwidth]{introduction/MarketOverview_042.pdf}
 	\caption{
-		Zwei Konkurrenten bieten die gleiche Produktlinie an.
-		Beide legen Preise für ihre neuen und gebrauchten Produkte fest.
-		Zudem bieten sie Kunden einen Rückkaufpreis für die Rücknahme der gebrauchten Produkte.
+		Zwei Konkurrenten (vendor_0 und vendor_1) bieten die gleiche Produktlinie an.
+		Beide legen Preise für ihre neuen und gebrauchten Produkte fest,
+        zu denen sie die Produkte den Kunden (Consumer) auf dem Marktplatz anbieten.
+        Neuprodukte werden zu einem festen Preis vom Zulieferer (Supplier) eingekauft.
+		Zudem machen sie Kunden ein Angebot für den Rückkauf in Gebrauch befindlicher Produkte (Resources in use).
 		Auch beim Rückkauf gibt es Konkurrenz: Die Eigentümer haben die Wahl, an wen sie zurückverkaufen oder ob sie dennoch wegwerfen.
+        In so einem Fall wird der Zähler bei Garbage erhöht.
 	}
 	\label{graphic:MarketOverview}
 \end{figure}
@@ -49,7 +52,7 @@ Dieses $n_{ep}$ wurde in der Standardkonfiguration mit 500 so groß gewählt, da
 
 Das hier eingeführte Modell simuliert einen Recommerce-Markt mit zwei konkurrierenden Anbietern.
 Der Markt soll fair und symmetrisch sein, was bedeutet, dass beide Anbieter die gleichen Produkte verkaufen, gleiche Beliebtheit haben, abwechselnd und für die gleiche Länge die Preise setzen und die gleichen Kosten haben.
-Der erste Anbieter setzt seine Preise stets zu Beginn jedes Schrittes, sein Wettbewerber reagiert in der Mitte.
+Der erste Anbieter setzt seine Preise stets zu Beginn jedes Schrittes, sein Wettbewerber nach der Hälfte der Kunden, die in jedem Schritt kommen.
 Damit gibt es für jeden Anbieter zwei Phasen: Eine, in der er auf den Konkurrenten reagiert hat, und noch die alten Konkurrenzpreise anliegen, und eine, in der seine Preise gleich sind und der Konkurrent aktualisiert hat.
 In beiden Phasen kommen gleich viele Kunden.
 Damit können die Gewinne der beiden Anbieter direkt verglichen und auf die Güte der Preisstrategien geschlossen werden.
@@ -67,28 +70,33 @@ Für den Anbieter $i$ müssen in Abhängigkeit des Zustandes drei Preise gesetzt
 	\item für diese Produkte in neu ($p_{i, neu}$) sowie
 	\item den Rückkaufpreis ($p_{i, re}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
 \end{enumerate}
-Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max}$.
+Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max} \in \mathbb{N}$.
 Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0, p_{max}]^3$ definiert.
 Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0, 1, \ldots, p_{max}\}^3$ definieren.
 Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen wie im Abschnitt \ref{section:dp}.
 Zudem unterscheiden sich die Reinforcement-Learning-Verfahren für diskrete und stetige Aktionsräume.
 
-In jedem Schritt besuchen $k \in 2\mathbb{N}$ Kunden den Marktplatz, betrachten die Angebote und treffen eine von fünf möglichen Entscheidungen.
+In jedem Schritt besucht eine gerade natürliche Zahl $k$ an Kunden den Marktplatz
+Dabei treffen immer $k / 2$ Kunden auf den Marktzustand, in dem der erste Anbieter seine Preise aktualisiert hat und die alten Preise des zweiten Anbieters anliegen.
+Die anderen $k / 2$ Kunden bekommen die unveränderten Preise des ersten Anbieters und die neuen Preise des zweiten Anbieters.
+Die Kunden bewerten für sich die Angebote und treffen eine von fünf möglichen Entscheidungen.
 Entweder kaufen sie kein Produkt, das gebrauchte oder neue beim ersten Anbieter oder das gebrauchte oder neue beim Konkurrenten.
-Das Kaufverhalten ist aber keinesfalls deterministisch.
+Das Kaufverhalten ist aber keinesfalls homogen.
 Es wird stark durch die Preise beeinflusst, aber unterschiedliche Kunden haben unterschiedliche Erwartungen, unterschiedliche Konsumgewohnheiten oder unterschiedliche Einstellungen zu Nachhaltigkeit.
 Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden geshuffelt wird.
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
 Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
-Die Präferenz, das Neuprodukt bei Anbieter $i$ zu kaufen, lautet
+Die Präferenz, das Neuprodukt bei Anbieter $i\in\{1, 2\}$ zu kaufen, lautet
 \begin{equation}
 	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0,8 p_{max})}.
 \end{equation}
-Das Kaufen eines Gebrauchtproduktes bei Anbieter $i$ wird auf
+Das Kaufen eines Gebrauchtproduktes bei Anbieter $i\in\{1, 2\}$ wird auf
 \begin{equation}
 	\sigma_{kunde, gebraucht, i} = \frac{5,5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0,5 p_{max})}
 \end{equation}
 festgelegt.
+Ist der Preis null, so sei die Präferenz unendlich und die Wahrscheinlichkeit, bei diesem Anbieter das Geschenk anzunehmen, 1.\footnote{Bei mehreren Anbietern mit Preis null wird einer uniform zufällig ausgesucht.}
+
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung im Vergleich zu Neuprodukten entgegengebracht.
 Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0,5 p_{max}$ bei Gebraucht- und $0,8 p_{max}$ bei Neuware überschreitet.
@@ -119,12 +127,12 @@ Nach dem gleichen Verfahren wie bei der Kaufentscheidung der Kunden wird ihr Ver
 Die Präferenz für das Halten eines Produktes wird auf $1$ normiert.
 Die Wegwurfpräferenz
 \begin{equation}
-	\sigma_{eigentuemer, wegwurf} = \min_{i}{\left(\min{(p_{i, neu}, p_{i, gebraucht})}\right)} - \max_{i}{p_{i, re}}.
+	\sigma_{eigentuemer, wegwurf} = \min_{i\in\{1, 2\}}{\left(\min{(p_{i, neu}, p_{i, gebraucht})}\right)} - \max_{i}{p_{i, re}}
 \end{equation}
 motiviert sich daher, dass die Eigentümer ihr Produkt wenig wertschätzen, wenn die Differenz zwischen dem niedrigsten Kaufpreis und dem höchsten Rückkaufpreis hoch ist.
-Die Präferenz für das Zurückverkaufen an die einzelnen Anbieter ist direkt ihr Rückkaufpreis, also
+Die Präferenz für das Zurückverkaufen an den Anbieter $i\in\{1, 2\}$ ist direkt sein Rückkaufpreis, also
 \begin{equation}
-	\sigma_{eigentuemer, rueckkauf, i} = p_{i, re}
+	\sigma_{eigentuemer, rueckkauf, i} = p_{i, re}.
 \end{equation}
 Anbieter, die mehr bieten, sind also beliebter.
 Die Zähldichte der Wahrscheinlichkeitsverteilung ergibt sich dann wieder als Softmax dieser Präferenzen.
