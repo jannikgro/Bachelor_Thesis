@@ -205,7 +205,7 @@ Das bedeutet, dass eine Policy $\pi$ gefunden werden soll, die möglichst zufäl
 Mit dem Parameter $\alpha$ wird die Balance aus Entropie und Belohnungen eingestellt.
 Die Formulierung dieses >>soften<< Returns lautet:
 \begin{equation}
-	G_{soft,t} := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \left(R_i + \alpha \mathcal{H}(\pi(\cdot | S_t))\right)
+	G_{soft,t} := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \left(R_i + \alpha \mathcal{H}(\pi(\cdot | S_i))\right)
 \end{equation}
 Das Training der Aktionswertefunktion findet genau wie bei TD3 statt.
 Die Verlustfunktion zur Optimierung der Policy schreibt sich mit folgendem Ausdruck:
