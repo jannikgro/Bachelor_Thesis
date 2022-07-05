@@ -89,7 +89,7 @@ Deshalb werden in den folgenden Abschnitten DDPG und TD3 nicht weiter betrachtet
 
 Grafik \ref{graphic:OnPolicyLearningCurves} stellt die Lernkurven der Algorithmen dar.
 Dabei wurde PPO mit zwei Hyperparametrisierungen verwendet, die sich im Parameter $\epsilon$ unterscheiden.
-Das eine Mal wird 0,2 wie im Originalpaper verwendet, das andere Mal 0,3.
+Das eine Mal wird $0{,}2$ wie im Originalpaper verwendet, das andere Mal $0{,}3$.
 Jedes dieser Experimente wurde vier Mal unabhängig für eine Million Schritte (zweitausend Episoden) durchgeführt.
 Die Lernkurven verwenden wieder die laufenden Durchschnitte der Episodenreturns.
 Der Bereich zwischen maximalem und minimalem Episodenreturns dieser vier Agenten ist eingefärbt.
@@ -102,13 +102,13 @@ Dieser Effekt tritt auch bei anderen Lernkurven-Diagrammen auf und liegt nur an 
 
 Aus der Grafik geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
 Sie erreichen alle mit Ergebnissen über 6000 pro Episode gute Ergebnisse.
-Auf Grundlage dieser Grafik kann man feststellen, dass die Parametrisierung mit $\varepsilon=0,3$ bessere Performance einbringt als die Standardparametrisierung.
+Auf Grundlage dieser Grafik kann man feststellen, dass die Parametrisierung mit $\varepsilon=0{,}3$ bessere Performance einbringt als die Standardparametrisierung.
 
 Für belastbare Aussagen über die Spitzenperformance wurde bei jedem Trainingsdurchlauf alle 100 Episoden das nach dem Rolling Average beste Modell aus den vorigen 100 Episoden gespeichert.
 Nach dem Training wurden diese Modelle auf je 25 unabhängigen Episoden getestet, um eine genauere Schätzung ihrer Performance zu erhalten.
 Die Leistungsmaxima der drei A2C-Trainingsdurchläufe lagen bei 8160, 8520, 7150 und 8510.
-Bei den PPO-Durchläufen mit $\varepsilon=0,2$ waren die Maxima 7380, 7780, 8330 und 8120.
-Die PPO-Durchläufe mit $\varepsilon=0,3$ erreichten 8300, 8680, 8360 und 8350.
+Bei den PPO-Durchläufen mit $\varepsilon=0{,}2$ waren die Maxima 7380, 7780, 8330 und 8120.
+Die PPO-Durchläufe mit $\varepsilon=0{,}3$ erreichten 8300, 8680, 8360 und 8350.
 Dass die Spitzen der A2C-Durchläufe in der Lernkurve niedriger sind als die hier aufgeführten Zahlen, liegt an den Rolling Averages und der erheblich geringeren Trainingsstabilität der A2C-Agenten.
 Sie halten das hohe Leistungsniveau nur sehr kurz, weshalb die Mittelwertbildung mit anderen Ergebnissen während des Trainings niedrigere Werte ergibt.
 Sichert man jedoch die Parameter der A2C-Agenten in dem Moment, in dem sie gerade gute Ergebnisse liefern, erzielen auch sie wettbewerbsfähige Leistung.
@@ -136,12 +136,12 @@ Diese heftigen Abstürze führen dazu, dass die Mittelwertlinie der A2C-Agenten 
 Im Gegenzug dazu ist die Trainingsstabilität bei den PPO-Varianten deutlich höher.
 Zwischen den vier Trainingsdurchläufen der PPO-Agenten gibt es nur geringe Unterschiede.
 Die Leistungsentwicklung liegt in einem schmalen Band und Abstürze finden nicht statt.
-Allerdings benötigt PPO in der Standardkonfiguration knapp 250 Episoden und in der Version mit $\varepsilon=0,3$ ungefähr 180 Episoden, um die Gewinnzone zu erreichen.
+Allerdings benötigt PPO in der Standardkonfiguration knapp 250 Episoden und in der Version mit $\varepsilon=0{,}3$ ungefähr 180 Episoden, um die Gewinnzone zu erreichen.
 Auch danach ist die Leistungssteigerung geringer als bei den anderen Algorithmen.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/ppo_detailed_analysis.pdf}
-	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0,2$) analog zu Abbildung \ref{graphic:A2CInstability}}
+	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0{,}2$) analog zu Abbildung \ref{graphic:A2CInstability}}
 	\label{graphic:PPOStability}
 \end{figure}
 In Abbildung \ref{graphic:PPOStability} ist ein detaillierter Blick in einen typischen PPO-Trainingsdurchlauf zu sehen.
@@ -152,12 +152,12 @@ Diese Experimente zeigen, dass PPO in seiner Intention, die Trainingsstabilität
 Diese Erhöhung der Trainingsstabilität findet dadurch statt, dass die Änderung der stochastischen Policy bei den Trainingsschritten begrenzt wird.
 Aus dieser Begrenzung der Policyänderung ist die geringere Lerngeschwindigkeit eine logische Schlussfolgerung.
 
-So lässt sich auch erklären, warum der Durchlauf mit $\varepsilon=0,3$ schneller trainiert.
+So lässt sich auch erklären, warum der Durchlauf mit $\varepsilon=0{,}3$ schneller trainiert.
 Mit größerem $\varepsilon$ wird pro Sample eine größere Policyänderung erlaubt, was zu schnellerem Training führt.
 Allerdings steigt damit wieder das Risiko von Instabilität, weshalb die Parametrisierung des PPO-Algorithmus einen Trade-off zwischen Trainingsgeschwindigkeit und Stabilität eröffnet.
-Die Wahl des Standardparameters $0,2$ mag in diesen Experimenten konservativ erscheinen, $0,3$ ist ebenfalls noch recht stabil, weist aber bereits kleinere Abstürze auf.
+Die Wahl des Standardparameters $0{,}2$ mag in diesen Experimenten konservativ erscheinen, $0{,}3$ ist ebenfalls noch recht stabil, weist aber bereits kleinere Abstürze auf.
 Das Experiment zu Abbildung \ref{graphic:PPODifferentClipping} im Anhang zeigt, wie sich PPO bei größerem $\varepsilon$ verhält.
-Es bestätigt $0,3$ als eine gute Wahl.
+Es bestätigt $0{,}3$ als eine gute Wahl.
 
 Eine Beobachtung in Abbildung \ref{graphic:PPOStability} verdient besondere Beachtung, weil sie zunächst paradox erscheint:
 Obwohl der RL-Agent den regelbasierten Agenten nach etwas Training übertrifft, wird er später wieder überholt.
@@ -223,7 +223,7 @@ Warum PPO in diesem Markt etwas besser abschneidet, ist eine äußerst interessa
 Eine plausible Erklärung wird in Abschnitt \ref{section:partial_markov} auf Grundlage der dortigen Beobachtungen geliefert.
 Kurz ausgedrückt wird dort festgestellt, dass SAC in der Policy Zusammenhänge lernt, die nicht gelernt werden sollten.
 Eine andere mögliche Erklärung, dass die Policy der SAC-Agenten wegen der Entropieregularisierung größere Standardabweichungen schätzt und deshalb weniger genau als die von PPO ist, lässt sich durch die Daten aus dem Training nicht bestätigen.
-Bei beiden Trainingsalgorithmen haben die Policies zum Ende des Trainings Standardabweichungen von etwa $0,5$, wobei SAC keine größeren Standardabweichungen hat.
+Bei beiden Trainingsalgorithmen haben die Policies zum Ende des Trainings Standardabweichungen von etwa $0{,}5$, wobei SAC keine größeren Standardabweichungen hat.
 
 Für die Frage >>Wie lange dauert das Training?<< gibt es zwei mögliche Kenngrößen.
 Einmal kann die Anzahl der benötigten Samples bewertet werden, die Sample Efficiency, oder es kann die tatsächliche Zeit auf der Uhr herangezogen werden.

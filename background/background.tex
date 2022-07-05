@@ -116,7 +116,7 @@ erfüllt ist.
 Das ist zwar bei Approximationslösungen nicht erreichbar, die Minimierung des Erwartungswert über die quadrierten Differenzen zeigt aber die Entfernung von diesem Ziel.
 
 \section{DDPG und TD3}
-Die Verallgemeinerung auf stetige Aktionsräume ist bei Deep-Q-Networks nicht grundlegende Designänderungen möglich.
+Die Verallgemeinerung auf stetige Aktionsräume ist bei Deep-Q-Networks nicht ohne grundlegende Designänderungen möglich.
 Allerdings gibt es ein RL-Verfahren, Deep Deterministic Policy Gradient (DDPG), das in \cite{10.5555/3044805.3044850} publiziert wurde und als Verallgemeinerung von Q-Learning auf Umgebungen mit stetigen Aktionsräumen angesehen werden kann.
 Es handelt sich dabei ebenfalls um ein Off-Policy-Verfahren.
 Ein neuronales Netz mit den Parametern $\psi$ berechnet die Aktionswerteschätzfunktion $Q_\psi: \mathcal{S} \times \mathcal{A}\rightarrow \mathbb{R}$ (jetzt muss die Aktion mit in die Eingabe).
@@ -158,7 +158,7 @@ Es lässt sich für den REINFORCE-Algorithmus als
 \end{equation}
 formulieren, wobei $S_t$ und $A_t$ als Zufallsvariablen den Zustand und die Aktion im $t$-ten Schritt angeben, und $G_t$ den Result vom $t$-ten Schritt aus.
 Der REINFORCE-Algorithmus sampelt nun Episoden unter Verwendung einer Policy und nutzt eine Schätzung dieses Gradienten für Gradientenanstieg.
-Die Updateregel ist intuitiv: Aktionen, auf denen ein positivem Return folgt, werden wahrscheinlicher gemacht und Aktionen mit negativem Return unwahrscheinlicher.
+Die Updateregel ist intuitiv: Aktionen, auf die ein positiver Return folgt, werden wahrscheinlicher gemacht und Aktionen mit negativem Return unwahrscheinlicher.
 
 Doch REINFORCE hat für die praktische Anwendung einen offensichtlichen Nachteil: Die Bewertung, ob eine Aktion >>gut<< oder >>schlecht<< ist, richtet sich immer unmittelbar nach dem gemessenen Return.
 In einer Umgebung, die nur negative Rewards vergibt, wird der Gradient immer negativ sein und damit auch für Aktionen, die in der Situation deutlich besser sind als andere.

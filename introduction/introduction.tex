@@ -68,15 +68,15 @@ Bei der folgenden Notation werden die Anbieter mit 1 und 2 indiziert.
 Dabei ist 1 der Anbieter, aus dessen Sicht das Marktgeschehen abläuft.
 Die in dieser Arbeit verwendeten Standardwerte für die Marktparameter sind im Anhang in Tabelle \ref{tab:default_parameters} aufgeführt.
 
-Für den Anbieter $i$ müssen in Abhängigkeit des Zustandes drei Preise gesetzt werden:
+Für den Anbieter $i\in\{1, 2\}$ müssen in Abhängigkeit des Zustandes drei Preise gesetzt werden:
 \begin{enumerate}
 	\item für gebrauchte Produkte der Produktlinie ($p_{i, gebraucht}$),
 	\item für diese Produkte in neu ($p_{i, neu}$) sowie
 	\item den Rückkaufpreis ($p_{i, re}$), für den von einem Eigentümer gebrauchte Produkte zurückgekauft werden.
 \end{enumerate}
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max} \in \mathbb{N}$.
-Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0, p_{max}]^3$ definiert.
-Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0, 1, \ldots, p_{max}\}^3$ definieren.
+Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0{,} p_{max}]^3$ definiert.
+Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0{,} 1, \ldots, p_{max}\}^3$ definieren.
 Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen, wie sie im Abschnitt \ref{section:dp} vorgestellt werden.
 Zudem unterscheiden sich die Reinforcement-Learning-Verfahren für diskrete und stetige Aktionsräume.
 
@@ -92,18 +92,18 @@ Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden
 Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
 Die Präferenz, das Neuprodukt bei Anbieter $i\in\{1, 2\}$ zu kaufen, lautet
 \begin{equation}
-	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0,8 p_{max})}.
+	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0{,}8 p_{max})}.
 \end{equation}
 Das Kaufen eines Gebrauchtproduktes bei Anbieter $i\in\{1, 2\}$ wird auf
 \begin{equation}
-	\sigma_{kunde, gebraucht, i} = \frac{5,5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0,5 p_{max})}
+	\sigma_{kunde, gebraucht, i} = \frac{5{,}5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0{,}5 p_{max})}
 \end{equation}
 festgelegt.
 Ist der Preis null, so sei die Präferenz unendlich und die Wahrscheinlichkeit, bei diesem Anbieter das Geschenk anzunehmen, 1.\footnote{Bei mehreren Anbietern mit Preis null wird einer uniform zufällig ausgesucht.}
 
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung im Vergleich zu Neuprodukten entgegengebracht.
-Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0,5 p_{max}$ bei Gebraucht- und $0,8 p_{max}$ bei Neuware überschreitet.
+Zusätzlich sinkt die Präferenz deutlich, wenn der Preis $0{,}5 p_{max}$ bei Gebraucht- und $0{,}8 p_{max}$ bei Neuware überschreitet.
 Das modelliert die grundsätzlich beschränkte Zahlungsbereitschaft der Kunden für diese Produkte und verhindert einen Preiszyklus nach oben.
 Wie gefordert, werden die Produkte aller Anbieter als gleichwertig betrachtet.
 Fallen die Präferenzen für die Kaufoptionen niedrig aus, so wird durch die Softmax-Funktion eine hohe Wahrscheinlichkeit auf das Nichtkaufen entfallen.
