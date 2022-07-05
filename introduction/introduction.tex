@@ -2,15 +2,17 @@
 Nicht erst seitdem es Online-Marktplätze gibt, ist die Festlegung von Preisen eine zentrale Herausforderung im Geschäftsbetrieb.
 Durch Online-Marktplätze hat allerdings die Intensität des Wettbewerbs erheblich zugenommen, da Konkurrenzangebote leicht einsehbar sind und Preise in hochfrequentem Tempo gesetzt werden können.
 Zudem müssen alle Produkte des meist sehr breiten Angebots in Abhängigkeit der Marktsituation dynamisch eingepreist werden.
-Diese Gründe motivieren automatische Preisfindung, da menschliche Branchenkenner mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
+Diese Gründe motivieren automatische Preisfindung, da menschliche Branchenexperten mit der Anpassung der Preise schlicht nicht mehr schritthalten können.
 
-Eine weitere Komponente kommt im sogenannten Recommerce hinzu.
-Recommerce beschreibt den Rückkauf, die Aufwertung und den Weitervertrieb von gebrauchten Produkten im Internet. % \cite{deges2019grundlagen}
+Eine weitere Schwierigkeit kommt im sogenannten Recommerce hinzu.
+Recommerce beschreibt laut \cite{RecommerceDefinition} den Rückkauf, die Aufwertung und den Weitervertrieb von gebrauchten Produkten im Internet.
 Gerade mit Blick auf die ressourcenintensive Modebranche verspricht Recommerce eine Steigerung der Nachhaltigkeit durch Einführung einer Kreislaufwirtschaft.
-Es eröffnet Eigentümern die Möglichkeit, durch den Rückverkauf ihrer nicht weiter benötigten Produkte Geld einzunehmen, und macht Kaufinteressenten gebrauchte und ggf. aufgewertete Produkte zu niedrigeren Preisen verfügbar.
+Wer einmal ein Produkt gekauft hat und dieses noch hält, ist ein Eigentümer des Produktes.
+Diesen Eigentümern wird die Möglichkeit eröffnet, durch den Rückverkauf ihrer nicht weiter benötigten Produkte Geld einzunehmen.
+Weiterhin macht Recommerce Kaufinteressenten gebrauchte und ggf. aufgewertete Produkte zu niedrigeren Preisen verfügbar.
 Zur Herausforderung, neue Produkte einzupreisen, kommt also noch hinzu, Preise für gebrauchten Produkte und Rückkaufpreise festzulegen.
 Dabei müssen auch Nebenbedingungen wie Lagerkosten beachtet werden, wodurch sich ein durchaus kompliziertes Problem ergibt.
-Abbildung \ref{graphic:MarketOverview} zeigt eine grafische Visualisierung des in dieser Arbeit untersuchten Szenarios.
+\mbox{Abbildung \ref{graphic:MarketOverview}} zeigt eine grafische Visualisierung des in dieser Arbeit untersuchten Duopolszenarios.
 
 \begin{figure}[htb]
 	\centering
@@ -20,7 +22,7 @@ Abbildung \ref{graphic:MarketOverview} zeigt eine grafische Visualisierung des i
 		Beide legen Preise für ihre neuen und gebrauchten Produkte fest,
         zu denen sie die Produkte den Kunden (Consumer) auf dem Marktplatz anbieten.
         Neuprodukte werden zu einem festen Preis vom Zulieferer (Supplier) eingekauft.
-		Zudem machen sie Kunden ein Angebot für den Rückkauf in Gebrauch befindlicher Produkte (Resources in use).
+		Zudem machen sie Eigentümern ein Angebot für den Rückkauf in Gebrauch befindlicher Produkte (Resources in use).
 		Auch beim Rückkauf gibt es Konkurrenz: Die Eigentümer haben die Wahl, an wen sie zurückverkaufen oder ob sie dennoch wegwerfen.
         In so einem Fall wird der Zähler bei Garbage erhöht.
 	}
@@ -47,8 +49,11 @@ Dazu wird die Zeit in gleich lange Abschnitte diskretisiert.
 Vor jedem Schritt wird dem Agenten der Zustand des Marktes präsentiert.
 Daraufhin setzt der Agent seine Preise, die für den Rest des Schrittes gelten.
 In der Übertragung eines echten Marktes könnte ein Schritt zum Beispiel einer Stunde oder einer Minute entsprechen.
-Obwohl die Optimierung für einen \textit{infinite horizon} stattfinden soll, werden für das Training und die Analyse Episoden betrachtet, die aus $n_{ep}$ Schritten bestehen.
-Dieses $n_{ep}$ wurde in der Standardkonfiguration mit 500 so groß gewählt, dass der Effekt des Startzustandes verschwindet.
+Eigentlich soll die Optimierung für einen \textit{infinite horizon} stattfinden.
+Das bedeutet, dass nicht auf einen festen Zeitraum hin optimiert wird.
+Stattdessen wird auf ein langfristig profitables Equilibrium hingearbeitet.
+Um allerdings das Problem für Training und Analyse handhabbar zu machen, werden Episoden betrachtet, die aus $n_{ep} \in \mathbb{N}$ Schritten bestehen.
+Dieses $n_{ep}$ wurde in der Standardkonfiguration mit 500 so groß gewählt, dass der praktische Unterschied zu einer infinite-horizon-Betrachtung nur gering ist.
 
 Das hier eingeführte Modell simuliert einen Recommerce-Markt mit zwei konkurrierenden Anbietern.
 Der Markt soll fair und symmetrisch sein, was bedeutet, dass beide Anbieter die gleichen Produkte verkaufen, gleiche Beliebtheit haben, abwechselnd und für die gleiche Länge die Preise setzen und die gleichen Kosten haben.
@@ -73,17 +78,17 @@ Für den Anbieter $i$ müssen in Abhängigkeit des Zustandes drei Preise gesetzt
 Alle drei Preise bewegen sich zwischen 0 und dem maximal möglichen Preis $p_{max} \in \mathbb{N}$.
 Damit ist der (stetige) Aktionsraum als $\mathcal{A}_\mathbb{R}=[0, p_{max}]^3$ definiert.
 Alternativ lässt sich der Aktionsraum auch mit diskreten Preisstufen als $\mathcal{A}_\mathbb{N}=\{0, 1, \ldots, p_{max}\}^3$ definieren.
-Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen wie im Abschnitt \ref{section:dp}.
+Die diskrete Formulierung schränkt deutlich stärker ein, ermöglicht aber (prinzipiell) exakte Lösungen, wie sie im Abschnitt \ref{section:dp} vorgestellt werden.
 Zudem unterscheiden sich die Reinforcement-Learning-Verfahren für diskrete und stetige Aktionsräume.
 
 In jedem Schritt besucht eine gerade natürliche Zahl $k$ an Kunden den Marktplatz
 Dabei treffen immer $k / 2$ Kunden auf den Marktzustand, in dem der erste Anbieter seine Preise aktualisiert hat und die alten Preise des zweiten Anbieters anliegen.
 Die anderen $k / 2$ Kunden bekommen die unveränderten Preise des ersten Anbieters und die neuen Preise des zweiten Anbieters.
 Die Kunden bewerten für sich die Angebote und treffen eine von fünf möglichen Entscheidungen.
-Entweder kaufen sie kein Produkt, das gebrauchte oder neue beim ersten Anbieter oder das gebrauchte oder neue beim Konkurrenten.
+Entweder kaufen sie kein Produkt, oder das gebrauchte oder neue bei einem der Anbieter.
 Das Kaufverhalten ist aber keinesfalls homogen.
 Es wird stark durch die Preise beeinflusst, aber unterschiedliche Kunden haben unterschiedliche Erwartungen, unterschiedliche Konsumgewohnheiten oder unterschiedliche Einstellungen zu Nachhaltigkeit.
-Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden geshuffelt wird.
+Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden gesamplet wird.
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
 Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
 Die Präferenz, das Neuprodukt bei Anbieter $i\in\{1, 2\}$ zu kaufen, lautet
@@ -104,7 +109,7 @@ Das modelliert die grundsätzlich beschränkte Zahlungsbereitschaft der Kunden f
 Wie gefordert, werden die Produkte aller Anbieter als gleichwertig betrachtet.
 Fallen die Präferenzen für die Kaufoptionen niedrig aus, so wird durch die Softmax-Funktion eine hohe Wahrscheinlichkeit auf das Nichtkaufen entfallen.
 
-Für jeden der beiden Anbieter enthält das Marktmodell einen Zähler für die Anzahl der im Lager befindlichen Gebrauchtprodukte, $n_{lager}$.
+Für jeden der beiden Anbieter enthält das Marktmodell einen Zähler für die Anzahl der im Lager befindlichen Gebrauchtprodukte, $n_{lager} \in \mathbb{N}$.
 Das Lager hat ein Fassungsvermögen von $m_{lager}$ Produkten.
 Der initiale Lagerstand wird für beide Anbieter unabhängig und uniform zufällig zwischen $0$ und $m_{lager}$ gewählt.
 Wenn mehr Produkte zurücklaufen, werden diese verworfen und der Lagerstand bleibt beim Maximum.
