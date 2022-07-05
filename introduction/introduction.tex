@@ -200,7 +200,12 @@ Für den hier definierten Markt lassen sich einige Überlegungen anstellen:
 Im Anhang ist eine regelbasierte Strategie definiert, die diesen Ideen folgt.
 Sie erreicht in Tests gegen sich selbst Ergebnisse von 1200 bis 1400 auf einer Episode mit 500 Schritten.
 Es gelingt ihr, Gewinn zu erwirtschaften und das Lager bei etwa 10 Produkten zu halten.
-Diese Ergebnisse fallen niedriger aus als die der RL-Agenten in der Analyse, und auch niedriger als die Ergebnisse dieser regelbasierten Strategie.
-Das liegt am permanenten Unterbietungsverhalten der regelbasierten Strategie, womit sie beim Spiel gegen sich selbst unverzüglich die Preisuntergrenze und damit eine schlechte Rendite erreicht.
-Selbstverständlich können durch weiteres Tuning bessere Strategien gefunden werden.
-Das erfordert allerdings Aufwand und eine umfangreiche Kenntnis des Marktes.
+Diese Ergebnisse fallen niedriger aus als die der RL-Agenten in der Analyse, und auch niedriger als die Ergebnisse dieser regelbasierten Strategie, wenn sie gegen andere Strategien spielt.
+Das liegt an ihrem permanenten Unterbieten, womit sie beim Spiel gegen sich selbst unverzüglich die Preisuntergrenze und damit eine schlechte Rendite erreicht.
+
+Weiteres Tuning der regelbasierten Strategien ist möglich, aber mit sehr hohem Aufwand verbunden.
+Es erfordert weiterhin die sehr genaue Kenntnis eines speziellen Marktszenarios.
+Dazu gehört insbesondere auch die Preisstrategie des Wettbewerbers.
+Die Güte einer Preisstrategie lässt sich nämlich nur in Bezug auf die Gegnerstrategie bewerten.
+So ist Unterbieten eine schlechte Strategie, wenn der Konkurrent ebenfalls konsequent unterbietet.
+Verhält sich der Konkurrent aber weniger aggressiv, so ist Unterbieten eine sehr leistungsstarke Strategie.
