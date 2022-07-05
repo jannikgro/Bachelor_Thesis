@@ -118,7 +118,7 @@ Allerdings verursacht auch die Lagerhaltung Kosten: Am Ende eines jeden Schritte
 Das wiederum treibt die Anbieter dazu, ihr Lager möglichst klein zu halten und stellt sie vor die Herausforderung, mit Rückkauf- und Gebrauchtpreis nicht nur auf ihren Konkurrenten zu reagieren, sondern auch ihr Lager zu regulieren.
 
 Weiterhin verwaltet der Markt einen Zähler für die Anzahl der Produkte, die sich in Zirkulation befinden ($n_{zirk}$).
-Er uniform zufällig zwischen $0$ und $5 m_{lager}$ initialisiert.
+Er wird uniform zufällig zwischen $0$ und $5 m_{lager}$ initialisiert.
 Der Verkauf eines Neuproduktes erhöht diesen Zähler um eins.
 Im Gegensatz dazu werden bereits gebrauchte Produkte nicht noch einmal weiterverkauft, weshalb ihr Verkauf den Zähler nicht erhöht.
 
@@ -173,7 +173,7 @@ Deshalb wird in Abschnitt \ref{section:partial_markov} die Frage diskutiert, ob 
 
 Zuletzt muss noch beleuchtet werden, dass für den beschriebenen Markt keine weiteren Größen beobachtet werden müssen und somit die Markov-Eigenschaft tatsächlich erfüllt ist.
 Das Verhalten des Marktes ist vollständig definiert und kommt mit den genannten Größen aus.
-Auch der regelbasierte Wettbewerber in Abschnitt \ref{section:rulebased} verwenden für sein Verhalten nur die aufgezählten Variablen.
+Auch der regelbasierte Wettbewerber in Abschnitt \ref{section:rulebased} verwendet für sein Verhalten nur die aufgezählten Variablen.
 Messgrößen wie die vorher gesetzten Preise, die Anzahl der weggeworfenen Objekte oder die Anzahl der bisherigen Verkäufe könnte man im Zustand vermuten (sie sind ja schließlich auf der grafischen Visualisierung des Marktes), beeinflussen aber nicht das künftige Verhalten.
 Eine Gedächtnisfunktion der Kunden (und dann notwendigerweise auch der Agenten) über vergangenes Verhalten ist eine mögliche Erweiterung, die das Modell praxisnäher bringen würde.
 So könnten Kunden die vergangene Preispolitik in ihre Entscheidung mit einbeziehen und Anbietern ein höheres oder niedrigeres Renommee zubilligen.

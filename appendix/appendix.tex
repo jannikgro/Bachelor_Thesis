@@ -7,10 +7,10 @@
 		$n_{ep}$      & Anzahl der Schritte in einer Episode                                        & $500$\\
 		$p_{max}$     & maximal wählbarer Preis für alle drei Kanäle                                & $10$\\
 		$p_{einkauf}$ & Einkaufs- oder Produktionspreis für Neuprodukte                             & $3$\\
-		$p_{lager}$   & Preis pro eingelagertem Gebrauchtprodukt pro Schritt                        & $0,1$\\
+		$p_{lager}$   & Preis pro eingelagertem Gebrauchtprodukt pro Schritt                        & $0{,}1$\\
 		$k$           & Kundenzahl, die pro Schritt den Markt besucht                               & $20$\\
 		$m_{lager}$   & maximale Anzahl von Gebrauchtprodukten, die im Lager gehalten werden können & $100$\\
-		$c$           & Anteil der Eigentümer, die pro Schritt einen Rückverkauf erwägen            & $0,05$\\\bottomrule
+		$c$           & Anteil der Eigentümer, die pro Schritt einen Rückverkauf erwägen            & $0{,}05$\\\bottomrule
 	\end{tabular}
 	\caption{Marktparameters mit kurzer Erklärung und für diese Experimente verwendete Standardwerte}
 	\label{tab:default_parameters}
@@ -25,8 +25,8 @@
 		Größe des Experiencebuffers                   & $10^6$\\
 		Episoden bis zum Beginn des Lernens           & $100$\\
 		Größe eines Minibatches                       & $100$\\
-		Koeffizient für die Polyak-Mittelung ($\tau$) & $0,005$\\
-		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
+		Koeffizient für die Polyak-Mittelung ($\tau$) & $0{,}005$\\
+		Diskontierungsfaktor ($\gamma$)               & $0{,}99$\\\bottomrule
 	\end{tabular}
 	\caption{Hyperparameter für DDPG und TD3}
 	\label{tab:DDPGHyperparameters}
@@ -39,7 +39,7 @@
 		Parameter                                     & Wert\\\midrule
 		Lernrate                                      & $7\cdot 10^{-4}$\\
 		Anzahl der Schritte pro Update                & $5$\\
-		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
+		Diskontierungsfaktor ($\gamma$)               & $0{,}99$\\\bottomrule
 	\end{tabular}
 	\caption{Hyperparameter für Advantage Actor Critic}
 	\label{tab:A2CHyperparameter}
@@ -54,8 +54,8 @@
 		Anzahl der Schritte pro Update                & $2048$\\
 		Größe eines Minibatches                       & $64$\\\
 		Anzahl der Epochen pro Update                 & $10$\\
-		\textit{clip\_range} ($\varepsilon$)          & $0,2$\\
-		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
+		\textit{clip\_range} ($\varepsilon$)          & $0{,}2$\\
+		Diskontierungsfaktor ($\gamma$)               & $0{,}99$\\\bottomrule
 	\end{tabular}
 	\caption{Hyperparameter für Proximal Policy Optimization}
 	\label{tab:PPOHyperparameters}
@@ -71,8 +71,8 @@
 		Episoden bis zum Beginn des Lernens           & $100$\\
 		Größe eines Minibatches                       & $256$\\
 		Entropiekoeffizient ($\alpha$)                & automatisch\\
-		Koeffizient für die Polyak-Mittelung ($\tau$) & $0,005$\\
-		Diskontierungsfaktor ($\gamma$)               & $0,99$\\\bottomrule
+		Koeffizient für die Polyak-Mittelung ($\tau$) & $0{,}005$\\
+		Diskontierungsfaktor ($\gamma$)               & $0{,}99$\\\bottomrule
 	\end{tabular}
 	\caption{Hyperparameter für Soft Actor Critic}
 	\label{tab:SACHyperparameters}
@@ -126,7 +126,7 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 	\includegraphics[width=\textwidth]{appendix/ppo_different_clipping.pdf}
 	\caption{
 		Lernkurven des Proximal-Policy-Optimization-Algorithmus bei unterschiedlichen Werten für $\varepsilon$:
-		Zwischen $0,2$ und $0,3$ ist eine Verbesserung in der Leistung zu sehen.
+		Zwischen $0{,}2$ und $0{,}3$ ist eine Verbesserung in der Leistung zu sehen.
 		Bei größeren Werten setzt sich die Verbesserung nicht fort und die Trainingsstabilität sinkt.
 	}
 	\label{graphic:PPODifferentClipping}
@@ -145,7 +145,7 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
         Hohe Werte sind eine Regularisierung und führen dazu, dass die Policy >>zufälliger<< ist.
         Die Exploration und Stabilität nehmen zu, allerdings leidet die Spitzenperformance.
         Das liegt daran, dass die Policy weniger genau gelernt wird, und die Aktionsauswahl stärker streut.
-        Bei dem Durchlauf mit $\varepsilon=0,2$ ist die Performance deutlich niedriger, was vermutlich an zu geringer Exploration liegt.
+        Bei dem Durchlauf mit $\varepsilon=0{,}2$ ist die Performance deutlich niedriger, was vermutlich an zu geringer Exploration liegt.
         Der Durchlauf mit $\varepsilon=1$ hat sogar geringfügig bessere Ergebnisse geliefert als die mit automatischer Ermittlung des Entropiekoeffizienten.
 	}
 	\label{graphic:SACTemperature}
@@ -213,7 +213,7 @@ Alle Preise werden auf den Aktionsraum beschränkt (für den Fall, dass die Rech
 	\includegraphics[width=\textwidth]{appendix/comparison_oligopoly_big_network.pdf}
 	\caption{
 		Lernkurven von vier PPO- und SAC-Durchläufen in einem Oligopolszenario über 1000 Episoden, wobei PPO mit der gleichen Netzwerkarchitektur wie SAC trainiert:
-		Dabei erreichen die PPO-Agenten in ihren Leistungsspitzen Werte von 2800, 2900, 3010 und -1750.
+		Dabei erreichen die PPO-Agenten in ihren Leistungsspitzen Werte von 2800{,} 2900{,} 3010 und -1750.
 		Die SAC-Agenten erreichen Werte zwischen 2950 und 3070.
 		Damit ist der beste PPO-Durchlauf nicht mehr schlechter als die SAC-Durchläufe, allerdings sind die PPO-Durchläufe mit dem größeren Netz erheblich instabiler.
 	}
