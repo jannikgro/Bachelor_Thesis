@@ -217,7 +217,7 @@ Damit bleiben sie ebenfalls hinter denen der PPO-Agenten zurück, die meist übe
 
 Wie auch für die anderen Algorithmen wurden für SAC ein typischer Durchlauf und die gemittelten Aktionen in Abbildung \ref{graphic:SACDetails} abgedruckt.
 Die durchschnittlichen Preise starten -- offenbar durch eine andere Parameterinitialisierung -- auf höherem Niveau als bei PPO.
-Sie sinken dann und enden bei $6,4$ und $5,4$, genau wie bei PPO.
+Sie sinken dann und enden bei $6{,}4$ und $5{,}4$, genau wie bei PPO.
 
 Warum PPO in diesem Markt etwas besser abschneidet, ist eine äußerst interessante Frage, deren Beantwortung man sich aber auf Grundlage dieser Experimente nur annähern kann.
 Eine plausible Erklärung wird in Abschnitt \ref{section:partial_markov} auf Grundlage der dortigen Beobachtungen geliefert.
@@ -234,7 +234,7 @@ Die Geschwindigkeit des Trainings ist bei A2C und PPO sehr ähnlich.
 Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere Samplebedarf bei PPO.
 Insbesondere wird deutlich, dass A2C in reinem Zeitbedarf den anderen Algorithmen erheblich überlegen ist.
 
-Weil insbesondere das SAC-Training so zeitaufwändig ist (in diesem Experiment etwa 7 Stunden) und der Lernfortschritt im späteren Verlauf so gering ist, wird bei einigen der folgenden Versuche mit SAC die Anzahl der Trainingsschritte reduziert.
+Weil insbesondere das SAC-Training so zeitaufwändig ist und der Lernfortschritt im späteren Verlauf so gering ist, wird bei einigen der folgenden Versuche mit SAC die Anzahl der Trainingsschritte reduziert.
 Gleiches geschieht bei A2C, da hier bereits sehr früh die maximale Performance erreicht werden.
 
 \section{Den Konkurrenten übertreffen -- eine angepasste Rewardfunktion}
