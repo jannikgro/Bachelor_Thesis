@@ -87,7 +87,7 @@ Die Kunden bewerten für sich die Angebote und treffen eine von fünf möglichen
 Entweder kaufen sie kein Produkt, oder das gebrauchte oder neue bei einem der Anbieter.
 Das Kaufverhalten ist aber keinesfalls homogen.
 Es wird stark durch die Preise beeinflusst, aber unterschiedliche Kunden haben unterschiedliche Erwartungen, unterschiedliche Konsumgewohnheiten oder unterschiedliche Einstellungen zu Nachhaltigkeit.
-Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden gesamplet wird.
+Deshalb wird eine Wahrscheinlichkeitsverteilung des Kaufverhaltens über die Kundschaft erstellt, aus der dann für einzelne Kunden gesampelt wird.
 Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden, aus denen dann per Softmax die Zähldichte der Wahrscheinlichkeitsverteilung berechnet wird.
 Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
 Die Präferenz, das Neuprodukt bei Anbieter $i\in\{1, 2\}$ zu kaufen, lautet
@@ -122,12 +122,12 @@ Er wird uniform zufällig zwischen $0$ und $5 m_{lager}$ initialisiert.
 Der Verkauf eines Neuproduktes erhöht diesen Zähler um eins.
 Im Gegensatz dazu werden bereits gebrauchte Produkte nicht noch einmal weiterverkauft, weshalb ihr Verkauf den Zähler nicht erhöht.
 
-Je mehr Kunden im Besitz eines Produkts sind, desto mehr dieser Eigentümer erwägen, ihr Produkt nicht länger besitzen zu wollen.
+Je mehr Kunden im Besitz eines Produktes sind, desto mehr dieser Eigentümer erwägen, ihr Produkt nicht länger besitzen zu wollen.
 In der Kreislaufwirtschaft stehen sie dann vor vier Optionen:
 Sie können ihr Produkt weiter behalten, es wegwerfen oder an einen der beiden Anbieter zurückverkaufen.
 Die Möglichkeit des Rückkaufs ist nicht auf den Anbieter beschränkt, der ihnen das Produkt ursprünglich verkauft hat, sondern es findet Wettbewerb um den Rückkauf statt.
 Insgesamt stellen sich in jedem Schritt $c \cdot n_{zirk}$ Eigentümer dieser Entscheidung, wobei $c$ ein Parameter ist, für den $0 < c \leq 1$ gilt.
-Nach dem gleichen Verfahren wie bei der Kaufentscheidung der Kunden wird ihr Verhalten mit einer diskreten Wahrscheinlichkeitsverteilung modelliert, aus der dann für jeden der $c \cdot n_{zirk}$ Eigentümer geshuffelt wird.
+Nach dem gleichen Verfahren wie bei der Kaufentscheidung der Kunden wird ihr Verhalten mit einer diskreten Wahrscheinlichkeitsverteilung modelliert, aus der dann für jeden der $c \cdot n_{zirk}$ Eigentümer gesampelt wird.
 Die Präferenz für das Halten eines Produktes wird auf $1$ normiert.
 Die Wegwurfpräferenz
 \begin{equation}
@@ -152,15 +152,15 @@ Er ist siebendimensional und enthält Folgendes:
 \begin{enumerate}
 	\item die Anzahl der gerade zirkulierenden Elemente,
 	\item die Anzahl der Elemente im eigenen Lager,
-	\item den Preis des gebrauchten Produkts des Konkurrenten ($p_{2, gebraucht}$),
+	\item den Preis des gebrauchten Produktes des Konkurrenten ($p_{2, gebraucht}$),
 	\item den Neupreis des Konkurrenten ($p_{2, neu}$),
 	\item den Rückkaufpreis des Konkurrenten ($p_{2, re}$) und
 	\item den Lagerstand des Konkurrenten.
 \end{enumerate}
 Diese Werte beeinflussen das Verhalten der Kunden und des Konkurrenten.
-Sie müssen gegeben sein, damit die sogenannte Markoveigenschaft erfüllt ist.
+Sie müssen gegeben sein, damit die sogenannte Markov-Eigenschaft erfüllt ist.
 Diese besagt, dass die Wahrscheinlichkeiten der Zustandsübergänge und der Belohnungen nur vom aktuellen Zustand und der gewählten Aktion abhängen und damit insbesondere stochastisch unabhängig von den zuvor besuchten Zuständen und Aktionen sind.
-Der Schrittzähler ist wegen der \textit{ininite-horizon}-Optimierung nicht Teil des Zustandes.
+Der Schrittzähler ist wegen der \textit{infinite-horizon}-Optimierung nicht Teil des Zustandes.
 
 Dass die für den Zustandsraum ausgewählten Dimensionen das künftige Verhalten des Systems beeinflussen, ist durch die Definition des Marktverhaltens klar.
 So werden Gebraucht- und Neupreis des Konkurrenten für die erste Hälfte dieses Schrittes direkt für das Kundenverhalten verwendet.

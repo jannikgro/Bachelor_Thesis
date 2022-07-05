@@ -128,7 +128,7 @@ Ihr Durchschnitt überschreitet die Schwelle zum Gewinn nach etwa 60 Episoden.
 \end{figure}
 Die Grafik \ref{graphic:A2CInstability} stellt Details eines einzelnen A2C-Durchlaufes dar.
 Es handelt sich dabei um einen typischen Durchlauf mit mittlerer Peak-Performance.
-Man sieht die Instabilität nicht nur an den Ergebnissen sondern auch an den starken Schwankungen, denen die Aktionsauswahl während des Trainings unterworfen ist.
+Man sieht die Instabilität nicht nur an den Ergebnissen, sondern auch an den starken Schwankungen, denen die Aktionsauswahl während des Trainings unterworfen ist.
 Wie auch bei den anderen A2C-Agenten stürzt seine Leistung mitunter deutlich ab und fällt weit in die Verlustzone.
 Nicht immer erholen sich die Agenten davon, oft erhalten sie weiterhin schlechte Ergebnisse.
 Diese heftigen Abstürze führen dazu, dass die Mittelwertlinie der A2C-Agenten in Abbildung \ref{graphic:OnPolicyLearningCurves} wieder unter 0 fällt, obwohl einige der Agenten weiterhin akzeptable Ergebnisse liefern.
@@ -228,7 +228,7 @@ Bei beiden Trainingsalgorithmen haben die Policies zum Ende des Trainings Standa
 Für die Frage >>Wie lange dauert das Training?<< gibt es zwei mögliche Kenngrößen.
 Einmal kann die Anzahl der benötigten Samples bewertet werden, die Sample Efficiency, oder es kann die tatsächliche Zeit auf der Uhr herangezogen werden.
 Letztere hängt stark von der Hardware sowie der Geschwindigkeit der Simulation im Vergleich zum Optimieren der Parameter ab.
-Bei der für diese Experimente verwendeten Implementierung und Hardware benötigt das Training pro Schritt mit SAC etwa $3,7$ Mal so lang wie mit PPO.
+Bei der für diese Experimente verwendeten Implementierung und Hardware benötigt das Training pro Schritt mit SAC etwa $3{,}7$ Mal so lang wie mit PPO.
 Das Sammeln der Beispiele aus dem Markt nimmt bei PPO etwa 25\% der Trainingszeit ein, bei SAC nur etwa 6\%.
 Die Geschwindigkeit des Trainings ist bei A2C und PPO sehr ähnlich.
 Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere Samplebedarf bei PPO.
@@ -288,8 +288,8 @@ Weil jedoch davon ausgegangen werden kann, dass der Konkurrent seine Preisstrate
 Zweitens ist die mittels RL trainierte Strategie nur gegen diese bestimmte regelbasierte Strategie gerichtet.
 Ändert der Wettbewerber seine Preisstrategie plötzlich, schwächt das die Performance der RL-Strategie und macht neues Training erforderlich.
 
-Deshalb wünscht man sich eine Strategie, die gegen möglichst viele Wettbewerberstrategien bestehen kann, und nicht auf eine spezielle overfittet ist.
-Deepmind hatte eine ähnliche Herausforderung beim Training von Go- und Schachstrategien, das durch Self-Play gelöst wurde. 
+Deshalb wünscht man sich eine Strategie, die gegen möglichst viele Wettbewerberstrategien bestehen kann, und nicht auf eine spezielle überangepasst ist.
+DeepMind hatte eine ähnliche Herausforderung beim Training von Go- und Schachstrategien, das durch Self-Play gelöst wurde. 
 Das kann in \cite{Silver2017, https://doi.org/10.48550/arxiv.1712.01815} nachgelesen werden.
 
 Für diesen Markt wurde eine Self-Play Variante entwickelt, bei der ein RL-Agent weiterhin auf einem Duopol-Markt trainiert, aber die Policy des Wettbewerbers die eigene Policy ist.
