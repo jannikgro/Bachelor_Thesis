@@ -65,7 +65,7 @@ Zu Beginn des Trainings ist bei einigen Läufen eine Verbesserung der gemittelte
 Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen.
 In keinem der Durchläufe konnten Gewinne erwirtschaftet werden.
 
-Die schlechten Ergebnisse kommen deshalb zustande, weil die Agenten über das gesamte Training hinweg nicht lernen, die Preise vernünftig zu setzen.
+Die schlechten Ergebnisse kommen deshalb zustande, weil die Agenten über das gesamte Training hinweg nicht lernen, sinnvolle Preise zu setzen.
 Bei vielen Durchläufen bleiben die Neupreise ohne Anpassung auf die aktuelle Situation beim Maximum 10 hängen, oft sogar auch die Gebrauchtpreise.
 Die Tatsache, dass die Agenten lange auf einer Stelle bleiben und auch die gleichen verbesserungswürdigen Aktionen immer wieder ausführen, könnte auf unzureichende Exploration schließen lassen.
 Allerdings konnte auch eine verrauschte Aktionswahl zur besseren Exploration keine Verbesserung der Leistung bewirken.
@@ -100,7 +100,7 @@ Es fällt bei A2C ein sprunghafter Anstieg bei 100 Episoden auf.
 Grund dafür ist der laufende Durchschnitt, bei dem nach 100 Episoden die sehr schlechten Ergebnisse vom Anfang des Trainings aus der Mittelung herausfallen.
 Dieser Effekt tritt auch bei anderen Lernkurven-Diagrammen auf und liegt nur an diesem Diagrammtyp.
 
-Aus den Grafiken geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
+Aus der Grafik geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
 Sie erreichen alle mit Ergebnissen über 6000 pro Episode gute Ergebnisse.
 Auf Grundlage dieser Grafik kann man feststellen, dass die Parametrisierung mit $\varepsilon=0,3$ bessere Performance einbringt als die Standardparametrisierung.
 
@@ -137,7 +137,7 @@ Im Gegenzug dazu ist die Trainingsstabilität bei den PPO-Varianten deutlich hö
 Zwischen den vier Trainingsdurchläufen der PPO-Agenten gibt es nur geringe Unterschiede.
 Die Leistungsentwicklung liegt in einem schmalen Band und Abstürze finden nicht statt.
 Allerdings benötigt PPO in der Standardkonfiguration knapp 250 Episoden und in der Version mit $\varepsilon=0,3$ ungefähr 180 Episoden, um die Gewinnzone zu erreichen.
-Auch danach ist das Training langsam.
+Auch danach ist die Leistungssteigerung geringer als bei den anderen Algorithmen.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/ppo_detailed_analysis.pdf}
@@ -150,7 +150,7 @@ Dessen durchschnittliche Performance steigt bis zum Ende auf 8160, und weist bei
 Der Unterschied in der Lerngeschwindigkeit und -stabilität zwischen PPO zu A2C überrascht nicht, er existiert \textit{by design}.
 Diese Experimente zeigen, dass PPO in seiner Intention, die Trainingsstabilität zu erhöhen, erfolgreich ist.
 Diese Erhöhung der Trainingsstabilität findet dadurch statt, dass die Änderung der stochastischen Policy bei den Trainingsschritten begrenzt wird.
-Aus dieser Begrenzung der Policyänderung ist die geringere Lerngeschwindigkeit dann eine logische Schlussfolgerung.
+Aus dieser Begrenzung der Policyänderung ist die geringere Lerngeschwindigkeit eine logische Schlussfolgerung.
 
 So lässt sich auch erklären, warum der Durchlauf mit $\varepsilon=0,3$ schneller trainiert.
 Mit größerem $\varepsilon$ wird pro Sample eine größere Policyänderung erlaubt, was zu schnellerem Training führt.
@@ -164,7 +164,7 @@ Obwohl der RL-Agent den regelbasierten Agenten nach etwas Training übertrifft, 
 Das erweckt den Eindruck, als würde der Agent im Verlaufe des Trainings schlechter.
 Jedoch ist das Gegenteil der Fall.
 Der PPO-Agent erlernt zunächst, die Preise für Neu- und Gebrauchtware höher zu setzen.
-Dieses Training dauert aus inzwischen diskutierten Gründen im Vergleich lange, aber bei Neuverkaufspreisen, die größer als vier sind, macht er die Erfahrung, dass der regelbasierte Wettbewerber ihn immer um 1 unterbietet.
+Dieses Training dauert aus den diskutierten Gründen im Vergleich lange, aber bei Neuverkaufspreisen, die größer als vier sind, macht er die Erfahrung, dass der regelbasierte Wettbewerber ihn immer um 1 unterbietet.
 Durch wechselseitiges Unterbieten führt eine Preisabwärtsspirale dazu, dass sich der Preis nur knapp oberhalb des Einkaufspreises einpegelt.
 Die dabei äußerst niedrige Rendite ermöglicht jedoch nur niedrige Gewinne, sodass der Agent in seinem weiteren Training die Erfahrung macht, dass er seinen Gewinn steigern kann, indem er seine Preise höher setzt.
 Er wird dann weiterhin unterboten, allerdings nur um den Wert eins.
@@ -263,7 +263,7 @@ Für diese Experimente wurden beide Summanden gleich gewichtet, es könnte aber 
 Im Anhang sind die Lernkurven der Algorithmen mit gemischter Rewardfunktion im Vergleich zur Standardrewardfunktion abgedruckt (Abbildungen \ref{graphic:MixedRewardsA2C}, \ref{graphic:MixedRewardsPPO} und \ref{graphic:MixedRewardsSAC}).
 Wie erwartet liegen die Gewinne der Agenten niedriger als bei der anderen Rewardfunktion (schließlich sind Gewinne nicht mehr das alleinige Optimierungskriterium), allerdings fällt dieser Unterschied bei den Algorithmen unterschiedlich aus.
 Weiterhin erhöht sich durch den Wechsel der Rewardfunktion die Instabilität bei allen Algorithmen.
-Ob das Ziel, neben guten Gewinnen die Konkurrenz zu überholen, erreicht wird, zeigt Abbildung \ref{graphic:LineplotMixedRewards}.
+Ob das Ziel, neben guten Gewinnen die Konkurrenz zu überholen, erreicht wird, zeigt \mbox{Abbildung \ref{graphic:LineplotMixedRewards}}.
 
 Obwohl der A2C-Durchlauf wieder Probleme mit Instabilität zeigt, erreicht er ein durchschnittliches Maximum von 7900, der Konkurrent nur 7200.
 Er überholt also bei der veränderten Rewardfunktion den regelbasierten Konkurrenten, und erhält gleichzeitig gute Gewinne.
@@ -321,7 +321,7 @@ Deshalb dürfen auch die Returns dieser Lernkurven nicht mit denen aus den vorig
 \end{figure}
 Um Vergleichbarkeit herstellen zu können, wurde während des Self-Plays alle 50 Episoden ein Modell gespeichert und jedes dieser Modelle anschließend für 25 Episoden getestet.
 Damit wurden akkurate Lernkurven erstellt, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleichen.
-Für die drei Algorithmen und die zwei Rewardfunktionen wurde ein mittlerer Durchlauf ausgewählt und in der Abbildung \ref{graphic:SelfPlayDetails} veranschaulicht.
+Für die drei Algorithmen und die zwei Rewardfunktionen wurde ein mittlerer Durchlauf ausgewählt und in der \mbox{Abbildung \ref{graphic:SelfPlayDetails}} veranschaulicht.
 
 Bei beiden Rewardfunktionen haben die Agenten den Markt erfolgreich erlernt und können sich auch in dem Benchmark gegen den regelbasierten Konkurrenten behaupten.
 So liegen die Peaks aller Agenten im Benchmark bei 8000 oder knapp darunter, allerdings mit starken Schwankungen bei A2C.

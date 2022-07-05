@@ -43,7 +43,8 @@ Dann werden rundenweise für alle Zustände $s\in\mathcal{S}$ ihre Einträge in 
 \end{equation}
 als Berechnungsvorschrift aktualisiert.
 Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy.
-Bei \cite{Sutton1998} ist das Verfahren als Wertiteration zu finden und ist in analoger Weise auch mit Aktionswerten möglich.
+Bei \cite{Sutton1998} ist das Verfahren als Wertiteration zu finden.
+Es ist in analoger Weise mit Aktionswerten umsetzbar.
 Die optimale Policy ist dann die deterministische, sogenannte Greedy-Policy.
 Sie wählt in jedem Zustand das Argmax der Aktionen.
 
@@ -59,7 +60,7 @@ In jedem Schritt wird dabei mit einer Wahrscheinlichkeit von $1-\varepsilon$ die
 Weiteres dazu kann in \cite{Sutton1998} nachgelesen werden.
 
 \section{Approximation als Ausweg bei zu großem Zustands- und Aktionsraum}
-Doch auch dieses Verfahren kann auf den beschriebenen Markt nicht angewandt werden.
+Doch auch Monte-Carlo-Verfahren können auf den beschriebenen Markt nicht angewandt werden.
 In jedem Fall müsste die Formulierung mit dem diskreten Aktionsraum gewählt werden.
 Hindernis ist aber auch hier der große Zustands- und Aktionsraum: soll das Monte-Carlo-Verfahren angewandt werden, so ist dafür eine Tabelle der Größe $|\mathcal{S} \times \mathcal{A}|$ erforderlich.
 Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste die Tabelle $50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$ Einträge haben.
@@ -81,7 +82,8 @@ Dazu wird als Berechnungsvorschrift die Bellman-Gleichung verwendet.
 Allerdings werden nicht unbedingt vollständige Episoden betrachtet, sondern der Aktionswert nach dem Folgezustand ergibt sich mittels der momentanen Schätzfunktion.
 Diese Technik, zur Verbesserung von Schätzwerten rekursiv bisherige Schätzwerte zu verwenden, wird Bootstrapping genannt und wird laut \cite{Sutton1998} als wichtige Technologie angesehen.
 Nach dem Training wird wieder die Greedy-Policy verwendet.
-Während des Trainings wird eine $\varepsilon$-Soft-Policy genutzt, um für ausreichende Exploration zu sorgen.
+Während des Trainings wird mit Wahrscheinlichkeit $\varepsilon$ eine zufällige Aktion genommen, um für bessere Expolration zu sorgen.
+Das $\varepsilon$ wird während des Trainings abgesenkt.
 
 Dieses Verfahren lässt sich mit Tabellen oder neuronalen Netzwerken umsetzen.
 Letzteres wird \textit{Deep-Q-Learning} genannt.
@@ -99,7 +101,7 @@ Diese Verlustfunktion beim Deep-Q-Learning lautet für eine Schätzfunktion der 
 Erfolgreiche Q-Learning-Umsetzungen verwenden einen Experiencebuffer, in dem die Erfahrung $\mathcal{D}$ gespeichert wird.
 Weiterhin speichern sie zwei Netze: neben dem, das trainiert wird, auch ein sogenanntes Zielnetz, was in der Schätzung des Zielwertes verwendet wird.
 Das verhindert ungewollte Oszillationen und Instabilität, wie in \cite{atari2014} beschrieben.
-Zahlreiche weitere Techniken zur Verbesserung von Deep-Q-Networks sind verbreitet und verbessern das Training erheblich.
+Zahlreiche Erweiterungen zu Deep-Q-Networks sind verbreitet und verbessern das Training erheblich.
 Zahlreiche von ihnen sind in \cite{qlearningcomparison2017} aufgeführt.
 Für die gleich folgenden Verfahren ist insbesondere die Erkenntnis wichtig, dass Q-Learning-Verfahren zur systematischen Überschätzung der Aktionswerte neigen.
 Näheres dazu steht in \cite{qlearningoverestimation}.
@@ -126,21 +128,21 @@ Die dazugehörige Verlustfunktion lautet sehr ähnlich zu der von Q-Learning
 \begin{equation}
 	L(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma Q_{\psi'}(s',\pi_\phi(s'))\right)\right)^2\right].
 \end{equation}
-Dabei wird bei DDPG wird ein Zielnetz mit Parametern $\psi'$ für die Schätzung der Policyfunktion verwendet, was nach jedem Optimierungsschritt mit dem Hyperparameter $\rho \in [0, 1]$ und der Polyak-Mittelung $\psi' \leftarrow (1 - \rho) \psi' + \rho \psi$ aktualisiert wird.
+Dabei wird bei DDPG ein Zielnetz mit Parametern $\psi'$ für die Schätzung der Policyfunktion verwendet, was nach jedem Optimierungsschritt mit dem Hyperparameter $\rho \in [0, 1]$ und der Polyak-Mittelung $\psi' \leftarrow (1 - \rho) \psi' + \rho \psi$ aktualisiert wird.
 Zur Optimierung der Policyfunktion in dem Sinne, dass sie für einen Zustand möglichst das Argmax berechnet, wird Gradientenanstieg verwendet.
 Das wird dadurch möglich, dass beide neuronalen Netze differenzierbar sind und der Aktionsraum stetig ist.
 So kann der Gradient $\nabla_\phi \mathbb{E}_{s\sim\mathcal{D}}\left[Q_\psi(s, \pi_\phi(s))\right]$ durch die automatische Differenzierung des Deep-Learning-Frameworks berechnet und ein Optimierungsschritt in die Richtung des größten Anstiegs vorgenommen werden.
 
 Nachfolgende Analysen haben ergeben, dass die systematische Überschätzung der Funktionswerte bei DDPG sich besonders stark auf die Leistung auswirkt.
-In dem Paper \cite{DBLP:journals/corr/abs-1802-09477} wurden deshalb drei Verbesserungen für den DDPG-Algorithmus vorgeschlagen:
+In der Arbeit \cite{DBLP:journals/corr/abs-1802-09477} wurden deshalb drei Verbesserungen für den DDPG-Algorithmus vorgeschlagen:
 \begin{enumerate}
 	\item Es werden zwei separate Netze für die Aktionswertefunktion gehalten.
 	Für die Berechnung des Zielwertes wird immer das Minimum von beiden genommen.
-	\item Weil die Q-Netze manchmal kleinere Ausbuchtungen haben, die vom Gradientenanstieg ausgenutzt werden, wird bei der Berechnung des Zielwertes der Aktionsauswahl durch das Policynetz normalverteiltes Rauschen angefügt.
+	\item Weil die gelernten Q-Funktionen teils lokal starke Unterschiede haben, die vom Gradientenanstieg ausgenutzt werden, wird bei der Berechnung des Zielwertes der Aktionsauswahl durch das Policynetz normalverteiltes Rauschen angefügt.
 	Die Aktionen werden dabei selbstverständlich auf den Aktionsraum geclippt.
 	\item Im Gegensatz zu vielen DDPG-Implementierungen wird das Policy-Netz nur alle zwei Q-Netz-Updates trainiert.
 \end{enumerate}
-Der entstehende Algorithmus wird als TD3 bezeichnet und hat bei vielen Tests durch bessere Performance überzeugt.
+Der entstehende Algorithmus wird als TD3 bezeichnet und übertrifft DDPG bei den dort aufgeführten Standardbenchmarks.
 
 \section{Policy-Gradient-Verfahren}
 Eine alternative Herangehensweise zu den wertebasierten Verfahren sind die Policy-Gradient-Verfahren.
@@ -164,7 +166,7 @@ Abhilfe schafft hier die sogenannte Baseline, eine Funktion $b: \mathcal{S} \rig
 Sie ist sinnvollerweise eine Schätzung des Zustandswertes.
 Mit ihr wird bewertet, ob ein erreichter Return für einen Zustand gut oder schlecht ist.
 Anstelle des Returns wird dann für den Gradienten der Advantagewert $\hat{A}_t := G_t - b(S_t)$ verwendet.
-Algorithmen, die nach diesem Prinzip funktionieren, werden Actor-Critic-Algorithmen genannt.
+Dieser Algorithmus wird Advantage-Actor-Critic (A2C) genannt.
 Das ist eine Metapher für die zwei Netze Actor (berechnet die Policy) und Critic (schätzt den Zustandswert und ermöglicht damit die >>Kritik<< einer Aktion).
 In manchen Implementierungen teilen sich die beiden Netze vordere Schichten.
 
@@ -214,7 +216,8 @@ Die Verlustfunktion zur Optimierung der Policy schreibt sich mit folgendem Ausdr
 \end{equation}
 Es wird dabei aus den Aktionswerten eine Wahrscheinlichkeitsverteilung gebaut, indem sie exponenziert und durch einen Normierungsfaktor $Z_\theta(S_t)$ geteilt werden.
 Dieser Normierungsfaktor wird nur mathematisch dafür benötigt, dass das Integral über den gesamten Aktionsraum 1 ergibt.
-Für den Algorithmus wird er aber nicht berechnet, da er nicht von $\theta$ abhängt und deshalb bei der Gradientenberechnung in die Lernrate hineingezogen wird.
+Für die Gradientenberechnung ist er aber eine Konstante, da er nicht von $\varphi$ abhängt.
+Deshalb wird er nicht berechnet und stattdessen die Lernrate angepasst.
 Diese konstruierte Wahrscheinlichkeitsverteilung gewichtet wie erwartet die Aktionen mit hohem Aktionswert höher.
 In diese Richtung soll dann die Policy verändert werden.
 Im Programm muss aber diese komplizierte Verlustfunktion nicht abgeleitet werden, sondern lässt sich mit einigen Umformungen deutlich leichter formulieren.
