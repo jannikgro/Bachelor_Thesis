@@ -5,9 +5,9 @@ Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, p)$ (kur
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
 Weiterhin ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $a \in \mathcal{A}$ die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung (engl. Reward) $r \in \mathbb{R}$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
 Zentraler Begriff beim Lösen eines MDPs ist die sogenannte Policyfunktion.
-Sie kann deterministisch sein und als $\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$ formalisiert werden.
+Sie kann deterministisch sein und als \mbox{$\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$} formalisiert werden.
 Weiterhin können Policies stochastisch sein.
-Die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form $\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, \infty)$.
+Die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form \mbox{$\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, \infty)$}.
 Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$.
 Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
 Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen
@@ -30,7 +30,7 @@ Analog wird für den Zustand $s \in \mathcal{S}$ und eine Aktion $a \in \mathcal
 \end{equation}
 definiert, also die erwartete (diskontierte) Summe an Belohnungen nach dem Besuch von $s$ und der Wahl von Aktion $a$, wenn danach der Policy $\pi$ gefolgt wird.
 Zustands- und Aktionswerte sind zentrale Begriffe im Reinforcement Learning, die in vielen Algorithmen verwendet werden.
-Das Ziel, den Return $G_0$ zu maximieren, lässt sich auch äquivalent als Maximierung von $V(S_0)$ formulieren.
+Das Ziel, den Return $G_0$ zu maximieren, lässt sich auch äquivalent als Maximierung des Zustandswertes von $S_0$ formulieren.
 
 \section{Exakte Lösungen mittels Dynamic Programming}
 \label{section:dp}
@@ -39,7 +39,7 @@ Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Üb
 Anschließend wird eine angenäherte Funktion für die Zustandswerte $V^*$ als Array gespeichert und mit beliebigen Werten initialisiert.
 Dann werden rundenweise für alle Zustände $s\in\mathcal{S}$ ihre Einträge in dieser Tabelle mithilfe der Bellman-Gleichung
 \begin{equation}
-	V^*(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + V^*(s')\right)}\right)}
+	V^*(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + \gamma V^*(s')\right)}\right)}
 \end{equation}
 als Berechnungsvorschrift aktualisiert.
 Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy.
@@ -62,16 +62,16 @@ Weiteres dazu kann in \cite{Sutton1998} nachgelesen werden.
 \section{Approximation als Ausweg bei zu großem Zustands- und Aktionsraum}
 Doch auch Monte-Carlo-Verfahren können auf den beschriebenen Markt nicht angewandt werden.
 In jedem Fall müsste die Formulierung mit dem diskreten Aktionsraum gewählt werden.
-Hindernis ist aber auch hier der große Zustands- und Aktionsraum: soll das Monte-Carlo-Verfahren angewandt werden, so ist dafür eine Tabelle der Größe $|\mathcal{S} \times \mathcal{A}|$ erforderlich.
-Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste die Tabelle $50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$ Einträge haben.
+Hindernis ist aber auch hier der große Zustands- und Aktionsraum: soll das Monte-Carlo-Verfahren angewandt werden, so ist dafür eine Tabelle der Größe \mbox{$|\mathcal{S} \times \mathcal{A}|$} erforderlich.
+Bei den in Tabelle \ref{tab:default_parameters} genannten Standardwerten müsste die Tabelle \mbox{$50 \cdot 500 \cdot 100 \cdot 10^3 \cdot 100 \cdot 10^3 = 2.5 \cdot 10^{14}$} Einträge haben.
 Obwohl dieser Wert bereits jeden verfügbaren Speicher sprengt, ist die Anzahl der unterschiedlichen Preisstufen mit 10 für realistische Verhältnisse recht niedrig angesetzt.
 Tatsächlich liegt der benötigte Speicher in $\mathcal{O}\left(p_{max}^6\right)$, was eine Skalierung unmöglich macht.
-Weil dies sogar nur die Betrachtung des Speichers war -- bis Konvergenz erreicht ist, müsste jeder Zustand sehr oft durchlaufen werden -- muss geschlussfolgert werden, dass eine Lösung, die für alle Zustände die Zustandswerte ausrechnen möchte, nicht realisierbar ist.
+Weil dies sogar nur die Betrachtung des Speichers war -- bis Konvergenz erreicht ist, müsste jeder Zustand sehr oft durchlaufen werden -- muss geschlussfolgert werden, dass eine exakte Lösung mit Tabellen nicht realisierbar ist.
 
 Approximationen sind also unumgänglich.
 Sie beruhen auf der Einsicht, dass der Zustandsraum zwar sehr groß ist, aber viele Zustände sich sehr ähnlich sind.
 Dadurch können Modelle mit deutlich weniger Parametern als Zuständen diese gewünschten Funktionen  mit für praktische Zwecke ausreichender Genauigkeit annähern.
-Beispiele und Erklärungen dazu sind auch in \cite{lapan2020deep} zu finden.
+Beispiele und Erklärungen dazu sind in \cite{lapan2020deep} zu finden.
 Alle folgenden Verfahren nutzen sogenannte künstliche neuronale Netze, die am weitesten verbreitete Technologie, um komplexe nichtlineare Funktionen zu approximieren.
 
 \section{Q-Learning-Verfahren}
@@ -79,14 +79,14 @@ Alle folgenden Verfahren nutzen sogenannte künstliche neuronale Netze, die am w
 Ein weit verbreitetes Verfahren zum Lösen von Markov-Entscheidungsprozessen ist das sogenannte Q-Learning.
 Die Idee ist hierbei, wie in dem in Abschnitt \ref{section:dp} beschriebenen Monte-Carlo-Verfahren, Aktionswerte einer optimalen Policy zu schätzen.
 Dazu wird als Berechnungsvorschrift die Bellman-Gleichung verwendet.
-Allerdings werden nicht unbedingt vollständige Episoden betrachtet, sondern der Aktionswert nach dem Folgezustand ergibt sich mittels der momentanen Schätzfunktion.
+Allerdings werden nicht unbedingt vollständige Episoden betrachtet, sondern für den Aktionswert nach dem Folgezustand wird die momentane Schätzfunktion verwendet.
 Diese Technik, zur Verbesserung von Schätzwerten rekursiv bisherige Schätzwerte zu verwenden, wird Bootstrapping genannt und wird laut \cite{Sutton1998} als wichtige Technologie angesehen.
 Nach dem Training wird wieder die Greedy-Policy verwendet.
-Während des Trainings wird mit Wahrscheinlichkeit $\varepsilon$ eine zufällige Aktion genommen, um für bessere Expolration zu sorgen.
+Während des Trainings wird mit Wahrscheinlichkeit $\varepsilon$ von ihr abgewichen, und für bessere Expolration eine zufällige Aktion gewählt.
 Das $\varepsilon$ wird während des Trainings abgesenkt.
 
 Dieses Verfahren lässt sich mit Tabellen oder neuronalen Netzwerken umsetzen.
-Letzteres wird \textit{Deep-Q-Learning} genannt.
+Mit neuronalen Netzen wird es \textit{Deep-Q-Learning} genannt.
 \textit{Deep-Q-Networks} (DQNs) sind für diskrete Aktionsräume entworfen worden.
 Die Schätzung der Aktionswertefunktion wird dabei so umgesetzt, dass an den Input des Netzes nur der Zustand angelegt wird und dann in einer Berechnung auf so viele Ausgabeneuronen abgebildet wird, wie es Aktionen gibt.
 So erhält man bei nur einem der aufwendigen Läufe durch das neuronale Netz bereits alle Aktionswerte auf einmal.
@@ -102,7 +102,7 @@ Erfolgreiche Q-Learning-Umsetzungen verwenden einen Experiencebuffer, in dem die
 Weiterhin speichern sie zwei Netze: neben dem, das trainiert wird, auch ein sogenanntes Zielnetz, was in der Schätzung des Zielwertes verwendet wird.
 Das verhindert ungewollte Oszillationen und Instabilität, wie in \cite{atari2014} beschrieben.
 Zahlreiche Erweiterungen zu Deep-Q-Networks sind verbreitet und verbessern das Training erheblich.
-Zahlreiche von ihnen sind in \cite{qlearningcomparison2017} aufgeführt.
+Die verbreitetesten von ihnen sind in \cite{qlearningcomparison2017} aufgeführt.
 Für die gleich folgenden Verfahren ist insbesondere die Erkenntnis wichtig, dass Q-Learning-Verfahren zur systematischen Überschätzung der Aktionswerte neigen.
 Näheres dazu steht in \cite{qlearningoverestimation}.
 
@@ -110,7 +110,7 @@ Q-Learning-Verfahren sind Off-Policy-Algorithmen.
 Das bedeutet, dass ihr Training auch mit Zustandsübergängen stattfinden kann, die nicht von der aktuellen Policy erzeugt wurden.
 Der Grund dafür ist, dass bei einer perfekten Policy für \textbf{jeden} Zustandsübergang $(s, a, r, s')$ die Bellman-Gleichung
 \begin{equation}
-	Q(s, a) = \sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + \max_{a' \in \mathcal{A}}{Q(s', a')}\right)}
+	Q(s, a) = \sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + \gamma \max_{a' \in \mathcal{A}}{Q(s', a')}\right)}
 \end{equation}
 erfüllt ist.
 Das ist zwar bei Approximationslösungen nicht erreichbar, die Minimierung des Erwartungswert über die quadrierten Differenzen zeigt aber die Entfernung von diesem Ziel.
@@ -123,10 +123,11 @@ Ein neuronales Netz mit den Parametern $\psi$ berechnet die Aktionswerteschätzf
 Um an die Policy zu gelangen, ist es dabei aber kaum möglich, das tatsächliche Maximum dieser Funktion $Q_\psi$ zu bestimmen.
 Für neuronale Netze ist keine analytische Lösung möglich und numerische Verfahren sind viel zu aufwendig für die vielen benötigten Trainingsschritte.
 Die Lösung besteht in einem weiteren neuronalen Netz mit den Parametern $\phi$, das explizit die deterministische Policyfunktion $\pi_\phi: \mathcal{S} \rightarrow \mathcal{A}$ berechnet, ein Actor-Netz.
+Es gibt wieder einen Experiencebuffer für die gesammelte Erfahrung $\mathcal{D}$.
 Das Training des Q-Netzes findet wie beim DQN statt, außer dass für den Zielwert die Policyfunktion verwendet wird.
-Die dazugehörige Verlustfunktion lautet sehr ähnlich zu der von Q-Learning
+Die dazugehörige Verlustfunktion lautet sehr ähnlich zu der von Deep-Q-Learning
 \begin{equation}
-	L(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma Q_{\psi'}(s',\pi_\phi(s'))\right)\right)^2\right].
+	L_\mathcal{D}(\psi) = \mathbb{E}_{(s, a, r, s')\sim\mathcal{D}}\left[\left(Q_\psi(s,a)-\left(r+\gamma Q_{\psi'}(s',\pi_\phi(s'))\right)\right)^2\right].
 \end{equation}
 Dabei wird bei DDPG ein Zielnetz mit Parametern $\psi'$ für die Schätzung der Policyfunktion verwendet, was nach jedem Optimierungsschritt mit dem Hyperparameter $\rho \in [0, 1]$ und der Polyak-Mittelung $\psi' \leftarrow (1 - \rho) \psi' + \rho \psi$ aktualisiert wird.
 Zur Optimierung der Policyfunktion in dem Sinne, dass sie für einen Zustand möglichst das Argmax berechnet, wird Gradientenanstieg verwendet.
@@ -136,7 +137,7 @@ So kann der Gradient $\nabla_\phi \mathbb{E}_{s\sim\mathcal{D}}\left[Q_\psi(s, \
 Nachfolgende Analysen haben ergeben, dass die systematische Überschätzung der Funktionswerte bei DDPG sich besonders stark auf die Leistung auswirkt.
 In der Arbeit \cite{DBLP:journals/corr/abs-1802-09477} wurden deshalb drei Verbesserungen für den DDPG-Algorithmus vorgeschlagen:
 \begin{enumerate}
-	\item Es werden zwei separate Netze für die Aktionswertefunktion gehalten.
+	\item Es werden zwei separate Netze für die Aktionswertefunktion gespeichert.
 	Für die Berechnung des Zielwertes wird immer das Minimum von beiden genommen.
 	\item Weil die gelernten Q-Funktionen teils lokal starke Unterschiede haben, die vom Gradientenanstieg ausgenutzt werden, wird bei der Berechnung des Zielwertes der Aktionsauswahl durch das Policynetz normalverteiltes Rauschen angefügt.
 	Die Aktionen werden dabei selbstverständlich auf den Aktionsraum geclippt.
@@ -146,22 +147,23 @@ Der entstehende Algorithmus wird als TD3 bezeichnet und übertrifft DDPG bei den
 
 \section{Policy-Gradient-Verfahren}
 Eine alternative Herangehensweise zu den wertebasierten Verfahren sind die Policy-Gradient-Verfahren.
-Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt eine stochastische Policyfunktion $\pi_\phi$ z.B. mit einem neuronalen Netz.
-Sie verfolgen das gleiche in Abschnitt \ref{section:mdp_fundamentals} formulierte Ziel, nämlich eine Policy zu finden, die den Zustandswert des Startzustandes und damit den erwarteten Return einer Episode zu maximieren.
+Während wertebasierte Verfahren zunächst Aktions- oder Zustandswerte schätzen, und daraus ihre Policy herleiten, berechnen Policy-Gradient-Verfahren direkt eine stochastische Policyfunktion $\pi_\phi$ mit Parametern $\phi$, häufig ein neuronales Netz.
+Policy-Gradient-Verfahren verfolgen das gleiche in Abschnitt \ref{section:mdp_fundamentals} formulierte Ziel, nämlich eine Policy zu finden, die den Zustandswert des Startzustandes und damit den erwarteten Return einer Episode maximiert.
 Das ursprüngliche Verfahren dieser Klasse heißt REINFORCE \cite{10.1007/BF00992696} und ist aus dem Jahr 1992.
 Danach wurden zahlreiche Verbesserungen vorgenommen, die zu A2C und PPO führen.
-Grundidee ist hierbei, Gradientenanstieg für die Anpassung der Policy zu nutzen, sodass der Zustandswert des Startzustandes maximiert wird.
+Die Grundidee bei diesen Algorithmen ist, direkt Gradientenanstieg für die Anpassung der Policy zu nutzen, sodass der Zustandswert des Startzustandes maximiert wird.
 Dazu gibt es ein bedeutendes theoretisches Resultat, das eine Möglichkeit aufzeigt, den Gradienten aus gesampelten Episoden leicht zu schätzen, das sogenannte Policy-Gradient-Theorem.
 Es lässt sich für den REINFORCE-Algorithmus als
 \begin{equation}
 	\nabla_\phi V_{\pi_\phi}(S_0) \propto \mathbb{E}_{S_t, A_t}\left[G_t \nabla\log{\pi_\phi(S_t, A_t)}\right]
 \end{equation}
-formulieren, wobei $S_t$ und $A_t$ als Zufallsvariablen den Zustand und die Aktion im $t$-ten Schritt angeben, und $G_t$ den Result vom $t$-ten Schritt aus.
+formulieren, wobei $S_t$ und $A_t$ als Zufallsvariablen den Zustand und die Aktion im $t$-ten Schritt angeben.
+$G_t$ ist der Return vom $t$-ten Schritt aus.
 Der REINFORCE-Algorithmus sampelt nun Episoden unter Verwendung einer Policy und nutzt eine Schätzung dieses Gradienten für Gradientenanstieg.
 Die Updateregel ist intuitiv: Aktionen, auf die ein positiver Return folgt, werden wahrscheinlicher gemacht und Aktionen mit negativem Return unwahrscheinlicher.
 
 Doch REINFORCE hat für die praktische Anwendung einen offensichtlichen Nachteil: Die Bewertung, ob eine Aktion >>gut<< oder >>schlecht<< ist, richtet sich immer unmittelbar nach dem gemessenen Return.
-In einer Umgebung, die nur negative Rewards vergibt, wird der Gradient immer negativ sein und damit auch für Aktionen, die in der Situation deutlich besser sind als andere.
+In einer Umgebung, die nur negative Rewards vergibt, wird der Gradient immer in die absteigende Richtung zeigen, auch für Aktionen, die in der Situation deutlich besser sind als andere.
 Abhilfe schafft hier die sogenannte Baseline, eine Funktion $b: \mathcal{S} \rightarrow \mathbb{R}$, die einen Vergleichswert für Zustände angibt.
 Sie ist sinnvollerweise eine Schätzung des Zustandswertes.
 Mit ihr wird bewertet, ob ein erreichter Return für einen Zustand gut oder schlecht ist.
@@ -174,16 +176,18 @@ Um aus den Trainingsdaten den Advantagewert zu schätzen, gibt es mehrere Herang
 Eine Möglichkeit ist es, die Episoden bis zum Ende zu sampeln und die dabei gemessenen Werte zu verwenden.
 Das ist ein Schätzer ohne Bias, aber mit großer Varianz.
 Alternativ kann Bootstrapping verwendet werden, was die Varianz reduziert aber Bias einführt.
-Um einen Kompromiss zwischen Bias und Varianz zu finden, wurde der Generalized Advantage Estimator \cite{https://doi.org/10.48550/arxiv.1506.02438} vorgeschlagen, der auch in diesen Implementierungen verwendet wird.
+Um einen Kompromiss zwischen Bias und Varianz zu finden, wurde der Generalized Advantage Estimator \cite{https://doi.org/10.48550/arxiv.1506.02438} vorgeschlagen, der auch in den hier verwendeten Implementierungen verwendet wird.
 
 Im Gegensatz zu den Q-Learning-Verfahren aus dem Abschnitt \ref{section:qlearning} handelt es sich bei dieser Gruppe um On-Policy-Algorithmen.
-Das bedeutet, dass die Trainingsdaten mit der Policy gewonnen werden mussten, die auch trainiert wird.
+Das bedeutet, dass für das Training nur Erfahrung verwendet werden kann, die mit der neuesten Policy gewonnen wurde.
 Training mit älteren Daten ist nicht möglich.
 
-Ein Problem bei Actor-Critic-Methoden ist, dass abrupte Änderungen der Policy die Besuchswahrscheinlichkeiten der Zustände radikal verändern kann, ein Grund für Instabilität.
+Ein Problem bei Actor-Critic-Methoden ist, dass bei der Änderungen der Policy oft zu große Schritte gemacht werden.
+Das kann die Besuchswahrscheinlichkeiten der Zustände radikal verändern.
+Dann stimmen nämlich die Zustandswertschätzungen nicht mehr, ein Grund für Instabilität.
 Um das Problem zu lindern, soll beim Lernen die Veränderung der Wahrscheinlichkeiten der Policy gering gehalten werden.
-Ein wichtiger Beitrag dazu war TRPO, das die Kullback-Leibler-Divergenz zwischen alten und neuen Wahrscheinlichkeiten begrenzt. \cite{trpo2015}
-Sein Nachfolger PPO \cite{ppo2018} begrenzt den Unterschied zwischen alten und neuen Wahrscheinlichkeiten auf einfachere Weise. 
+Ein wichtiger Beitrag dazu war TRPO \cite{trpo2015}, das die Kullback-Leibler-Divergenz zwischen alten und neuen Wahrscheinlichkeiten begrenzt.
+Sein Nachfolger PPO \cite{ppo2018} verfolgt das gleiche Ziel, jedoch auf mathematisch deutlich einfachere Weise. 
 Dazu wird der Gradientenanstieg nach dem Sammeln von Erfahrung in kleinere Schritte zerlegt und die alten Parameter $\phi_{old}$ gespeichert.
 Das geschieht, um für eine Aktion $a \in \mathcal{A}$ in einem Zustand $s \in \mathcal{S}$ das Verhältnis aus neuer und alter Wahrscheinlichkeit $r(t, \phi, \phi_{old}) := \pi_\phi(S_t, A_t) / \pi_{\phi_{old}}(S_t, A_t)$ berechnen zu können.
 Damit wird mit dem Hyperparameter $\varepsilon \in [0, 1]$ die Zielfunktion

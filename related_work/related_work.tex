@@ -3,7 +3,8 @@ Demnach dominierten Monopolszenarien oder Szenarien mit starken, einschränkende
 
 Im Bereich der algorithmen- und datengetriebenen Preisoptimierung lässt sich die Schwierigkeit in zwei separate Herausforderungen unterteilen: Das Schätzen des Kundenverhaltens und das Optimieren des Pricings bei bekanntem oder erlerntem Kundenverhalten.
 In \cite{10.1145/3219819.3219833} werden diese Probleme einzeln gelöst.
-Zunächst werden Regressionsverfahren angewandt, um das Kundenverhalten zu erlernen, und anschließend ein approximatives Dynamic-Programming-Verfahren vorgestellt, um trotz des >>Fluchs der Dimension<< Preisstrategien optimieren zu können.
+Zunächst werden Regressionsverfahren angewandt, um das Kundenverhalten zu erlernen.
+Anschließend wird ein approximatives Dynamic-Programming-Verfahren vorgestellt, um trotz des >>Fluchs der Dimension<< Preisstrategien optimieren zu können.
 Die mit diesem Verfahren optimierten Preisstrategien konnten erfolgreich auf Amazon Marketplace angewandt werden.
 
 RL für dynamisches Pricing wurde in den letzten Jahren für spezielle Märkte angewandt, etwa den Energiemarkt bei \cite{Kim2016DynamicPA}.
@@ -17,7 +18,7 @@ Zwischen dem Verkauf unterschiedlicher Produktlinien gibt es komplexe Abhängigk
 Als Technologie wurde Tabular-Q-Learning mit Eligibility Traces verwendet.
 
 Weiterhin wurde bei \cite{KRASHENINNIKOVA20198} RL für die Optimierung von Versicherungsprämien eingesetzt.
-Es wurde zwar ein domänenspezifisches Modell gewählt, das aber ebenfalls eine aktuelle Marktsituation als Modell und Preise als Aktionen verwendet.
+Es wurde zwar ein domänenspezifisches Modell gewählt, das aber ebenfalls eine aktuelle Marktsituation als Zustand und Preise als Aktionen verwendet.
 Dabei wurden zwei Rewardfunktionen vorgeschlagen, wobei die eine nur den Gewinn bewertet, und die andere zusätzlich auch Kundenbindung.
 Das genutzte RL-Verfahren heißt VQQL.
 Es diskretisiert erst Zustands- und Aktionsraum, und wendet anschließend Tabular-Q-Learning an.
@@ -26,7 +27,7 @@ Bei dieser Forschungsarbeit wurde mit einer großen spanischen Versicherungsgese
 Ebenfalls mit Tabular-Q-Learning wurde in der Arbeit \cite{9086147} zur Optimierung von Cloudpreisen gearbeitet.
 In diesem Anwendungsfall geht es darum, dass ein Cloudprovider Hardware beschaffen muss.
 Damit muss er Kunden Clouddienstleistungen anbieten, dabei so viel Geld wie möglich erzielen, aber auch die Kundenzufriedenheit aufrechterhalten.
-In der Auswertung ihrer Experimente haben sie knapp 20\% mehr Profit erzielen können als state-of-the-art regelbasierte Systeme.
+In der Auswertung ihrer Experimente konnten knapp 20\% mehr Profit erzielt werden als mit state-of-the-art regelbasierten Systemen.
 
 Mit einem sehr ähnlichen Marktmodell wie bei \cite{10.1145/3219819.3219833} wurde in der Arbeit \cite{Kastius2022} RL eingesetzt, um unter Wettbewerbsbedingungen eine Preisstrategie zu optimieren.
 Untersucht wurde eine \textit{Linear Economy} im Duopol und Oligopol.
@@ -42,7 +43,7 @@ Dabei wurden die Vorteile der Deep-Learning-Verfahren, insbesondere Skalierbarke
 
 Während es bisher kaum detaillierte Analysen der aktuelleren RL-Verfahren im Bereich des Dynamic Pricing gibt, so wurden die Algorithmen PPO und SAC auf anderen interessanten Problemstellungen verglichen.
 Bei \cite{LarsenVessel} wurden PPO, DDPG, TD3 und SAC in der Stable-Baselines-Implementierung bei autonomer Schifffahrt verglichen.
-Die zu lösende Aufgabe in dieser Arbeit war es, mit einem Schiff Routen zwischen Häfen zu fahren, ohne dabei mit Hindernissen zu kollidieren.
+Die zu lösende Aufgabe war es, mit einem Schiff Routen zwischen Häfen zu fahren, ohne dabei mit Hindernissen zu kollidieren.
 Zur Analyse wurden verschiedene Situationen getestet, bei denen die Algorithmen jeweils unterschiedlich gut abschnitten.
 Nur Proximal Policy Optimization konnte jede Umgebung besser lösen als alle anderen Algorithmen und hat damit im Vergleich mit Abstand am besten abgeschnitten.
 
