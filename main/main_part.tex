@@ -10,7 +10,7 @@ Alle Hyperparameter sind konfigurierbar.
 
 In dieser Untersuchung werden nur Algorithmen verglichen, die mit stetigem Aktionsraum arbeiten.
 Der Hauptgrund dafür ist, dass die neuronalen Netze für eine diskrete Formulierung für jede einzelne Aktion ein Ausgabeneuron benötigen.
-So müssen Deep-Q-Networks mit diskreten Aktionen für jede einzelne Aktionen aus $\mathcal{A_\mathbb{N}}$ mit einen Aktionswert schätzen.
+So müssen Deep-Q-Networks mit diskreten Aktionen für jede einzelne Aktionen aus $\mathcal{A_\mathbb{N}}$ einen Aktionswert schätzen.
 A2C und PPO in der diskreten Variante verwenden ebenfalls für jede Aktion ein Ausgabeneuron, um deren Wahrscheinlichkeit anzugeben.
 Das sind bei der Konfiguration mit $p_{max}=10$ bereits 1000 Ausgabeneuronen, und das Wachstumsverhalten ist kubisch in der Anzahl der Preisstufen.
 Außerdem haben die Aktionen in einer diskreten Formulierung im Gegensatz zu der gewählten stetigen keinerlei Ordnung.
@@ -87,7 +87,7 @@ Deshalb werden in den folgenden Abschnitten DDPG und TD3 nicht weiter betrachtet
 	\label{graphic:OnPolicyLearningCurves}
 \end{figure}
 
-Grafik \ref{graphic:OnPolicyLearningCurves} stellt die Lernkurven der Algorithmen dar.
+Abbildung \ref{graphic:OnPolicyLearningCurves} stellt die Lernkurven der Algorithmen dar.
 Dabei wurde PPO mit zwei Hyperparametrisierungen verwendet, die sich im Parameter $\epsilon$ unterscheiden.
 Das eine Mal wird $0{,}2$ wie im Originalpaper verwendet, das andere Mal $0{,}3$.
 Jedes dieser Experimente wurde vier Mal unabhängig für eine Million Schritte (zweitausend Episoden) durchgeführt.
@@ -382,7 +382,7 @@ Die niedrigeren Leistungsmaxima von SAC lassen sich vermutlich durch derartige S
 Für die von SAC erlernte Policy lässt sich eine Erklärung in der Funktionsweise von Soft Actor Critic finden.
 Sie basiert darauf, dass bei weiterentwickelten Policies im Markt mehr Produkte in Zirkulation sind.
 Das ist in Abbildung \ref{graphic:InCirculationExplain} (links) gezeigt und liegt daran, dass wenig trainierte Policies im Gegensatz zu den weiterentwickelten oft zu viel zurückkaufen (und dabei zu viel Geld ausgeben).
-Das bedeutet, dass gerade am Anfang der Experiencebuffer nur mit Zustandsübergänge mit niedrigen \textit{in-circulation}-Werten gefüllt wird.
+Das bedeutet, dass gerade am Anfang der Experiencebuffer nur mit Zustandsübergängen mit niedrigen \textit{in-circulation}-Werten gefüllt wird.
 Diese Samples bleiben im Experiencebuffer, sind aber für das spätere Training nicht mehr hilfreich und können die Anomalien in der Policy erklären.
 So liegt eine starke Anomalie in der Policy im Bereich zwischen 50 und 150 Produkten in Zirkulation, genau der Bereich, aus dem die frühen Samples stammen.
 Das Entfallen des \textit{in-circulation}-Eintrages verbessert also die Performance des SAC wohl deshalb, weil dieser dann nicht mehr die Möglichkeit hat, mit missweisenden Samples tatsächlich nicht existente Zusammenhänge zu erlernen.
