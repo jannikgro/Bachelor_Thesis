@@ -3,7 +3,8 @@
 Bei der Einführung der Notation wird sich an das Lehrbuch \cite{Sutton1998} gehalten.
 Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, p)$ (kurz MDP).
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
-Weiterhin ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $a \in \mathcal{A}$ die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung (engl. Reward) $r \in \mathbb{R}$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
+Wir nehmen an, dass alle Belohnungen (engl. Reward) aus einer (endlichen) Teilmenge $\Lambda \subset \mathbb{R}$ stammen.
+Dann ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $a \in \mathcal{A}$ die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung $r \in \Lambda$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
 Zentraler Begriff beim Lösen eines MDPs ist die sogenannte Policyfunktion.
 Sie kann deterministisch sein und als \mbox{$\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$} formalisiert werden.
 Weiterhin können Policies stochastisch sein.
@@ -39,7 +40,7 @@ Das setzt voraus, dass sowohl Zustands- als auch Aktionsraum endlich und die Üb
 Anschließend wird eine angenäherte Funktion für die Zustandswerte $V^*$ als Array gespeichert und mit beliebigen Werten initialisiert.
 Dann werden rundenweise für alle Zustände $s\in\mathcal{S}$ ihre Einträge in dieser Tabelle mithilfe der Bellman-Gleichung
 \begin{equation}
-	V^*(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + \gamma V^*(s')\right)}\right)}
+	V^*(s) \leftarrow \max_{a\in\mathcal{A}}{\left(\sum_{s'\in\mathcal{S}, r \in \Lambda}{p_{s, a}\left(s', r\right) \left(r + \gamma V^*(s')\right)}\right)}
 \end{equation}
 als Berechnungsvorschrift aktualisiert.
 Unabhängig davon, ob diese Berechnung in-place oder mit zwei alternierenden Arrays ausgeführt wird, konvergiert sie zur Zustandswertefunktion einer optimalen Policy.
@@ -108,9 +109,9 @@ Näheres dazu steht in \cite{qlearningoverestimation}.
 
 Q-Learning-Verfahren sind Off-Policy-Algorithmen.
 Das bedeutet, dass ihr Training auch mit Zustandsübergängen stattfinden kann, die nicht von der aktuellen Policy erzeugt wurden.
-Der Grund dafür ist, dass bei einer perfekten Policy für \textbf{jeden} Zustandsübergang $(s, a, r, s')$ die Bellman-Gleichung
+Der Grund dafür ist, dass bei einer perfekten Policy für \textbf{jedes} $s \in \mathcal{S}$ und $a \in \mathcal{A}$ die Bellman-Gleichung
 \begin{equation}
-	Q(s, a) = \sum_{s'\in\mathcal{S}, r \in \mathbb{R}}{p_{s, a}\left(s', r\right) \left(r + \gamma \max_{a' \in \mathcal{A}}{Q(s', a')}\right)}
+	Q(s, a) = \sum_{s'\in\mathcal{S}, r \in \Lambda}{p_{s, a}\left(s', r\right) \left(r + \gamma \max_{a' \in \mathcal{A}}{Q(s', a')}\right)}
 \end{equation}
 erfüllt ist.
 Das ist zwar bei Approximationslösungen nicht erreichbar, die Minimierung des Erwartungswert über die quadrierten Differenzen zeigt aber die Entfernung von diesem Ziel.
