@@ -388,6 +388,38 @@ So liegt eine starke Anomalie in der Policy im Bereich zwischen 50 und 150 Produ
 Das Entfallen des \textit{in-circulation}-Eintrages verbessert also die Performance des SAC wohl deshalb, weil dieser dann nicht mehr die Möglichkeit hat, mit missweisenden Samples tatsächlich nicht existente Zusammenhänge zu erlernen.
 Es ist damit als Schwäche von SAC gegenüber dem On-Policy-Verfahren PPO zu verzeichnen, dass es weniger gut in der Lage ist, die geringe Relevanz dieses Attributes selbstständig zu erlernen.
 
+\section{Durch die Policy induziertes Marktgeschehen}
+Die vorigen Untersuchungen bewerteten die Leistung der Policy vorrangig anhand der Leistung, die ein Agent über den Trainingsverlauf hinweg erzielt.
+Es lohnt sich jedoch ebenfalls, eine einzelne Episode genauer zu betrachten.
+Dabei interessiert man sich dafür, ob situationsangemessene Preise gewählt werden, ob das Lager erfolgreich reguliert wird und ob sich Gleichgewichte einstellen.
+Es muss jedoch beachtet werden, dass es sich um exemplarische Durchläufe handelt.
+Bei Verallgemeinerungen ist deshalb große Vorsicht geboten.
+
+Im ersten Durchlauf einer Episode wurde ein PPO-Agent gegen den unterbietenden regelbasierten Wettbewerber getestet.
+Es handelt sich bei dem PPO-Agenten um die Modellparameter, die bei dem Self-Play-Durchlauf mit gemischter Belohnungsfunktion trainiert wurden, dessen Trainingsverlauf in \mbox{Abbildung \ref{graphic:SelfPlayDetails}} abgedruckt wurde.
+Details aus dieser Episode sind in Abbildung \ref{graphic:EpisodeAnalysisPPOvsRulebased} abgedruckt.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{main/episode_analysis_ppo_vs_rulebased.pdf}
+	\caption{Details einer Episode, in der ein PPO-Agent (trainiert mit Self-Play und gemischter Belohnungsfunktion) gegen den unterbietenden regelbasierten Wettbewerber antritt}
+	\label{graphic:EpisodeAnalysisPPOvsRulebased}
+\end{figure}
+Dabei wurden die Lagerstände der beiden Agenten über die vollen 500 Schritte der Episode abgedruckt.
+Von den gesetzten Preisen wurde ein 25-Schritte-Intervall zum Ende der Episode gezeigt.
+Zunächst ist zu erkennen, dass beide Agenten einen Startzustand mit unerwünscht hohem Lagerstand bekommen.
+Bei PPO ist die Initialisierung fast beim Maximum.
+Beide Agenten leeren nun ihre Lager, um Lagerkosten zu sparen.
+Nach weniger als 50 Schritten pendelt sich das Lager bei beiden Agenten um 10 Produkte herum ein.
+Während dieser Wert beim regelbasierten Agenten fest einprogrammiert ist, hat sich der PPO-Agent ein sehr ähnliches Niveau beim Training selbst beigebracht.
+Die Lagerschwankungen, die sich eingestellt haben, sind beim regelbasierten Agenten kleiner als beim PPO-Agenten.
+Eine naheliegende Erklärung dafür ist, dass der regelbasierte Agent den vorgegebenen Lagerstand sehr aggressiv regelt.
+So ist bei Rückkauf- und Gebrauchtpreis zu sehen, dass beinahe jeden Schritt zwischen einem sehr niedrigem und einem sehr hohen Preisniveau gewechselt wird.
+Die Unterschiede zwischen benachbarten Preisen fallen bei dem RL-Agenten deutlich niedriger aus.
+Man kann auf Basis dieser Diagramme vorschlagen, dass der regelbasierte Agent bei der Regulierung des Lagers größere Toleranz walten lassen könnte, um die Preissprünge zwischen aufeinanderfolgenden Schritten zu reduzieren.
+Bei den Neupreisen sieht man ebenfalls die einprogrammierte Logik im Preisverlauf:
+Der regelbasierte Agent setzt hier keine eigenen Impulse und unterbietet den PPO-Agenten stets um eins.
+Dadurch ist seine Kurve die um einen halben Schritt nach rechts und eine Preisstufe nach unten versetzte Kurve des PPO-Agenten.
+
 \section{Vergleich im Monopol}
 In den vorigen Abschnitten wurden die Algorithmen in einem Recommerce-Duopol mit einem regelbasierten, unterbietenden Konkurrenten getestet.
 Für reale Anwendungen sind aber viele verschiedene Szenarien zu meistern.
