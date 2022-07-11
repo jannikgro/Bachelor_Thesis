@@ -396,7 +396,7 @@ Es muss jedoch beachtet werden, dass es sich um exemplarische Durchläufe handel
 Bei Verallgemeinerungen ist deshalb große Vorsicht geboten.
 
 Im ersten Durchlauf einer Episode wurde ein PPO-Agent gegen den unterbietenden regelbasierten Wettbewerber getestet.
-Es handelt sich bei dem PPO-Agenten um die Modellparameter, die bei dem Self-Play-Durchlauf mit gemischter Belohnungsfunktion trainiert wurden, dessen Trainingsverlauf in \mbox{Abbildung \ref{graphic:SelfPlayDetails}} abgedruckt wurde.
+Der PPO-Agenten hat die Modellparameter, die bei dem Self-Play-Durchlauf mit gemischter Belohnungsfunktion trainiert wurden, dessen Trainingsverlauf in \mbox{Abbildung \ref{graphic:SelfPlayDetails}} abgedruckt ist.
 Details aus dieser Episode sind im Anhang in Abbildung \ref{graphic:EpisodeAnalysisPPOvsRulebased} abgedruckt.
 Dabei wurden die Lagerstände der beiden Agenten über die vollen 500 Schritte der Episode abgedruckt.
 Von den gesetzten Preisen wurde ein 25-Schritte-Intervall zum Ende der Episode gezeigt.
@@ -407,7 +407,7 @@ Nach weniger als 50 Schritten pendelt sich das Lager bei beiden Agenten um 10 Pr
 Während dieser Wert beim regelbasierten Agenten fest einprogrammiert ist, hat sich der PPO-Agent ein sehr ähnliches Niveau beim Training selbst beigebracht.
 Die Lagerschwankungen, die sich eingestellt haben, sind beim regelbasierten Agenten kleiner als beim PPO-Agenten.
 Eine naheliegende Erklärung dafür ist, dass der regelbasierte Agent den vorgegebenen Lagerstand sehr aggressiv regelt.
-So ist bei Rückkauf- und Gebrauchtpreis zu sehen, dass beinahe jeden Schritt zwischen einem sehr niedrigem und einem sehr hohen Preisniveau gewechselt wird.
+So ist bei Rückkauf- und Gebrauchtpreis zu sehen, dass beinahe bei jedem Schritt zwischen einem sehr niedrigem und einem sehr hohen Preisniveau gewechselt wird.
 Die Unterschiede zwischen benachbarten Preisen fallen bei dem RL-Agenten deutlich niedriger aus.
 Man kann auf Basis dieser Diagramme vorschlagen, dass der regelbasierte Agent bei der Regulierung des Lagers größere Toleranz walten lassen könnte, um die Preissprünge zwischen aufeinanderfolgenden Schritten zu reduzieren.
 Bei den Neupreisen sieht man ebenfalls die einprogrammierte Logik im Preisverlauf:
@@ -418,11 +418,12 @@ Am Ende der Episode stehen als Profite 7994 für den PPO-Agenten gegen 5844 des 
 Neben der Gegenüberstellung mit dem regelbasierten Agenten wurde eine Episode des PPO-Agenten gegen einen ebenfalls mit gemischter Rewardfunktion und Self-Play trainierten SAC-Agenten untersucht.
 Dabei wurden die gleichen Diagramme erstellt.
 Sie sind im Anhang in \mbox{Abbildung \ref{graphic:EpisodeAnalysisPPOvsSAC}} zu finden.
-Die Initialisierung geschah wie im obigen Verlauf mit deutlich mehr Produkten im Lager als gewünscht, die dann abverkauft werden, bis sich der Lagerstand beider Agenten unter 20 einpegelt.
-Das Preisniveau für Neuprodukte ist bei beiden Agenten auf ähnlichem und stabilen Niveau und bewegt sich zwischen 5 und 6.
+Die Initialisierung geschah wie im obigen Verlauf mit deutlich mehr Produkten im Lager als gewünscht, die zuerst abverkauft werden, bis sich der Lagerstand beider Agenten unter 20 einpegelt.
+Das Preisniveau für Neuprodukte ist bei beiden Agenten auf ähnlichem und stabilen Niveau.
+Es bewegt sich zwischen 5 und 6.
 Während die anderen Preise sich ebenfalls auf relativ stabilem Niveau bewegen, sticht der Gebrauchtpreis des SAC-Agenten hervor.
 Er ist stärkeren Schwankungen zwischen 2 und 9 unterworfen.
-Am Ende der Episode liegt der PPO-Agent mit 9920 zu 9319 vor dem SAC-Agenten
+Am Ende der Episode liegt der PPO-Agent mit 9920 zu 9319 vor dem SAC-Agenten.
 
 \section{Vergleich im Monopol}
 In den vorigen Abschnitten wurden die Algorithmen in einem Recommerce-Duopol mit einem regelbasierten, unterbietenden Konkurrenten getestet.
