@@ -419,6 +419,16 @@ Man kann auf Basis dieser Diagramme vorschlagen, dass der regelbasierte Agent be
 Bei den Neupreisen sieht man ebenfalls die einprogrammierte Logik im Preisverlauf:
 Der regelbasierte Agent setzt hier keine eigenen Impulse und unterbietet den PPO-Agenten stets um eins.
 Dadurch ist seine Kurve die um einen halben Schritt nach rechts und eine Preisstufe nach unten versetzte Kurve des PPO-Agenten.
+Am Ende der Episode stehen als Profite 7994 für den PPO-Agenten gegen 5844 des regelbasierten Agenten.
+
+Neben der Gegenüberstellung mit dem regelbasierten Agenten wurde eine Episode des PPO-Agenten gegen einen ebenfalls mit gemischter Rewardfunktion und Self-Play trainierten SAC-Agenten untersucht.
+Dabei wurden die gleichen Diagramme erstellt.
+Sie sind im Anhang in \mbox{Abbildung \ref{graphic:EpisodeAnalysisPPOvsSAC}} zu finden.
+Die Initialisierung geschah wie im obigen Verlauf mit deutlich mehr Produkten im Lager als gewünscht, die dann abverkauft werden, bis sich der Lagerstand beider Agenten unter 20 einpegelt.
+Das Preisniveau für Neuprodukte ist bei beiden Agenten auf ähnlichem und stabilen Niveau und bewegt sich zwischen 5 und 6.
+Während die anderen Preise sich ebenfalls auf relativ stabilem Niveau bewegen, sticht der Gebrauchtpreis des SAC-Agenten hervor.
+Er ist stärkeren Schwankungen zwischen 2 und 9 unterworfen.
+Am Ende der Episode liegt der PPO-Agent mit 9920 zu 9319 vor dem SAC-Agenten
 
 \section{Vergleich im Monopol}
 In den vorigen Abschnitten wurden die Algorithmen in einem Recommerce-Duopol mit einem regelbasierten, unterbietenden Konkurrenten getestet.
