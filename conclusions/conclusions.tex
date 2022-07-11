@@ -1,9 +1,10 @@
-Obwohl ein Recommerce-Markt zahlreiche Herausforderungen mit sich bringt und starke Konkurrenz stattfindet, konnten sehr effektive Preisstrategien erfolgreich mit Reinforcement-Learning-Verfahren gefunden werden.
+Obwohl ein Recommerce-Markt zahlreiche Herausforderungen mit sich bringt und die Konkurrenz stark ist, konnten sehr effektive Preisstrategien erfolgreich mit Reinforcement-Learning-Verfahren gefunden werden.
 Dabei lieferten die Algorithmen A2C, PPO und SAC sehr gute Spitzenergebnisse, während DDPG und TD3 nicht gut abschnitten.
 Advantage Actor Critic ist den beiden Verfahren PPO und SAC in der Trainingsstabilität deutlich unterlegen, konnte aber sehr gute Policies liefern, wenn die Modellparameter während des Trainings in einem Moment guter Leistung gespeichert wurden.
 Weiterhin übertraf Advantage Actor Critic die anderen Algorithmen bei der Trainingsdauer und überraschenderweise auch bei der Sample Efficiency.
 Im Duopol und Monopol erreichte PPO die beste Performance der verglichenen Algorithmen.
-Über unterschiedliche Szenarien hinweg schnitt er in der Spitzenleistung am besten ab und lieferte stets stabiles Training.
+Über unterschiedliche Szenarien hinweg schnitt er in der Spitzenleistung am besten ab.
+Seine Trainingskurven verliefen in den Experimenten stabil.
 Sein Nachteil war in jeder der Analysen die geringere Sample Efficiency.
 Der Soft Actor Critic Algorithmus lieferte ebenfalls äußerst stabile Trainingsläufe, blieb jedoch in seiner Spitzenleistung auf Duopolszenarien hinter PPO zurück.
 In der Sample Efficiency hingegen war SAC PPO stets überlegen.
@@ -11,12 +12,12 @@ Im deutlich höherdimensionalen Oligopol-Markt lieferte SAC die beste Spitzenlei
 Eine genauere Untersuchung dieses Phänomens legt nahe, dass PPO weniger gut komplexe Policyfunktionen trainiert, die durch größere neuronale Netze berechnet werden.
 Weil die Algorithmen in den unterschiedlichen Szenarien und nach unterschiedlichen Bewertungskriterien unterschiedlich gut abschnitten, kann kein klarer Sieger gekürt werden.
 
-Die Ergebnisse dieser Arbeit lassen sich Ermutigung lesen, dass Reinforcement Learning auf realen Märkten zur Optimierung des Pricing angewandt werden kann.
+Die Ergebnisse dieser Arbeit sind eine Bestätigung, dass Reinforcement Learning auf realen Märkten zur Optimierung des Pricing angewandt werden kann.
 Der verwendete Markt ist kompliziert genug und die Ergebnisse stabil genug, sodass erwartet werden kann, dass die Algorithmen auch auf Märkten mit weiteren Parametern wie Qualität oder Saison erfolgreich abschneiden werden.
 Weiterhin wurde die Lösbarkeit zentraler Probleme für die praktische Anwendung untersucht.
 Die Ergebnisse fielen positiv aus.
-So funktionieren die Algorithmen auch dann, wenn einige Aspekte des Marktes nicht beobachtet werden können und die Markoveigenschaft damit nicht erfüllt ist.
-Das Problem unbekannter Konkurrenzpolicy kann durch Self-Play gelöst werden.
+So funktionieren die Algorithmen auch dann, wenn einige Aspekte des Marktes nicht beobachtet werden können und die Markov-Eigenschaft damit nicht erfüllt ist.
+Das Problem, dass die Preisstrategie des Konkurrenten unbekannt ist, kann durch Self-Play gelöst werden.
 Die dabei trainierten Policies konnten ihre Konkurrenz bei guten Ergebnissen übertreffen, ohne sie jemals im Training gesehen zu haben.
 
 Als Herausforderung verbleibt das nicht genau bekannte Verhalten von Käufern und Eigentümern für das Training auf Simulationsplattformen.
@@ -26,11 +27,11 @@ Das ist jedoch mit verschiedenen Regressionsverfahren möglich und wurde in vorh
 
 Eine denkbare Alternative zum Training mit einer Simulationsplattform ist es, auf einem Markt die Daten, die mit einer bisherigen Preisstrategie gesammelt wurden, direkt in einen Experiencebuffer zu schreiben.
 Mit einem Off-Policy-Verfahren wie SAC könnte damit eine Policy erlernt werden, die auf dem echten Marktplatz bereits akzeptable Ergebnisse liefert.
-Im Folgenden könnte dann auf dem echten Markt noch Fine-Tuning-Training stattfinden.
+Anschließend könnte auf dem echten Markt noch Fine-Tuning-Training stattfinden.
 Stabilität und Sample-Efficiency sind die Haupteigenschaften, die ein genutztes RL-Verfahren mitbringen müsste.
 Ob ein solches Vorgehen praxistauglich ist, sollte Gegenstand künftiger Forschung sein.
 
-Eine weitere Schwierigkeit, die auf realen Marktplätzen auftreten kann und nicht im Umfang dieser Arbeit war, ist Gedächtnis der Kunden und Eigentümer.
+Eine weitere Schwierigkeit, die auf realen Marktplätzen auftreten kann und nicht im Umfang dieser Arbeit war, ist ein Gedächtnis der Kunden und Eigentümer.
 In diesem Modell kommen Kunden und Eigentümer auf den Marktplatz und haben für ihre Entscheidung nur die Informationen eines einzigen Zeitschrittes.
 Tatsächlich ist aber davon auszugehen, dass zumindest einige Kunden den Preisverlauf beobachten und nicht nur in Abhängigkeit aktueller, sondern auch vergangener oder antizipierter zukünftiger Preise ihre Kaufentscheidung treffen.
 Stünde dem Agenten dann wie im derzeitigen Modell nur der aktuelle Markt zur Verfügung, so fehlte ihm ein großer Teil der eigentlich benötigten Entscheidungsgrundlage.

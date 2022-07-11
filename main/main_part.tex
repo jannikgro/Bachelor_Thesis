@@ -10,7 +10,7 @@ Alle Hyperparameter sind konfigurierbar.
 
 In dieser Untersuchung werden nur Algorithmen verglichen, die mit stetigem Aktionsraum arbeiten.
 Der Hauptgrund dafür ist, dass die neuronalen Netze für eine diskrete Formulierung für jede einzelne Aktion ein Ausgabeneuron benötigen.
-So müssen Deep-Q-Networks mit diskreten Aktionen für jede einzelne Aktionen aus $\mathcal{A_\mathbb{N}}$ mit einen Aktionswert schätzen.
+So müssen Deep-Q-Networks mit diskreten Aktionen für jede einzelne Aktionen aus $\mathcal{A_\mathbb{N}}$ einen Aktionswert schätzen.
 A2C und PPO in der diskreten Variante verwenden ebenfalls für jede Aktion ein Ausgabeneuron, um deren Wahrscheinlichkeit anzugeben.
 Das sind bei der Konfiguration mit $p_{max}=10$ bereits 1000 Ausgabeneuronen, und das Wachstumsverhalten ist kubisch in der Anzahl der Preisstufen.
 Außerdem haben die Aktionen in einer diskreten Formulierung im Gegensatz zu der gewählten stetigen keinerlei Ordnung.
@@ -18,7 +18,7 @@ Sie spiegeln auch nicht wider, dass die Preise reelle Vektoren sind, deren (eukl
 Das dürfte das Problem für die Agenten unnötig schwieriger machen.
 So wurde etwa in \cite{Kastius2022} festgestellt, dass Soft Actor Critic bei ihren Pricing-Benchmarks besser abschnitt als Deep-Q-Learning.
 
-Die Algorithmen mit stochastischer Policy (A2C, PPO und SAC) verwenden Normalverteilungen als parametrisierte Wahrscheinlichkeitsverteilung, für die dann Mittelwert und Standardabweichung geschätzt werden.
+Die Algorithmen mit stochastischer Policy (A2C, PPO und SAC) verwenden Normalverteilungen als parametrisierte Wahrscheinlichkeitsverteilung, für die Mittelwert und Standardabweichung geschätzt werden.
 Die einzelnen Verteilungen für Gebrauchtpreis, Neupreis und Rückkaufpreis sind stochastisch unabhängig und damit insbesondere auch die Kovarianzen null.
 
 Weil kaum theoretische Erkenntnisse über die Ermittlung optimaler Hyperparameter vorliegen und diese stets problemspezifisch sind, wäre eine erschöpfende Optimierung der Hyperparameter nur mit erheblichem experimentellem Aufwand möglich.
@@ -45,7 +45,7 @@ Deshalb werden die Modelle dort, wo genaue Leistung für den Vergleich benötigt
 Alle Algorithmen werden zunächst im Duopol gegen den regelbasierten, unterbietenden Wettbewerber trainiert und evaluiert.
 Anschließend werden Trainingsdurchläufe gegen die eigene Policy, bei unvollständiger Information und mit einer angepasste Rewardfunktion getestet.
 Diese Tests dienen dazu, Herausforderungen anzugehen, die bei RL in einer realen Anwendung auftreten können.
-Zuletzt werden noch Monopol- sowie Oligopolszenarien untersucht.
+Zuletzt werden Monopol- sowie Oligopolszenarien untersucht.
 
 \section{DDPG und TD3}
 \label{section:main_ddpg}
@@ -65,7 +65,7 @@ Zu Beginn des Trainings ist bei einigen Läufen eine Verbesserung der gemittelte
 Allerdings kommt diese Verbesserung bei allen Algorithmen zum Erliegen.
 In keinem der Durchläufe konnten Gewinne erwirtschaftet werden.
 
-Die schlechten Ergebnisse kommen deshalb zustande, weil die Agenten über das gesamte Training hinweg nicht lernen, die Preise vernünftig zu setzen.
+Die schlechten Ergebnisse kommen deshalb zustande, weil die Agenten über das gesamte Training hinweg nicht lernen, sinnvolle Preise zu setzen.
 Bei vielen Durchläufen bleiben die Neupreise ohne Anpassung auf die aktuelle Situation beim Maximum 10 hängen, oft sogar auch die Gebrauchtpreise.
 Die Tatsache, dass die Agenten lange auf einer Stelle bleiben und auch die gleichen verbesserungswürdigen Aktionen immer wieder ausführen, könnte auf unzureichende Exploration schließen lassen.
 Allerdings konnte auch eine verrauschte Aktionswahl zur besseren Exploration keine Verbesserung der Leistung bewirken.
@@ -87,29 +87,29 @@ Deshalb werden in den folgenden Abschnitten DDPG und TD3 nicht weiter betrachtet
 	\label{graphic:OnPolicyLearningCurves}
 \end{figure}
 
-Grafik \ref{graphic:OnPolicyLearningCurves} stellt die Lernkurven der Algorithmen dar.
+Abbildung \ref{graphic:OnPolicyLearningCurves} stellt die Lernkurven der Algorithmen dar.
 Dabei wurde PPO mit zwei Hyperparametrisierungen verwendet, die sich im Parameter $\epsilon$ unterscheiden.
-Das eine Mal wird 0,2 wie im Originalpaper verwendet, das andere Mal 0,3.
-Jedes dieser Experimente wurde vier Mal unabhängig für eine Million Schritte (zweitausend Episoden) laufen gelassen.
+Das eine Mal wird $0{,}2$ wie im Originalpaper verwendet, das andere Mal $0{,}3$.
+Jedes dieser Experimente wurde vier Mal unabhängig für eine Million Schritte (zweitausend Episoden) durchgeführt.
 Die Lernkurven verwenden wieder die laufenden Durchschnitte der Episodenreturns.
 Der Bereich zwischen maximalem und minimalem Episodenreturns dieser vier Agenten ist eingefärbt.
 Die Linie stellt ihren Durchschnitt dar.
 In dieser Grafik wird der Verlustbereich ausgeblendet, um einen genaueren Vergleich im oberen Leistungsbereich zu ermöglichen.
 
 Es fällt bei A2C ein sprunghafter Anstieg bei 100 Episoden auf.
-Das liegt an dem laufenden Durchschnitt, bei dem nach 100 Episoden die sehr schlechten Ergebnisse vom Anfang des Trainings aus der Mittelung herausfallen.
+Grund dafür ist der laufende Durchschnitt, bei dem nach 100 Episoden die sehr schlechten Ergebnisse vom Anfang des Trainings aus der Mittelung herausfallen.
 Dieser Effekt tritt auch bei anderen Lernkurven-Diagrammen auf und liegt nur an diesem Diagrammtyp.
 
-Aus den Grafiken geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
+Aus der Grafik geht unmittelbar hervor, dass alle diese Agenten die Gewinnzone erreichen.
 Sie erreichen alle mit Ergebnissen über 6000 pro Episode gute Ergebnisse.
-Auf Grundlage dieser Grafik kann man feststellen, dass die Parametrisierung mit $\varepsilon=0,3$ bessere Performance einbringt als die Standardparametrisierung.
+Auf Grundlage dieser Grafik kann man feststellen, dass die Parametrisierung mit $\varepsilon=0{,}3$ bessere Performance einbringt als die Standardparametrisierung.
 
 Für belastbare Aussagen über die Spitzenperformance wurde bei jedem Trainingsdurchlauf alle 100 Episoden das nach dem Rolling Average beste Modell aus den vorigen 100 Episoden gespeichert.
 Nach dem Training wurden diese Modelle auf je 25 unabhängigen Episoden getestet, um eine genauere Schätzung ihrer Performance zu erhalten.
-Die Spitzenwerte der drei A2C-Trainingsdurchläufe lagen bei 8160, 8520, 7150 und 8510.
-Bei den PPO-Durchläufen mit $\varepsilon=0,2$ waren die Spitzenwerte 7380, 7780, 8330 und 8120.
-Die PPO-Durchläufe mit $\varepsilon=0,3$ erreichten 8300, 8680, 8360 und 8350.
-Dass die Spitzen der A2C-Durchläufe in der Lernkurve niedriger sind als die hier aufgeführten Spitzenwerte, liegt an den Rolling Averages und der erheblich geringeren Trainingsstabilität der A2C-Agenten.
+Die Leistungsmaxima der drei A2C-Trainingsdurchläufe lagen bei 8160, 8520, 7150 und 8510.
+Bei den PPO-Durchläufen mit $\varepsilon=0{,}2$ waren die Maxima 7380, 7780, 8330 und 8120.
+Die PPO-Durchläufe mit $\varepsilon=0{,}3$ erreichten 8300, 8680, 8360 und 8350.
+Dass die Spitzen der A2C-Durchläufe in der Lernkurve niedriger sind als die hier aufgeführten Zahlen, liegt an den Rolling Averages und der erheblich geringeren Trainingsstabilität der A2C-Agenten.
 Sie halten das hohe Leistungsniveau nur sehr kurz, weshalb die Mittelwertbildung mit anderen Ergebnissen während des Trainings niedrigere Werte ergibt.
 Sichert man jedoch die Parameter der A2C-Agenten in dem Moment, in dem sie gerade gute Ergebnisse liefern, erzielen auch sie wettbewerbsfähige Leistung.
 
@@ -128,7 +128,7 @@ Ihr Durchschnitt überschreitet die Schwelle zum Gewinn nach etwa 60 Episoden.
 \end{figure}
 Die Grafik \ref{graphic:A2CInstability} stellt Details eines einzelnen A2C-Durchlaufes dar.
 Es handelt sich dabei um einen typischen Durchlauf mit mittlerer Peak-Performance.
-Man sieht die Instabilität nicht nur an den Ergebnissen sondern auch an den starken Schwankungen, denen die Aktionsauswahl während des Trainings unterworfen ist.
+Man sieht die Instabilität nicht nur an den Ergebnissen, sondern auch an den starken Schwankungen, denen die Aktionsauswahl während des Trainings unterworfen ist.
 Wie auch bei den anderen A2C-Agenten stürzt seine Leistung mitunter deutlich ab und fällt weit in die Verlustzone.
 Nicht immer erholen sich die Agenten davon, oft erhalten sie weiterhin schlechte Ergebnisse.
 Diese heftigen Abstürze führen dazu, dass die Mittelwertlinie der A2C-Agenten in Abbildung \ref{graphic:OnPolicyLearningCurves} wieder unter 0 fällt, obwohl einige der Agenten weiterhin akzeptable Ergebnisse liefern.
@@ -136,12 +136,12 @@ Diese heftigen Abstürze führen dazu, dass die Mittelwertlinie der A2C-Agenten 
 Im Gegenzug dazu ist die Trainingsstabilität bei den PPO-Varianten deutlich höher.
 Zwischen den vier Trainingsdurchläufen der PPO-Agenten gibt es nur geringe Unterschiede.
 Die Leistungsentwicklung liegt in einem schmalen Band und Abstürze finden nicht statt.
-Allerdings benötigt PPO in der Standardkonfiguration knapp 250 Episoden und in der Version mit $\varepsilon=0,3$ ungefähr 180 Episoden, um die Gewinnzone zu erreichen.
-Auch danach ist das Training langsam.
+Allerdings benötigt PPO in der Standardkonfiguration knapp 250 Episoden und in der Version mit $\varepsilon=0{,}3$ ungefähr 180 Episoden, um die Gewinnzone zu erreichen.
+Auch danach ist die Leistungssteigerung geringer als bei den anderen Algorithmen.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{main/ppo_detailed_analysis.pdf}
-	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0,2$) analog zu Abbildung \ref{graphic:A2CInstability}}
+	\caption{Detaillierte Betrachtung eines PPO-Trainingsdurchlaufes (Variante mit $\varepsilon=0{,}2$) analog zu Abbildung \ref{graphic:A2CInstability}}
 	\label{graphic:PPOStability}
 \end{figure}
 In Abbildung \ref{graphic:PPOStability} ist ein detaillierter Blick in einen typischen PPO-Trainingsdurchlauf zu sehen.
@@ -150,25 +150,25 @@ Dessen durchschnittliche Performance steigt bis zum Ende auf 8160, und weist bei
 Der Unterschied in der Lerngeschwindigkeit und -stabilität zwischen PPO zu A2C überrascht nicht, er existiert \textit{by design}.
 Diese Experimente zeigen, dass PPO in seiner Intention, die Trainingsstabilität zu erhöhen, erfolgreich ist.
 Diese Erhöhung der Trainingsstabilität findet dadurch statt, dass die Änderung der stochastischen Policy bei den Trainingsschritten begrenzt wird.
-Aus dieser Begrenzung der Policyänderung ist die geringere Lerngeschwindigkeit dann eine logische Schlussfolgerung.
+Aus dieser Begrenzung der Policyänderung ist die geringere Lerngeschwindigkeit eine logische Schlussfolgerung.
 
-So lässt sich auch erklären, warum der Durchlauf mit $\varepsilon=0,3$ schneller trainiert.
+So lässt sich auch erklären, warum der Durchlauf mit $\varepsilon=0{,}3$ schneller trainiert.
 Mit größerem $\varepsilon$ wird pro Sample eine größere Policyänderung erlaubt, was zu schnellerem Training führt.
 Allerdings steigt damit wieder das Risiko von Instabilität, weshalb die Parametrisierung des PPO-Algorithmus einen Trade-off zwischen Trainingsgeschwindigkeit und Stabilität eröffnet.
-Die Wahl des Standardparameters $0,2$ mag in diesen Experimenten konservativ erscheinen, $0,3$ ist ebenfalls noch recht stabil, weist aber bereits kleinere Abstürze auf.
+Die Wahl des Standardparameters $0{,}2$ mag in diesen Experimenten konservativ erscheinen, $0{,}3$ ist ebenfalls noch recht stabil, weist aber bereits kleinere Abstürze auf.
 Das Experiment zu Abbildung \ref{graphic:PPODifferentClipping} im Anhang zeigt, wie sich PPO bei größerem $\varepsilon$ verhält.
-Es bestätigt $0,3$ als eine gute Wahl.
+Es bestätigt $0{,}3$ als eine gute Wahl.
 
-Eine Beobachtung in Abbildung \ref{graphic:PPOStability} verdient noch einmal besondere Beachtung, weil sie zunächst paradox erscheint:
+Eine Beobachtung in Abbildung \ref{graphic:PPOStability} verdient besondere Beachtung, weil sie zunächst paradox erscheint:
 Obwohl der RL-Agent den regelbasierten Agenten nach etwas Training übertrifft, wird er später wieder überholt.
 Das erweckt den Eindruck, als würde der Agent im Verlaufe des Trainings schlechter.
 Jedoch ist das Gegenteil der Fall.
 Der PPO-Agent erlernt zunächst, die Preise für Neu- und Gebrauchtware höher zu setzen.
-Dieses Training dauert aus inzwischen diskutierten Gründen im Vergleich lange, aber bei Neuverkaufspreisen, die größer als vier sind, macht er die Erfahrung, dass der regelbasierte Wettbewerber ihn immer um 1 unterbietet.
+Dieses Training dauert aus den diskutierten Gründen im Vergleich lange, aber bei Neuverkaufspreisen, die größer als vier sind, macht er die Erfahrung, dass der regelbasierte Wettbewerber ihn immer um 1 unterbietet.
 Durch wechselseitiges Unterbieten führt eine Preisabwärtsspirale dazu, dass sich der Preis nur knapp oberhalb des Einkaufspreises einpegelt.
 Die dabei äußerst niedrige Rendite ermöglicht jedoch nur niedrige Gewinne, sodass der Agent in seinem weiteren Training die Erfahrung macht, dass er seinen Gewinn steigern kann, indem er seine Preise höher setzt.
-Er wird dann zwar immer noch unterboten, allerdings nur um den Wert eins.
-Dabei nimmt er in Kauf, dass mehr Kunden wegen des niedrigen Preises beim Konkurrenten kaufen und dieser bei steigenden Preisen auch an jedem Kunden noch mehr verdient.
+Er wird dann weiterhin unterboten, allerdings nur um den Wert eins.
+Dabei nimmt er in Kauf, dass mehr Kunden wegen des niedrigen Preises beim Konkurrenten kaufen und dieser bei steigenden Preisen auch an jedem Kunden mehr verdient.
 Mit den Kunden, die der RL-Agent aber noch bekommt, kann er seine Gewinne im Vergleich zum niedrigpreisigen Markt dennoch steigern.
 Der Effekt besteht also darin, dass der RL-Agent in Reaktion auf den ihn immer unterbietenden Konkurrenten diesem einen überproportionalen Gewinnanstieg erlaubt, um selbst mehr Gewinne machen zu können.
 Die Existenz dieses Effekts ist der Tatsache geschuldet, dass das einzige Optimierungskriterium für die Agenten der eigene Gewinn ist.
@@ -179,7 +179,7 @@ Eine Rewardformulierung, die ein Übertreffen des Konkurrenten als Ziel mit einb
 Auf dem gleichen Duopolmarkt wurde auch SAC ausprobiert.
 Dabei wurde die SAC-Variante genommen, bei der der Entropiekoeffizient $\alpha$ automatisch trainiert wird.
 Dieser hat sich bei allen Trainingsdurchläufen bei etwa $1,5$ eingependelt.
-Die Grafik \ref{graphic:SACTemperature} im Anhang zeigt, dass unterschiedliche manuell eingestellte Entropiekoeffizienten ähnliche Trainingsergebnisse erreichen, wobei sich die Vermutung bestätigt, dass sehr niedrige Entropiekoeffizienten zu wenig Exploration bezwecken und Läufe mit deutlich höheren Entropiekoeffizienten wegen starker Regularisierung schlechtere Spitzenperformance erreichen.
+Die Grafik \ref{graphic:SACTemperature} im Anhang zeigt, dass unterschiedliche manuell eingestellte Entropiekoeffizienten ähnliche Trainingsergebnisse erreichen, wobei sich die Vermutung bestätigt, dass sehr niedrige Entropiekoeffizienten zu wenig Exploration bezwecken und Läufe mit deutlich höheren Entropiekoeffizienten wegen starker Regularisierung schlechtere Leistungsmaxima erreichen.
 
 \begin{figure}[htb]
 	\centering
@@ -197,15 +197,15 @@ Erstens soll es eine hohe Sample Efficiency haben, was bedeutet, dass es beim Tr
 Zweitens soll SAC eine hohe Trainingsstabilität haben.
 Die Lernkurve bestätigt, dass Soft-Actor-Critic diese zwei Hauptziele erreicht.
 Profitabel arbeitet der Agent nach etwa 70 Episoden, was nur leicht hinter A2C liegt und erheblich besser als PPO ist.
-Ab etwa 250 bis 300 Episoden sind die Agenten nah an ihrer Spitzenperformance.
+Ab etwa 250 bis 300 Episoden sind die Agenten nah an ihrer Peak-Performance.
 Das restliche Training bringt nur noch kleine Leistungszugewinne.
 Die hohe Sample-Efficiency liegt daran, dass SAC die gesammelte Erfahrung im Experiencebuffer speichert und sehr oft zum Training nutzt.
 Dadurch werden viel weniger Samples als bei PPO benötigt, das alte Erfahrung nicht mehr verwenden kann, sobald sich die Policy geändert hat.
 Alle vier Agenten bewegen sich für den Rest des Trainings in einem schmalen Bereich, wobei der Durchschnittsreturn knapp 8000 erreicht.
 Ob weiteres Training zusätzliche Verbesserungen bezwecken können, lässt sich nicht sicher sagen.
 Allerdings ändern sich die gemessenen Kenngrößen wie Aktionsauswahl und Loss im späteren Verlauf des Trainings kaum noch.
-Der Durchschnitt der vier SAC-Agenten liegt zwar dauerhaft über dem Durchschnitt der A2C-Agenten, aber gute A2C-Durchläufe erreichen bessere Spitzenperformance als die SAC-Agenten.
-Die Spitzenergebnisse dieser vier SAC-Durchläufe liegen bei 8120, 7890, 8120 und 8160.
+Der Durchschnitt der vier SAC-Agenten liegt zwar dauerhaft über dem Durchschnitt der A2C-Agenten, aber gute A2C-Durchläufe erreichen bessere Performance in der Spitze als die SAC-Agenten.
+Die Maximalleistungen dieser vier SAC-Durchläufe liegen bei 8120, 7890, 8120 und 8160.
 Damit bleiben sie ebenfalls hinter denen der PPO-Agenten zurück, die meist über 8300 als Return erzielen.
 
 \begin{figure}[htb]
@@ -217,25 +217,25 @@ Damit bleiben sie ebenfalls hinter denen der PPO-Agenten zurück, die meist übe
 
 Wie auch für die anderen Algorithmen wurden für SAC ein typischer Durchlauf und die gemittelten Aktionen in Abbildung \ref{graphic:SACDetails} abgedruckt.
 Die durchschnittlichen Preise starten -- offenbar durch eine andere Parameterinitialisierung -- auf höherem Niveau als bei PPO.
-Sie sinken dann und enden bei $6,4$ und $5,4$, genau wie bei PPO.
+Sie sinken dann und enden bei $6{,}4$ und $5{,}4$, genau wie bei PPO.
 
 Warum PPO in diesem Markt etwas besser abschneidet, ist eine äußerst interessante Frage, deren Beantwortung man sich aber auf Grundlage dieser Experimente nur annähern kann.
 Eine plausible Erklärung wird in Abschnitt \ref{section:partial_markov} auf Grundlage der dortigen Beobachtungen geliefert.
 Kurz ausgedrückt wird dort festgestellt, dass SAC in der Policy Zusammenhänge lernt, die nicht gelernt werden sollten.
 Eine andere mögliche Erklärung, dass die Policy der SAC-Agenten wegen der Entropieregularisierung größere Standardabweichungen schätzt und deshalb weniger genau als die von PPO ist, lässt sich durch die Daten aus dem Training nicht bestätigen.
-Bei beiden Trainingsalgorithmen haben die Policies zum Ende des Trainings Standardabweichungen von etwa $0,5$, wobei SAC keine größeren Standardabweichungen hat.
+Bei beiden Trainingsalgorithmen haben die Policies zum Ende des Trainings Standardabweichungen von etwa $0{,}5$, wobei SAC keine größeren Standardabweichungen hat.
 
 Für die Frage >>Wie lange dauert das Training?<< gibt es zwei mögliche Kenngrößen.
 Einmal kann die Anzahl der benötigten Samples bewertet werden, die Sample Efficiency, oder es kann die tatsächliche Zeit auf der Uhr herangezogen werden.
 Letztere hängt stark von der Hardware sowie der Geschwindigkeit der Simulation im Vergleich zum Optimieren der Parameter ab.
-Bei der für diese Experimente verwendeten Implementierung und Hardware benötigt das Training pro Schritt mit SAC etwa $3,7$ Mal so lang wie mit PPO.
+Bei der für diese Experimente verwendeten Implementierung und Hardware benötigt das Training pro Schritt mit SAC etwa $3{,}7$ Mal so lang wie mit PPO.
 Das Sammeln der Beispiele aus dem Markt nimmt bei PPO etwa 25\% der Trainingszeit ein, bei SAC nur etwa 6\%.
 Die Geschwindigkeit des Trainings ist bei A2C und PPO sehr ähnlich.
 Rechnet man somit die tatsächliche Trainingszeit, relativiert sich der höhere Samplebedarf bei PPO.
 Insbesondere wird deutlich, dass A2C in reinem Zeitbedarf den anderen Algorithmen erheblich überlegen ist.
 
-Weil insbesondere das SAC-Training so zeitaufwändig ist (in diesem Experiment etwa 7 Stunden) und der Lernfortschritt im späteren Verlauf so gering ist, wird bei einigen der folgenden Versuche mit SAC die Anzahl der Trainingsschritte reduziert.
-Gleiches geschieht bei A2C, da hier bereits sehr früh Spitzenwerte erreicht werden.
+Weil insbesondere das SAC-Training so zeitaufwändig ist und der Lernfortschritt im späteren Verlauf so gering ist, wird bei einigen der folgenden Versuche mit SAC die Anzahl der Trainingsschritte reduziert.
+Gleiches geschieht bei A2C, da hier bereits sehr früh die maximale Performance erreicht werden.
 
 \section{Den Konkurrenten übertreffen -- eine angepasste Rewardfunktion}
 \label{section:mixed_reward_function}
@@ -251,7 +251,7 @@ So kann es passieren, dass bei einer Optimierung der Differenz zwar der Konkurre
 
 Deshalb wurde für die folgende Versuchsreihe eine gemischte Rewardfunktion verwendet.
 Sie berechnet einfach die Summe aus Profit und Differenz zum Konkurrenten.
-Für diese Experimente wurden beide Summanden gleich gewichtet, es könnte aber noch ein Hyperparameter eingefügt werden, um die beiden Ziele Profitmaximierung und Übertreffen des Konkurrenten zu balancieren.
+Für diese Experimente wurden beide Summanden gleich gewichtet, es könnte aber ein Hyperparameter eingefügt werden, um die beiden Ziele Profitmaximierung und Übertreffen des Konkurrenten zu balancieren.
 
 \begin{figure}[htb]
 	\centering
@@ -263,7 +263,7 @@ Für diese Experimente wurden beide Summanden gleich gewichtet, es könnte aber 
 Im Anhang sind die Lernkurven der Algorithmen mit gemischter Rewardfunktion im Vergleich zur Standardrewardfunktion abgedruckt (Abbildungen \ref{graphic:MixedRewardsA2C}, \ref{graphic:MixedRewardsPPO} und \ref{graphic:MixedRewardsSAC}).
 Wie erwartet liegen die Gewinne der Agenten niedriger als bei der anderen Rewardfunktion (schließlich sind Gewinne nicht mehr das alleinige Optimierungskriterium), allerdings fällt dieser Unterschied bei den Algorithmen unterschiedlich aus.
 Weiterhin erhöht sich durch den Wechsel der Rewardfunktion die Instabilität bei allen Algorithmen.
-Ob das Ziel, neben guten Gewinnen die Konkurrenz zu überholen, erreicht wird, zeigt Abbildung \ref{graphic:LineplotMixedRewards}.
+Ob das Ziel, neben guten Gewinnen die Konkurrenz zu überholen, erreicht wird, zeigt \mbox{Abbildung \ref{graphic:LineplotMixedRewards}}.
 
 Obwohl der A2C-Durchlauf wieder Probleme mit Instabilität zeigt, erreicht er ein durchschnittliches Maximum von 7900, der Konkurrent nur 7200.
 Er überholt also bei der veränderten Rewardfunktion den regelbasierten Konkurrenten, und erhält gleichzeitig gute Gewinne.
@@ -288,14 +288,14 @@ Weil jedoch davon ausgegangen werden kann, dass der Konkurrent seine Preisstrate
 Zweitens ist die mittels RL trainierte Strategie nur gegen diese bestimmte regelbasierte Strategie gerichtet.
 Ändert der Wettbewerber seine Preisstrategie plötzlich, schwächt das die Performance der RL-Strategie und macht neues Training erforderlich.
 
-Deshalb wünscht man sich eine Strategie, die gegen möglichst viele Wettbewerberstrategien bestehen kann, und nicht auf eine spezielle overfittet ist.
-Deepmind hatte eine ähnliche Herausforderung beim Training von Go- und Schachstrategien, das durch Self-Play gelöst wurde. 
+Deshalb wünscht man sich eine Strategie, die gegen möglichst viele Wettbewerberstrategien bestehen kann, und nicht auf eine spezielle überangepasst ist.
+DeepMind hatte eine ähnliche Herausforderung beim Training von Go- und Schachstrategien, das durch Self-Play gelöst wurde. 
 Das kann in \cite{Silver2017, https://doi.org/10.48550/arxiv.1712.01815} nachgelesen werden.
 
 Für diesen Markt wurde eine Self-Play Variante entwickelt, bei der ein RL-Agent weiterhin auf einem Duopol-Markt trainiert, aber die Policy des Wettbewerbers die eigene Policy ist.
-In der programmiertechnischen Umsetzung wird dann für den Gegner ein Zeiger auf den RL-Agenten übergeben, der schließlich auch die Policyfunktion implementiert.
+In der programmiertechnischen Umsetzung wird für den Gegner ein Zeiger auf den RL-Agenten übergeben, der schließlich auch die Policyfunktion implementiert.
 Dadurch, dass der Agent stets gegen sich selbst spielt, wird die Markov-Eigenschaft verletzt, dennoch zeigen die Ergebnisse Trainingserfolg.
-Die Motivation hinter Self-Play ist, dass der Agent einerseits stets einem ebenbürtigen Gegner gegenübersteht, aber andererseits auch, dass er ständig Strategien gegen die eigene entwickelt, die dann wiederum herausgefordert werden.
+Die Motivation hinter Self-Play ist, dass der Agent einerseits die ganze Zeit einem ebenbürtigen Gegner gegenübersteht, aber andererseits auch, dass er ständig Strategien gegen die eigene entwickelt, die dann wiederum herausgefordert werden.
 Dadurch soll der Agent auf eine Vielzahl von Policies vorbereitet werden.
 
 Experimente mit Self-Play wurden mit den Algorithmen durchgeführt, die sich in der vorangegangenen Analyse als grundsätzlich geeignet für diesen Markt erwiesen haben: A2C, PPO und SAC.
@@ -321,10 +321,10 @@ Deshalb dürfen auch die Returns dieser Lernkurven nicht mit denen aus den vorig
 \end{figure}
 Um Vergleichbarkeit herstellen zu können, wurde während des Self-Plays alle 50 Episoden ein Modell gespeichert und jedes dieser Modelle anschließend für 25 Episoden getestet.
 Damit wurden akkurate Lernkurven erstellt, die das beim Self-Play trainierte Modell mit dem regelbasierten Agenten vergleichen.
-Für die drei Algorithmen und die zwei Rewardfunktionen wurde ein mittlerer Durchlauf ausgewählt und in der Abbildung \ref{graphic:SelfPlayDetails} veranschaulicht.
+Für die drei Algorithmen und die zwei Rewardfunktionen wurde ein mittlerer Durchlauf ausgewählt und in der \mbox{Abbildung \ref{graphic:SelfPlayDetails}} veranschaulicht.
 
 Bei beiden Rewardfunktionen haben die Agenten den Markt erfolgreich erlernt und können sich auch in dem Benchmark gegen den regelbasierten Konkurrenten behaupten.
-So liegen die Spitzenwerte aller Agenten im Benchmark bei 8000 oder knapp darunter, allerdings mit starken Schwankungen bei A2C.
+So liegen die Peaks aller Agenten im Benchmark bei 8000 oder knapp darunter, allerdings mit starken Schwankungen bei A2C.
 Von den A2C-Agenten erreichen einige kein Niveau von 5000.
 Die Auswirkungen der gemischten Rewardfunktion sind bei den Trainingsdurchläufen zu erkennen.
 Dass während des Trainings die Differenz zwischen eigenem und gegnerischem Profit mit als Optimierungskriterium verfolgt wird, führt tatsächlich dazu, dass der durch Self-Play trainierte Agent auch im Vergleich mit dem regelbasierten Konkurrenten sich zumindest nicht übertreffen lässt (A2C), den Konkurrenten im Gegensatz zur normalen Rewardfunktion dauerhaft abhängt (PPO) oder den Abstand zum Konkurrenten vergrößert (SAC).
@@ -356,7 +356,7 @@ Bis auf eine leicht verschlechterte Stabilität ist die Performance bei PPO ähn
 Dieses geringfügige Absinken der Stabilität lässt sich vermutlich direkt durch das Fehlen von Informationen erklären.
 Bei A2C verbessert sich ohne diese Informationen die Performance, und bei SAC sogar deutlich.
 Während die SAC-Agenten, denen nur der Lagerstand des Konkurrenten vorenthalten wird, recht ähnliche, leicht verbesserte Ergebnisse wie die mit vollständiger Information erzielen, sind die Agenten, bei denen zusätzlich die Information über die Anzahl der Produkte in Zirkulation fehlt, deutlich besser.
-Es senkt sich nicht nur die Zeit bis zum Erreichen der Spitzenperformance auf unter 100 Episoden, sondern es verbessert sich sogar die endgültige Performance.
+Es senkt sich nicht nur die Zeit bis zum Erreichen der Leistungsspitze auf unter 100 Episoden, sondern es verbessert sich sogar die endgültige Performance.
 Damit reicht die Leistung näher, aber nicht ganz an die von PPO heran.
 Das ist eine wichtige Erkenntnis mit Blick auf die praktische Anwendbarkeit, und dennoch stellt sich die Frage, wie sich die unerwartet gute Leistung mit unvollständiger Information erklären lässt.
 
@@ -377,16 +377,53 @@ Zunächst kann aus Abbildung \ref{graphic:InCirculationExplain} (Mitte) gelesen 
 So unterscheidet sich der Mittelwert der SAC-Policy für Gebrauchtpreise bei ähnlichen Situationen zwischen 2 und 10, ein Sprung durch den gesamten Aktionsraum.
 Dass sich eine nahezu optimale Policy so verhalten sollte, ist angesichts der geringen Bedeutung der beiden Argumente auszuschließen, was die Policy des deutlich erfolgreicheren PPO-Agenten bestätigt.
 Wie man es erwarten würde, hängt sie kaum von diesen beiden Argumenten ab.
-Die niedrigere Spitzenperformance von SAC lässt sich vermutlich durch derartige Schwächen der Policy erklären.
+Die niedrigeren Leistungsmaxima von SAC lassen sich vermutlich durch derartige Schwächen der Policy erklären.
 
 Für die von SAC erlernte Policy lässt sich eine Erklärung in der Funktionsweise von Soft Actor Critic finden.
 Sie basiert darauf, dass bei weiterentwickelten Policies im Markt mehr Produkte in Zirkulation sind.
 Das ist in Abbildung \ref{graphic:InCirculationExplain} (links) gezeigt und liegt daran, dass wenig trainierte Policies im Gegensatz zu den weiterentwickelten oft zu viel zurückkaufen (und dabei zu viel Geld ausgeben).
-Das bedeutet, dass gerade am Anfang der Experiencebuffer nur mit Zustandsübergänge mit niedrigen \textit{in-circulation}-Werten gefüllt wird.
+Das bedeutet, dass gerade am Anfang der Experiencebuffer nur mit Zustandsübergängen mit niedrigen \textit{in-circulation}-Werten gefüllt wird.
 Diese Samples bleiben im Experiencebuffer, sind aber für das spätere Training nicht mehr hilfreich und können die Anomalien in der Policy erklären.
 So liegt eine starke Anomalie in der Policy im Bereich zwischen 50 und 150 Produkten in Zirkulation, genau der Bereich, aus dem die frühen Samples stammen.
 Das Entfallen des \textit{in-circulation}-Eintrages verbessert also die Performance des SAC wohl deshalb, weil dieser dann nicht mehr die Möglichkeit hat, mit missweisenden Samples tatsächlich nicht existente Zusammenhänge zu erlernen.
 Es ist damit als Schwäche von SAC gegenüber dem On-Policy-Verfahren PPO zu verzeichnen, dass es weniger gut in der Lage ist, die geringe Relevanz dieses Attributes selbstständig zu erlernen.
+
+\section{Durch die Policy induziertes Marktgeschehen}
+Die vorigen Untersuchungen bewerteten die Leistung der Policy vorrangig anhand der Leistung, die ein Agent über den Trainingsverlauf hinweg erzielt.
+Es lohnt sich jedoch ebenfalls, eine einzelne Episode genauer zu betrachten.
+Dabei interessiert man sich dafür, ob situationsangemessene Preise gewählt werden, ob das Lager erfolgreich reguliert wird und ob sich Gleichgewichte einstellen.
+Es muss jedoch beachtet werden, dass es sich um exemplarische Durchläufe handelt.
+Bei Verallgemeinerungen ist deshalb große Vorsicht geboten.
+
+Im ersten Durchlauf einer Episode wurde ein PPO-Agent gegen den unterbietenden regelbasierten Wettbewerber getestet.
+Der PPO-Agenten hat die Modellparameter, die bei dem Self-Play-Durchlauf mit gemischter Belohnungsfunktion trainiert wurden, dessen Trainingsverlauf in \mbox{Abbildung \ref{graphic:SelfPlayDetails}} abgedruckt ist.
+Details aus dieser Episode sind im Anhang in Abbildung \ref{graphic:EpisodeAnalysisPPOvsRulebased} abgedruckt.
+Dabei wurden die Lagerstände der beiden Agenten über die vollen 500 Schritte der Episode abgedruckt.
+Von den gesetzten Preisen wurde ein 25-Schritte-Intervall zum Ende der Episode gezeigt.
+Zunächst ist zu erkennen, dass beide Agenten einen Startzustand mit unerwünscht hohem Lagerstand bekommen.
+Bei PPO ist die Initialisierung fast beim Maximum.
+Beide Agenten leeren nun ihre Lager, um Lagerkosten zu sparen.
+Nach weniger als 50 Schritten pendelt sich das Lager bei beiden Agenten um 10 Produkte herum ein.
+Während dieser Wert beim regelbasierten Agenten fest einprogrammiert ist, hat sich der PPO-Agent ein sehr ähnliches Niveau beim Training selbst beigebracht.
+Die Lagerschwankungen, die sich eingestellt haben, sind beim regelbasierten Agenten kleiner als beim PPO-Agenten.
+Eine naheliegende Erklärung dafür ist, dass der regelbasierte Agent den vorgegebenen Lagerstand sehr aggressiv regelt.
+So ist bei Rückkauf- und Gebrauchtpreis zu sehen, dass beinahe bei jedem Schritt zwischen einem sehr niedrigem und einem sehr hohen Preisniveau gewechselt wird.
+Die Unterschiede zwischen benachbarten Preisen fallen bei dem RL-Agenten deutlich niedriger aus.
+Man kann auf Basis dieser Diagramme vorschlagen, dass der regelbasierte Agent bei der Regulierung des Lagers größere Toleranz walten lassen könnte, um die Preissprünge zwischen aufeinanderfolgenden Schritten zu reduzieren.
+Bei den Neupreisen sieht man ebenfalls die einprogrammierte Logik im Preisverlauf:
+Der regelbasierte Agent setzt hier keine eigenen Impulse und unterbietet den PPO-Agenten stets um eins.
+Dadurch ist seine Kurve die um einen halben Schritt nach rechts und eine Preisstufe nach unten versetzte Kurve des PPO-Agenten.
+Am Ende der Episode stehen als Profite 7994 für den PPO-Agenten gegen 5844 des regelbasierten Agenten.
+
+Neben der Gegenüberstellung mit dem regelbasierten Agenten wurde eine Episode des PPO-Agenten gegen einen ebenfalls mit gemischter Rewardfunktion und Self-Play trainierten SAC-Agenten untersucht.
+Dabei wurden die gleichen Diagramme erstellt.
+Sie sind im Anhang in \mbox{Abbildung \ref{graphic:EpisodeAnalysisPPOvsSAC}} zu finden.
+Die Initialisierung geschah wie im obigen Verlauf mit deutlich mehr Produkten im Lager als gewünscht, die zuerst abverkauft werden, bis sich der Lagerstand beider Agenten unter 20 einpegelt.
+Das Preisniveau für Neuprodukte ist bei beiden Agenten auf ähnlichem und stabilen Niveau.
+Es bewegt sich zwischen 5 und 6.
+Während die anderen Preise sich ebenfalls auf relativ stabilem Niveau bewegen, sticht der Gebrauchtpreis des SAC-Agenten hervor.
+Er ist stärkeren Schwankungen zwischen 2 und 9 unterworfen.
+Am Ende der Episode liegt der PPO-Agent mit 9920 zu 9319 vor dem SAC-Agenten.
 
 \section{Vergleich im Monopol}
 In den vorigen Abschnitten wurden die Algorithmen in einem Recommerce-Duopol mit einem regelbasierten, unterbietenden Konkurrenten getestet.
@@ -408,7 +445,7 @@ Abbildung \ref{graphic:MonopolyComparison} zeigt die Lernkurven der drei Agenten
 Dabei stechen sofort die Parallelen zum Duopol-Markt ins Auge:
 \begin{enumerate}
 	\item Die relative Reihenfolge der Agenten bei der Lernkurve ist die gleiche: PPO schneidet am besten ab, dann SAC vor A2C.
-	\item A2C erreicht als erstes die Gewinnzone, dann folgt SAC und zuletzt PPO.
+	\item A2C erreicht als erstes die Gewinnzone, danach folgt SAC und zuletzt PPO.
 	\item Das Training von PPO und SAC ist sehr stabil, A2C-Training ist von Abstürzen geprägt.
 \end{enumerate}
 Auch wenn der Monopol-Markt einfacher ist, so benötigt das Training nicht erheblich weniger Samples.
@@ -430,7 +467,7 @@ Dabei tritt der RL-Agent gegen die folgenden Agenten an:
 	\item einen Agenten, der speziell für das Oligopolszenario erstellt wurde.
 	Als Neupreis unterbietet er den Median der anderen Anbieter, und reguliert sein Lager so, dass es etwa 7 Produkte enthält.
 \end{enumerate}
-Jeder Schritt wird dann in Fünftel zerlegt, die Anbieter setzen ihre Preise reihum.
+Jeder Schritt wird hier in Fünftel zerlegt, die Anbieter setzen ihre Preise reihum.
 In jedem dieser Fünftel kommen vier Kunden zum Marktplatz, insgesamt also weiterhin 20.
 Das sonstige Verhalten des Marktes bleibt unverändert.
 Der Beobachtungsraum ist 18-dimensional (\textit{in-circulation}, eigener Lagerstand und für jeden der vier Konkurrenten drei Preise sowie der Lagerstand).
@@ -446,7 +483,7 @@ Damit handelt es sich um das komplexeste Szenario, das untersucht wurde.
 Grafik \ref{graphic:OligopolyComparison} zeigt die Lernkurven auf diesem Oligopolszenario.
 Die RL-Agenten erreichen auch hier Lernerfolg, wobei die Gewinne selbstverständlich niedriger ausfallen, da sich die gleiche Anzahl von Kunden auf deutlich mehr Anbieter verteilt.
 Wie auch in den anderen Experimenten, zeigen PPO und SAC stabile Lernkurven.
-Bei A2C zeigen sich die bekannten Instabilitäten, aber die Spitzenperformance bleibt tatsächlich nur leicht hinter der der anderen Algorithmen zurück.
+Bei A2C zeigen sich die bekannten Instabilitäten, aber ihre Leistung in der Spitze bleibt tatsächlich nur leicht hinter der der anderen Algorithmen zurück.
 Äußerst interessant ist bei diesem Versuch, dass der SAC-Algorithmus besser abschneidet als PPO, der bei den anderen Experimenten in der Spitzenleistung überlegen war.
 Weil wegen des hohen Trainingsaufwandes nur 1000 Episoden trainiert wurden und die PPO-Kurven am Ende noch einen leichten Anstieg zeigen, kann zwar nicht ausgeschlossen werden, dass PPO zu einem späteren Zeitpunkt aufholt, aber dennoch lässt sich auf Grundlage dieser Lernkurve SAC als überlegen einordnen.
 
