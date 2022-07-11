@@ -1,10 +1,11 @@
 \section{MDPs lösen: Zustands- und Aktionswerte}
 \label{section:mdp_fundamentals}
-Bei der Einführung der Notation wird sich an das Lehrbuch \cite{Sutton1998} gehalten.
+Bei der Einführung der Notation wird sich am Lehrbuch \cite{Sutton1998} orientiert.
 Gegeben sei ein Markov-Entscheidungsprozess $(\mathcal{S}, \mathcal{A}, p)$ (kurz MDP).
 Dabei ist $\mathcal{S}$ der Zustands- und $\mathcal{A}$ der Aktionsraum.
-Wir nehmen an, dass alle Belohnungen (engl. Reward) aus einer (endlichen) Teilmenge $\Lambda \subset \mathbb{R}$ stammen.
-Dann ist für einen Zustand $s\in \mathcal{S}$ und eine Aktion $a \in \mathcal{A}$ die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung $r \in \Lambda$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
+Wir nehmen an, dass alle Belohnungen (engl. Reward) aus einer (endlichen) Menge $\Lambda \subset \mathbb{R}$ stammen.
+Dann ist für einen Zustand \mbox{$s\in \mathcal{S}$} und eine Aktion \mbox{$a \in \mathcal{A}$} die Wahrscheinlichkeitsdichte, in einen Zustand $s' \in \mathcal{S}$ überzugehen und dabei die Belohnung $r \in \Lambda$ zu erhalten, als $p_{s,a}(s', r)$ gegeben.
+
 Zentraler Begriff beim Lösen eines MDPs ist die sogenannte Policyfunktion.
 Sie kann deterministisch sein und als \mbox{$\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$} formalisiert werden.
 Weiterhin können Policies stochastisch sein.
