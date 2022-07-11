@@ -10,8 +10,8 @@ Zentraler Begriff beim Lösen eines MDPs ist die sogenannte Policyfunktion.
 Sie kann deterministisch sein und als \mbox{$\pi_{det}: \mathcal{S} \rightarrow \mathcal{A}$} formalisiert werden.
 Weiterhin können Policies stochastisch sein.
 Die Policyfunktion ist dann eine Zähl- oder Wahrscheinlichkeitsdichtefunktion der Form \mbox{$\pi_{stoch}: \mathcal{S}\times\mathcal{A}\rightarrow [0, \infty)$}.
-Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als $\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$.
-Dabei sind für jedes $i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$ stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
+Mit der Policy, den Zustandsübergängen, Belohnungen und dem Startzustand $S_0$ ergibt sich dann eine Episode als \mbox{$\tau = \left(S_0, A_0, R_0, S_1, A_1, R_1, \dots, S_{n_{ep} - 1}, A_{n_{ep} - 1}, R_{n_{ep} - 1}\right)$}.
+Dabei sind für jedes \mbox{$i \in \left\lbrace0, \dots, n_{ep} - 1\right\rbrace$} stets $S_i$, $A_i$, $R_i$ Zufallsvariablen, die für den $i$-ten Schritt Zustand, Aktion und Belohnung angeben.
 Mit einem optionalen Diskontierungsfaktor $\gamma \in [0, 1]$ werden die addierten Belohnungen
 \begin{equation}
 	G_t := \sum_{i=t}^{n_{ep} - 1} \gamma^{i - t} \cdot R_i
