@@ -91,14 +91,14 @@ Das geschieht, indem für die einzelnen Optionen Präferenzen aufgestellt werden
 Dabei wird die Präferenz für das Nichtkaufen auf 1 festgelegt.
 Die Präferenz, das Neuprodukt bei Anbieter $i\in\{1, 2\}$ zu kaufen, lautet
 \begin{equation}
-	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu}} - \exp{(p_{i, neu} - 0{,}8 p_{max})}.
+	\sigma_{kunde, neu, i} = \frac{10}{p_{i, neu} + 1} - \exp{(p_{i, neu} - 0{,}8 p_{max})}.
 \end{equation}
 Das Kaufen eines Gebrauchtproduktes bei Anbieter $i\in\{1, 2\}$ wird auf
 \begin{equation}
-	\sigma_{kunde, gebraucht, i} = \frac{5{,}5}{p_{i, gebraucht}} - \exp{(p_{i, gebraucht} - 0{,}5 p_{max})}
+	\sigma_{kunde, gebraucht, i} = \frac{5{,}5}{p_{i, gebraucht} + 1} - \exp{(p_{i, gebraucht} - 0{,}5 p_{max})}
 \end{equation}
 festgelegt.
-Ist der Preis null, so sei die Präferenz unendlich und die Wahrscheinlichkeit, bei diesem Anbieter das Geschenk anzunehmen, 1.\footnote{Bei mehreren Anbietern mit Preis null wird einer uniform zufällig ausgesucht.}
+Die Addition der Preise mit eins verhindert Nulldivision.
 
 Die Präferenz für eines der Angebote basiert also hauptsächlich auf dem Preis-Leistungs-Verhältnis.
 Gebrauchten Produkten wird dabei 55\% der Wertschätzung im Vergleich zu Neuprodukten entgegengebracht.
